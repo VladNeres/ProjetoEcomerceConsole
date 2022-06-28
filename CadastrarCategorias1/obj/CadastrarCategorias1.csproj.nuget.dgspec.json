@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\ClearTech\\Documents\\Projetos de estudo C#\\CadastrarCategorias1\\CadastrarCategorias1\\CadastrarCategorias1.csproj": {}
+    "C:\\Users\\ClearTech\\Documents\\Projetos de estudo C#\\CadastrarCategorias1\\T2-VladmirNeres\\CadastrarCategorias1\\CadastrarCategorias1.csproj": {}
   },
   "projects": {
-    "C:\\Users\\ClearTech\\Documents\\Projetos de estudo C#\\CadastrarCategorias1\\CadastrarCategorias1\\CadastrarCategorias1.csproj": {
+    "C:\\Users\\ClearTech\\Documents\\Projetos de estudo C#\\CadastrarCategorias1\\T2-VladmirNeres\\CadastrarCategorias1\\CadastrarCategorias1.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\ClearTech\\Documents\\Projetos de estudo C#\\CadastrarCategorias1\\CadastrarCategorias1\\CadastrarCategorias1.csproj",
+        "projectUniqueName": "C:\\Users\\ClearTech\\Documents\\Projetos de estudo C#\\CadastrarCategorias1\\T2-VladmirNeres\\CadastrarCategorias1\\CadastrarCategorias1.csproj",
         "projectName": "CadastrarCategorias1",
-        "projectPath": "C:\\Users\\ClearTech\\Documents\\Projetos de estudo C#\\CadastrarCategorias1\\CadastrarCategorias1\\CadastrarCategorias1.csproj",
+        "projectPath": "C:\\Users\\ClearTech\\Documents\\Projetos de estudo C#\\CadastrarCategorias1\\T2-VladmirNeres\\CadastrarCategorias1\\CadastrarCategorias1.csproj",
         "packagesPath": "C:\\Users\\ClearTech\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\ClearTech\\Documents\\Projetos de estudo C#\\CadastrarCategorias1\\CadastrarCategorias1\\obj\\",
+        "outputPath": "C:\\Users\\ClearTech\\Documents\\Projetos de estudo C#\\CadastrarCategorias1\\T2-VladmirNeres\\CadastrarCategorias1\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\ClearTech\\AppData\\Roaming\\NuGet\\NuGet.Config",

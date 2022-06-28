@@ -5,33 +5,35 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 
-namespace CadastrarCategorias
-{
+namespace CadastrarCategorias1 
+{ 
+
+
     public class Categorias
     {
 
         public string nome;
         public string status;
         public string data_Hora;
-
-     //creating constructor just allown create a new object if the person type the name of category
-        public Categorias(string nomeDaCategoria)
+        
+        //creating constructor just allown create a new object if the person type the name of category
+        public  Categorias(string nomeCategoria)
         {
-            nome = nomeDaCategoria;
+            nome = nomeCategoria;
             Verificar_Letras();
+            Status();
         }
 
-        // verification about limite  and alphabet
+        // verification limite  and alphabet
         public void Verificar_Letras()
         {
-
             while (!Regex.IsMatch(nome, @"^[ a-zA-Z á]*$") || nome.Length < 1 || nome.Length > 10)
             {
 
                 if (!Regex.IsMatch(nome, @"^[ a-zA-Z á]*$"))
                 {
                     Console.WriteLine("por favor digite apenas letras no nome da categoria");
-                    
+                    Console.ReadLine();
                 }
                 else if (nome.Length < 1 || nome.Length > 5)
                 {
@@ -47,5 +49,10 @@ namespace CadastrarCategorias
             Console.WriteLine(" A Categoria: " + nome + ",  foi criado :" + data_Hora);
         }
 
+        public bool Status()
+        {
+            Console.WriteLine("Status: ativo");
+            return true;
+        }
     }
-}
+}   

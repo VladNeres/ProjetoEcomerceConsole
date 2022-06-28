@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CadastrarCategorias
+namespace CadastrarCategorias1
 {
     class program
     {
@@ -9,9 +9,9 @@ namespace CadastrarCategorias
             Console.WriteLine("Ola Seja Bem vindao ao sisteme.\nDigide o nome da Categoria");
 
             string nome = Console.ReadLine();
-            Categorias categoria = new Categorias(nome); 
-
-            
-        }
+            Categorias categoria = new Categorias(nome);
+         
+           
+        } 
     }
 }

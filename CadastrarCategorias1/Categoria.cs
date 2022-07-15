@@ -34,12 +34,7 @@ namespace CadastrarCategorias
             while (loop)
             {
                 Console.WriteLine("digite o nome da categoria");
-                String nomeCategoria = Console.ReadLine();
-
-                //if (string.IsNullOrEmpty(nomeCategoria))
-                //{
-                //    throw new ArgumentException("O nome da Categoria não pode ser nula ou vazia");
-                //}
+                String nomeCategoria = Console.ReadLine(); 
                 if (VerificarLetras(nomeCategoria))
                 {
                     Nome = nomeCategoria;
@@ -90,7 +85,12 @@ namespace CadastrarCategorias
                 }
              return ("O nome da categoria foi alterado na data : " + data_Hora + "\n"+
                                                            "para : "  + Nome + "\n"+
-                                                           "Status : " + Status + "\n");
+                                                           "Status : " + Status + "\n"+
+                                                           "A nova data de alteração foi: "+ (data_Hora= DateTime.Now));
+                                
+                    
+                            
+                        
 
             }
 

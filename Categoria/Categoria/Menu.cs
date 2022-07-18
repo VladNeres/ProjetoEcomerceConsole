@@ -39,17 +39,16 @@ namespace Categorias
       
                         case "2":
 
-                        try
+                        if (string.IsNullOrEmpty(categoria.Nome))
                         {
-                            Console.WriteLine(categoria.EditarCategoria());
-
-                        }
-                        catch(System.NullReferenceException)
-                        {
-                            Console.WriteLine("Não pode criar essa joça");
+                            Console.WriteLine("Nenhuma Categoria cadastrada ainda, por favor Cadastre primeiro uma categoria");
                             break;
                         }
-                        break;
+                        else
+                        {
+                            Console.WriteLine(categoria.EditarCategoria());
+                            break;
+                        }
 
                     case "3":
                         if (string.IsNullOrEmpty(categoria.Nome))

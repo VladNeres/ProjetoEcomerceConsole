@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\ClearTech\\Documents\\Projetos de estudo C#\\Categoria\\Categoria\\Categoria.csproj": {}
+    "C:\\Users\\ClearTech\\Documents\\Sprints\\Categoria\\Categoria\\Categoria.csproj": {}
   },
   "projects": {
-    "C:\\Users\\ClearTech\\Documents\\Projetos de estudo C#\\Categoria\\Categoria\\Categoria.csproj": {
+    "C:\\Users\\ClearTech\\Documents\\Sprints\\Categoria\\Categoria\\Categoria.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\ClearTech\\Documents\\Projetos de estudo C#\\Categoria\\Categoria\\Categoria.csproj",
+        "projectUniqueName": "C:\\Users\\ClearTech\\Documents\\Sprints\\Categoria\\Categoria\\Categoria.csproj",
         "projectName": "Categoria",
-        "projectPath": "C:\\Users\\ClearTech\\Documents\\Projetos de estudo C#\\Categoria\\Categoria\\Categoria.csproj",
+        "projectPath": "C:\\Users\\ClearTech\\Documents\\Sprints\\Categoria\\Categoria\\Categoria.csproj",
         "packagesPath": "C:\\Users\\ClearTech\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\ClearTech\\Documents\\Projetos de estudo C#\\Categoria\\Categoria\\obj\\",
+        "outputPath": "C:\\Users\\ClearTech\\Documents\\Sprints\\Categoria\\Categoria\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\ClearTech\\AppData\\Roaming\\NuGet\\NuGet.Config",

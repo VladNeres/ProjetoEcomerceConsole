@@ -1,17 +1,16 @@
 ﻿using System;
 
-namespace CadastrarCategorias1
+namespace CadastrarCategorias
 {
-    class program
+    class Program
     {
         static void Main(String[] args)
         {
-            Console.WriteLine("Ola Seja Bem vindao ao sisteme.\nDigide o nome da Categoria");
+            //string nome = Console.ReadLine();
+            //Categoria categoria = new Categoria(nome, false) ;
+            MenuNavegar.ExibirMenu();
 
-            string nome = Console.ReadLine();
-            Categorias categoria = new Categorias(nome);
-         
-           
-        } 
+            Console.WriteLine("total de Categorias criadas:" + Categoria.TotalDeCategorias);
+        }
     }
 }

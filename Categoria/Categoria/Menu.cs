@@ -33,17 +33,40 @@ namespace Categorias
                     {
                         case "1":
                         
-                            Console.WriteLine(categoria.CadastrarCategoria());
-                            break;
+                        bool controleProsseguirEVoltar = true;
+                        while(controleProsseguirEVoltar)
+                        {
+                        Console.WriteLine("Deseja Cadastrar a categoria digite (S) para prosseguir ou (N) para para retornar ao menu ");
+                            string opcaoSimOuNao = Console.ReadLine();
+                            switch (opcaoSimOuNao)
+                            {
+                                case "S":
+                                    Console.WriteLine(categoria.CadastrarCategoria());
+                                    controleProsseguirEVoltar=false;
+                                    break;
 
-      
-                        case "2":
+                                case "N":
+                                    controleProsseguirEVoltar = false;
+
+                                    break;
+
+
+                                default:
+                                    Console.WriteLine("escolha uma opçao valida");
+                                    break;
+                            }
+                        }
+                        break;
+
+
+
+                    case "2":
 
                         if (string.IsNullOrEmpty(categoria.Nome))
                         {
                             Console.WriteLine("Nenhuma Categoria cadastrada ainda, por favor Cadastre primeiro uma categoria");
                             break;
-                        }
+                        }   
                         else
                         {
                             Console.WriteLine(categoria.EditarCategoria());

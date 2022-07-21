@@ -64,7 +64,7 @@ namespace Categorias
                 }
                 else
                 {
-                    Console.WriteLine("A categoria deve conter de 1 a 128 carcteres (apenas letras)\n");
+                    Console.WriteLine("A categoria deve conter de 1 a 50 carcteres (apenas letras)\n");
                 }
 
             }

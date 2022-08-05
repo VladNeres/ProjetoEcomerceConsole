@@ -62,7 +62,7 @@ namespace Categorias
                 Nome = nomeCategoria;
                 listaDeCategoria.Add(categoria);
                 categoria.ID = listaDeCategoria.Count;
-
+                categoria.Data_hora = DateTime.Now;
 
 
 
@@ -72,7 +72,7 @@ namespace Categorias
 
                     Console.WriteLine($"O ID da categoria é :  ({categoria.ID})");
                     Console.WriteLine($"O nome da categoria é : {categoria.Nome}");
-                    Console.WriteLine($"Criada em : ({categoria.Data_hora = DateTime.Now})");
+                    Console.WriteLine($"Criada em : ({categoria.Data_hora})");
                     Console.WriteLine($"Status : {categoria.Status} \n ");
 
 
@@ -95,7 +95,7 @@ namespace Categorias
         public virtual string Editar()
         {
             //Showing complet least to consult
-            MostrarResultado();
+            MostrarLista();
 
             //creating infinit loop to repeat while the function be true
             bool loopEditar = true;
@@ -106,69 +106,77 @@ namespace Categorias
                 Console.WriteLine("qual a categoria que voce deseja alterar ?");
 
                 string editarNomedaCategoriaEscolida = Console.ReadLine();
-                Match regex = Regex.Match(editarNomedaCategoriaEscolida, @"[a-zA-Z]{3}");
-                var editarLista = listaDeCategoria.Where(categoria => categoria.Nome.ToUpper().Equals(editarNomedaCategoriaEscolida.ToUpper()));
+                var procurarListaPorNome = listaDeCategoria.Where(categoria => categoria.Nome.ToUpper().Equals(editarNomedaCategoriaEscolida.ToUpper()));
+                
 
-                //creating a verification to see if there is an iten inside the list
-                if (editarLista == regex && editarLista.Count() == 0)
+                if (VerificarLetras(editarNomedaCategoriaEscolida))
                 {
-                    Console.WriteLine("Categoria não encontrada");
+                    if (procurarListaPorNome.Count() == 0)
+                    {
+                        Console.WriteLine("Categoria não encontrada");
+                    }
+                    else
+                    {
+
+                        Console.WriteLine("Escreva o novo nome da categoria");
+                        string novonome = Console.ReadLine();
+                        if (VerificarLetras(novonome))
+                        {
+                            //for each item inside the list will giv an choice option for Status and add the vallues with modification 
+                            foreach (Categoria item in procurarListaPorNome)
+                            {
+
+                                do
+                                {//creating  an option of choice option to Status
+                                    Console.WriteLine("Deseja que a categoria fique ativa ao ser atualizada?\n" +
+                                        " Digite (S) para Sim ou (N) para Não");
+                                    string opçãoDoStatus = Console.ReadLine();
+                                    switch (opçãoDoStatus.ToUpper())
+                                    {
+                                        case "S":
+
+                                            item.Status = "Ativo";
+                                            break;
+
+
+                                        case "N":
+                                            item.Status = "inativo";
+                                            break;
+
+                                        default:
+                                            Console.WriteLine("Digite uma opção valida!");
+                                            break;
+
+                                    }
+                                }
+                                while (string.IsNullOrEmpty(item.Status));
+
+                                Console.WriteLine($"Acategoria ({item.Nome}) criada na Data :  ({item.Data_hora})");
+                                item.Nome = novonome;
+                                Nome = novonome;
+                                DataAtualizada = DateTime.Now;
+                                Console.WriteLine($"Foi alterada para : ( {item.Nome}) na Data :  ({(item.DataAtualizada = DateTime.Now)})");
+                                Console.WriteLine("O Status da Categoria está : " + item.Status);
+                            }
+                            loopEditar = false;
+                        }
+                        else
+                        {
+                            Console.WriteLine("O novo nome da Categoria  deve conter entre 1 e 50 caracteres (apenas letras)\n");
+                        }
+                    }
                 }
                 else
                 {
 
-                    Console.WriteLine("Escreva o novo nome da categoria");
-                    string novonome = Console.ReadLine();
-                    if (VerificarLetras(novonome))
-                    {
-                        //for each item inside the list will giv an choice option for Status and add the vallues with modification 
-                        foreach (Categoria item in editarLista)
-                        {
-
-                            do
-                            {//creating  an option of choice option to Status
-                                Console.WriteLine("Deseja que a categoria fique atia ao ser atualizada?\n" +
-                                    " Digite (S) para Sim ou (N) para Não");
-                                string opçãoDoStatus = Console.ReadLine();
-                                switch (opçãoDoStatus.ToUpper())
-                                {
-                                    case "S":
-
-                                        item.Status = "Ativo";
-                                        break;
-
-
-                                    case "N":
-                                        item.Status = "inativo";
-                                        break;
-
-                                    default:
-                                        Console.WriteLine("Digite uma opção valida!");
-                                        break;
-
-                                }
-                            }
-                            while (string.IsNullOrEmpty(item.Status));
-
-                            Console.WriteLine($"Acategoria ({item.Nome}) criada na Data :  ({item.Data_hora}");
-                            item.Nome = novonome;
-                            Nome = novonome;
-                            DataAtualizada = DateTime.Now;
-                            Console.WriteLine($"Foi alterada para : ( {item.Nome}) na Data :  ({(item.DataAtualizada = DateTime.Now)}");
-                            Console.WriteLine("O Status da Categoria está : " + item.Status);
-                        }
-                        loopEditar = false;
-                    }
-                    else
-                    {
-                        Console.WriteLine("O novo nome da Categoria  deve conter entre 1 e 50 caracteres (apenas letras)\n");
-                    }
                 }
+                //creating a verification to see if there is an iten inside the list
+               
             }
             return "Categoria atualizada com sucesso \n";
         }
 
-        public virtual string MostrarResultado()
+        public virtual string MostrarLista()
         {
             foreach (Categoria item in listaDeCategoria)
             {
@@ -176,6 +184,7 @@ namespace Categorias
                 Console.WriteLine($"O nome da categoria é : {item.Nome}");
                 Console.WriteLine($"Criada em :   {item.Data_hora}");
                 Console.WriteLine($"Status :  {item.Status}");
+                Console.WriteLine($"Data da Ultima auteração {item.DataAtualizada}");
                 Console.WriteLine();
 
             }

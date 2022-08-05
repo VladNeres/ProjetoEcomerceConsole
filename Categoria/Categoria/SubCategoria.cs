@@ -8,18 +8,19 @@ namespace Categorias
 {
     public class SubCategoria : Categoria
     {
-        
-        List<SubCategoria> listaSubCategoria =new List<SubCategoria>();
+
+        List<SubCategoria> listaSubCategoria = new List<SubCategoria>();
         public SubCategoria()
         {
             Nome = " ";
             Status = "Ativo";
             Data_hora = DateTime.Now;
+            DataAtualizada=DateTime.Now;
         }
 
         public override string Cadastrar()
         {
-            
+
             bool loopSubCategoria = true;
             while (loopSubCategoria)
             {
@@ -29,10 +30,10 @@ namespace Categorias
                 if (VerificarLetras(nomeSubCategoria))
                 {
                     SubCategoria subCategoria = new SubCategoria();
-                    
+
                     subCategoria.Nome = nomeSubCategoria;
                     Nome = nomeSubCategoria;
-                    subCategoria.ID = listaSubCategoria.Count+1;
+                    subCategoria.ID = listaSubCategoria.Count + 1;
                     Status = " Ativo";
                     Data_hora = DateTime.Now;
 
@@ -48,52 +49,80 @@ namespace Categorias
                 {
                     Console.WriteLine("A categoria deve conter entre 1 e  50 caracteres (apenas letras)");
                 }
+
+                Console.WriteLine();
+                Console.WriteLine("aperte enter para voltar ao menu");
+                Console.ReadLine();
+                Console.Clear();
             }
             return "Sub-categoria criada com sucesso\n";
 
         }
 
-            public override string Editar()
-            {
-               
+        public override string Editar()
+        {
+            MostrarLista();
 
-                bool loopEditarSubCateforia = true;
-                while (loopEditarSubCateforia)
+            bool loopEditarSubCateforia = true;
+            while (loopEditarSubCateforia)
+            {
+
+                Console.WriteLine("digite o nome da sub categoria que deseja alterar");
+                string alterarNaLista = Console.ReadLine();
+                var editarNaLista = listaSubCategoria.Where(subCategoria => subCategoria.Nome.ToUpper().Equals(alterarNaLista.ToUpper()));
+
+                    
+                if (editarNaLista.Count() == 0)
+                {
+                    Console.WriteLine(" sub categoria não encontrada");
+                }
+                else
                 {
 
-                    Console.WriteLine("digite o nome da sub categoria que deseja alterar");
-                    string alterarNaLista= Console.ReadLine();
-
-                   var editarNaLista = listaSubCategoria.Where(subCategoria => subCategoria.Nome.ToLower().Equals(alterarNaLista.ToUpper()));
-                    // if(editarNaLista == 0)
-                    //{
-                    //    Console.WriteLine(" sub categoria não encontrada");
-                    //}
-                //else
-                //{
-                //    Console.WriteLine("Digite o novo nome da subCategoria");
-                    string novoNomeSubCategoria = Console.ReadLine();
-                    if (VerificarLetras(novoNomeSubCategoria))
+                    foreach (Categoria item in listaSubCategoria)
                     {
-                        Console.WriteLine("A subCategoria " + Nome + " Criada em :" + Data_hora + "\n" +
-                                          "Foi atualizada para : " + (Nome = novoNomeSubCategoria) + "\n" +
-                                          "Na data: " + (DataAtualizada = DateTime.Now) + "\n" +
-                                          "O status da subcategoria é : " + (Status = "ativo"));
-                        loopEditarSubCateforia = false;
+                        Console.WriteLine("Digite o novo nome da subCategoria");
+                        string novoNomeSubCategoria = Console.ReadLine();
+                        if (VerificarLetras(novoNomeSubCategoria))
+                        {
+                            Console.WriteLine($"A subCategoria  {item.Nome}  Criada em :_______  {item.Data_hora}");
+                            Nome = novoNomeSubCategoria;
+                            
+                            Status = "ativo";
+                            Console.WriteLine($"Foi atualizada para:_______ ({item.Nome}");
+                            Console.WriteLine($"Na data:___________________ ({(item.DataAtualizada)})");
+                            Console.WriteLine($"O status da subcategoria é : ({Status}");
+                            loopEditarSubCateforia = false;
 
+                        }
                     }
-                //}
+
+                }
             }
-                    
-                return " ";
+            return " ";
+        }
+        public override string MostrarLista()
+        {
+            foreach(var item in listaSubCategoria)
+            {
+                
+                Console.WriteLine($"ID da subCategoria:______{item.ID}");
+                Console.WriteLine($"Nome da subCategoria:____{item.Nome}");
+                Console.WriteLine($"Status da subCategoria:__{item.Status}");
+                Console.WriteLine($"Criado na data: _________{item.Data_hora}");
+
+                if (String.IsNullOrEmpty(item.DataAtualizada.ToLongDateString()))
+                {
+
+                }
+                else
+                {
+                    Console.WriteLine($"Data da ultima alteração{item.DataAtualizada= DateTime.Now}");
+                }
             }
-
-        //public override string MostarNaTela()
-        //{
-
-        //}
-
+          
+            return " ";
+        }
     }
-
 }
  

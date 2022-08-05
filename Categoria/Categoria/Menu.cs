@@ -25,6 +25,7 @@ namespace Categorias
                                                             "3- Cadastrar subcategoria \n" +
                                                             "4- Editar subCategoria \n" +
                                                             "5- Mostrar Lista De Categoria\n"+ 
+                                                            "6- Mostrar Lista De Subcategoria\n"+
                                                             "0- Para sair");
 
 
@@ -101,13 +102,17 @@ namespace Categorias
                         }
                         else
                         {
-                            Console.WriteLine(subCategoria.Editar); 
+                            Console.WriteLine(subCategoria.Editar()); 
                             break;
 
                         }
 
                     case "5":
-                        Console.WriteLine(categoria.MostrarResultado());
+                        Console.WriteLine(categoria.MostrarLista());
+                        break;
+
+                    case "6":
+                        Console.WriteLine(subCategoria.MostrarLista());
                         break;
 
                     case "0":

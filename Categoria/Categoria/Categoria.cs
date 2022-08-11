@@ -12,7 +12,7 @@ namespace Categorias
     public class Categoria
     {
         List<Categoria> listaDeCategoria = new List<Categoria>();
-        public string Nome { get; set; }
+        public string Nome { get; protected set; }
         public string Status { get; protected set; }
         public int ID { get; protected set; }
         public DateTime Data_hora { get; protected set; }
@@ -23,7 +23,8 @@ namespace Categorias
         {
             Nome = nome;
             Status = "Ativo";
-
+            Data_hora = DateTime.Now;
+            DataAtualizada = DateTime.Now;
 
         }
 
@@ -32,6 +33,8 @@ namespace Categorias
             Nome = " ";
             Status = "Ativo";
             ID = 0;
+            Data_hora = DateTime.Now;
+            DataAtualizada = DateTime.Now;
         }
 
         public bool VerificarLetras(string nome)
@@ -53,27 +56,26 @@ namespace Categorias
             bool loop = true;
             while (loop)
             {
-                Categoria categoria = new Categoria();
+
 
                 Console.WriteLine("Digite o nome da Categoria: ");
                 string nomeCategoria = Console.ReadLine();
 
-                categoria.Nome = nomeCategoria;
-                Nome = nomeCategoria;
-                listaDeCategoria.Add(categoria);
-                categoria.ID = listaDeCategoria.Count;
-                categoria.Data_hora = DateTime.Now;
-
-
-
                 if (VerificarLetras(nomeCategoria))
                 {
+                    Categoria categoria = new Categoria();
+                     categoria.Nome = nomeCategoria;
+                    Nome = nomeCategoria;
+                    categoria.ID = listaDeCategoria.Count;
+                    categoria.Data_hora = DateTime.Now;
 
 
                     Console.WriteLine($"O ID da categoria é :  ({categoria.ID})");
                     Console.WriteLine($"O nome da categoria é : {categoria.Nome}");
                     Console.WriteLine($"Criada em : ({categoria.Data_hora})");
                     Console.WriteLine($"Status : {categoria.Status} \n ");
+                    listaDeCategoria.Add(categoria);
+
 
 
                     loop = false;
@@ -82,7 +84,7 @@ namespace Categorias
                 {
                     Console.WriteLine("A categoria deve conter de 1 a 50 carcteres (apenas letras)\n");
                 }
-                Console.WriteLine("aperte enter para voltar ao menu");
+                Console.WriteLine("Aperte enter para voltar ao menu");
                 Console.ReadLine();
                 Console.Clear();
             }
@@ -90,7 +92,7 @@ namespace Categorias
             return " ";
 
         }
-
+        
 
         public virtual string Editar()
         {
@@ -103,20 +105,20 @@ namespace Categorias
             {
 
                 //surch a "categoria" throwght teh name
-                Console.WriteLine("qual a categoria que voce deseja alterar ?");
+                Console.WriteLine("Qual a categoria que voce deseja alterar ?");
 
+                
                 string editarNomedaCategoriaEscolida = Console.ReadLine();
                 var procurarListaPorNome = listaDeCategoria.Where(categoria => categoria.Nome.ToUpper().Equals(editarNomedaCategoriaEscolida.ToUpper()));
-                
 
-                if (VerificarLetras(editarNomedaCategoriaEscolida))
+               
+                if (procurarListaPorNome.Count() == 0)
                 {
-                    if (procurarListaPorNome.Count() == 0)
-                    {
                         Console.WriteLine("Categoria não encontrada");
-                    }
-                    else
+                }
+                else
                     {
+                       
 
                         Console.WriteLine("Escreva o novo nome da categoria");
                         string novonome = Console.ReadLine();
@@ -140,7 +142,7 @@ namespace Categorias
 
 
                                         case "N":
-                                            item.Status = "inativo";
+                                            item.Status = "Inativo";
                                             break;
 
                                         default:
@@ -154,8 +156,8 @@ namespace Categorias
                                 Console.WriteLine($"Acategoria ({item.Nome}) criada na Data :  ({item.Data_hora})");
                                 item.Nome = novonome;
                                 Nome = novonome;
-                                DataAtualizada = DateTime.Now;
-                                Console.WriteLine($"Foi alterada para : ( {item.Nome}) na Data :  ({(item.DataAtualizada = DateTime.Now)})");
+                                
+                                Console.WriteLine($"Foi alterada para : ( {item.Nome}) na Data :  ({(item.DataAtualizada)})");
                                 Console.WriteLine("O Status da Categoria está : " + item.Status);
                             }
                             loopEditar = false;
@@ -164,14 +166,9 @@ namespace Categorias
                         {
                             Console.WriteLine("O novo nome da Categoria  deve conter entre 1 e 50 caracteres (apenas letras)\n");
                         }
+                    
                     }
-                }
-                else
-                {
-
-                }
-                //creating a verification to see if there is an iten inside the list
-               
+                
             }
             return "Categoria atualizada com sucesso \n";
         }
@@ -184,11 +181,165 @@ namespace Categorias
                 Console.WriteLine($"O nome da categoria é : {item.Nome}");
                 Console.WriteLine($"Criada em :   {item.Data_hora}");
                 Console.WriteLine($"Status :  {item.Status}");
-                Console.WriteLine($"Data da Ultima auteração {item.DataAtualizada}");
-                Console.WriteLine();
+
+                
 
             }
             return "lista Completa!";
+        }
+
+
+        public virtual string RemoverDaLista()
+        {
+            MostrarLista();
+
+            bool loop = true;
+            while (loop)
+            {
+                Console.WriteLine("Digite o Id que deseja remover");
+                string remover = Console.ReadLine();
+                int numeroId = Convert.ToInt32((remover));
+                var removerPorID = listaDeCategoria.Where(categoria => categoria.ID.Equals(numeroId));
+                if (removerPorID.Count() == 0)
+                {
+                    Console.WriteLine("Esse id não foi cadastrado na lista");
+                }
+                else
+                {
+                    for (int i = 0; i < removerPorID.Count(); i++)
+                    {
+                        if(removerPorID.All(categoria => categoria.ID.Equals(numeroId)))
+                        {
+                            //listaDeCategoria.Remove();
+                        }
+                               
+                    }
+                }
+            }
+                     
+            return "";
+           
+        } 
+
+        public string Pesquisar()
+        {
+            bool loopPesquisar = true;
+            while (loopPesquisar)
+            {
+                Console.WriteLine("Por qual o meio que voce deseja pesquistar (ID, Nome ou Status)");
+                string escolhaLoop = Console.ReadLine();
+                switch (escolhaLoop.ToUpper())
+                {
+                    case "ID":
+
+                        Console.WriteLine("Digite o ID");
+                        int procurarPorID = Convert.ToInt32(Console.ReadLine());
+                        var mostar = listaDeCategoria.FindAll(item => item.ID.Equals(procurarPorID));
+
+                        if (mostar.Count() == 0)
+                        {
+                            Console.WriteLine("Categotia não encontrada");
+                        }
+                        else
+                        {
+                            foreach (var categoria in mostar)
+                            {
+                                Console.WriteLine($"O ID {categoria.ID}");
+                                Console.WriteLine($"Nome da categoria {categoria.Nome}");
+                                Console.WriteLine($"Status da categoria {categoria.Status}");
+                                Console.WriteLine(categoria.Data_hora);
+                                loopPesquisar = false;
+                            }
+                        }
+                        break;
+
+                    case "STATUS":
+
+                        bool loop = true;
+                        while (loop)
+                        {
+                            Console.WriteLine("Digite por qual status voce deseja pesquisar");
+                            string escolha = Console.ReadLine();
+                            switch (escolha.ToUpper())
+                            {
+
+                                case "ATIVO":
+                                    var procurarStatusAtivo = listaDeCategoria.FindAll(item => item.Status.ToUpper().Equals(escolha.ToUpper()));
+                                    foreach (var categoria in procurarStatusAtivo)
+                                    {
+                                        Console.WriteLine($"O ID {categoria.ID}");
+                                        Console.WriteLine($"Nome da categoria {categoria.Nome}");
+                                        Console.WriteLine($"Status da categoria {categoria.Status}");
+                                        Console.WriteLine(categoria.Data_hora);
+                                        loop = false;
+                                        loopPesquisar = false;
+                                    }
+                                    break;
+
+                                case "INATIVO":
+                                    var procurarStatusInativo = listaDeCategoria.FindAll(item => item.Status.ToUpper().Equals(escolha.ToUpper()));
+
+                                    foreach (var categoria in procurarStatusInativo)
+                                    {
+                                        Console.WriteLine($"O ID {categoria.ID}");
+                                        Console.WriteLine($"Nome da categoria {categoria.Nome}");
+                                        Console.WriteLine($"Status da categoria {categoria.Status}");
+                                        Console.WriteLine(categoria.Data_hora);
+                                        loop = false;
+                                        loopPesquisar = false;
+
+                                    }
+                                    break;
+
+
+                                default:
+                                    Console.WriteLine("Digite uma opção valida");
+                                    break;
+                            }
+                        }
+
+                        break;
+
+                    case "NOME":
+
+                        bool loopNome = true;
+                        while (loopNome)
+                        {
+                            Console.WriteLine("Digite o nome que deseja verificar");
+                            string nomePesquisar = Console.ReadLine();
+                            int contaNome = nomePesquisar.Length;
+
+                            var encontrarPorNome= listaDeCategoria.FindAll(item => item.Nome.ToUpper().Substring(0,contaNome).Equals(nomePesquisar.ToUpper()));
+
+                            if (encontrarPorNome.Count()==0)
+                            {
+                                Console.WriteLine("Categoria não encontrada");
+                            }
+                            else
+                            {
+                                foreach (Categoria item in encontrarPorNome)
+                                {
+                                    Console.WriteLine($"O ID {item.ID}");
+                                    Console.WriteLine($"Nome da categoria {item.Nome}");
+                                    Console.WriteLine($"Status da categoria {item.Status}");
+                                    Console.WriteLine(item.Data_hora);
+                                    loop = false;
+                                }
+                            } 
+                            loopNome = false;
+                            loopPesquisar = false; 
+                        }
+                        break;
+
+
+                    default:
+                        Console.WriteLine("Escolha uma opção valida (NOME,STAUS ou ID)");
+                        break;
+
+                }
+            }
+            
+            return "";
         }
     }
 

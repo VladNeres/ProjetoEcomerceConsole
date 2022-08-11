@@ -26,6 +26,8 @@ namespace Categorias
                                                             "4- Editar subCategoria \n" +
                                                             "5- Mostrar Lista De Categoria\n"+ 
                                                             "6- Mostrar Lista De Subcategoria\n"+
+                                                            "7- Remover Categoria por id\n" +
+                                                            "8- Pesquisar Categorias\n"+
                                                             "0- Para sair");
 
 
@@ -73,12 +75,10 @@ namespace Categorias
                         {
                             Console.WriteLine("Nenhuma Categoria cadastrada ainda, por favor Cadastre primeiro uma categoria");
                             break;
-                        }
-                        else
-                        {
+                        }                     
                             Console.WriteLine(categoria.Editar());
                             break;
-                        }
+                        
 
                     case "3":
                         if (string.IsNullOrWhiteSpace(categoria.Nome))
@@ -87,11 +87,9 @@ namespace Categorias
                                               "por favor primeiro cadastre uma categoria!\n");
                             break;
                         }
-                        else
-                        {
-                            Console.WriteLine(subCategoria.Cadastrar());
+                           Console.WriteLine(subCategoria.Cadastrar());
                             break;
-                        }
+                        
 
                     case "4":
 
@@ -100,19 +98,35 @@ namespace Categorias
                             Console.WriteLine("Não há subcategoria cadastrada, por favor primeiro cadastre uma categoria!\n ");
                             break;
                         }
-                        else
-                        {
+                        
                             Console.WriteLine(subCategoria.Editar()); 
                             break;
 
-                        }
+                        
 
                     case "5":
+                        if (string.IsNullOrWhiteSpace(categoria.Nome))
+                        {
+                            Console.WriteLine("Não há categorias cadastradas, para listar é necessario adicionar um item á lista!"); 
+                            break;
+                        }
                         Console.WriteLine(categoria.MostrarLista());
                         break;
 
                     case "6":
+                        if (string.IsNullOrWhiteSpace(subCategoria.Nome))
+                        {
+                            Console.WriteLine("Não há subcategorias cadastrada, para listar é necessasrio adicionar um item á lista");
+                        }
                         Console.WriteLine(subCategoria.MostrarLista());
+                        break;
+
+                    case "7":
+                        Console.WriteLine(categoria.RemoverDaLista());
+                        break;
+
+                    case "8":
+                        Console.WriteLine(categoria.Pesquisar());
                         break;
 
                     case "0":

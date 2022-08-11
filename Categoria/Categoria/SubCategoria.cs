@@ -51,7 +51,7 @@ namespace Categorias
                 }
 
                 Console.WriteLine();
-                Console.WriteLine("aperte enter para voltar ao menu");
+                Console.WriteLine("Aperte enter para voltar ao menu");
                 Console.ReadLine();
                 Console.Clear();
             }

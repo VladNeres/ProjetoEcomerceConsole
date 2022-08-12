@@ -8,7 +8,7 @@ namespace CategoriaRefatoracao
 {
     public class Menu
     {
-        List<Categoria> listaDeCategoria = new List<Categoria>();
+        List<Categoria> listaDeCategoria  = new List<Categoria>();
 
 
         public void ExbirMenu()
@@ -21,11 +21,12 @@ namespace CategoriaRefatoracao
                                   "|                         |\n" +
                                   "|   Olá Seja Bem Vindo    |\n" +
                                   "===========================\n" +
-                                  "| 0- Sair                  |\n" +
+                                  "| 0- Sair                 |\n" +
                                   "| 1- Cadastrar Categoria  |\n" +
-                                  "| 2- Editar    Categoria  |\n" +
-                                  "| 3- Pesquisar Categoria  |\n" +
-                                  "| 4- Lista     completa  |\n");
+                                  "| 2- Cadastrar subCateg.  |\n" +
+                                  "| 3- Editar    Categoria  |\n" +
+                                  "| 4- Pesquisar na Lista   |\n" +
+                                  "| 5- Lista     completa  |\n");
 
                 Console.Write(" Escolha a opção desejada => ");
                 string opcaoMenu = Console.ReadLine();
@@ -34,21 +35,30 @@ namespace CategoriaRefatoracao
                     case "1":
                         Console.WriteLine("= Cadastrar Categoria =");
                         CadastrarCategoria();
+                        LimpaTela();
                         break;
 
                     case "2":
-                        Console.WriteLine("= Editar Categoria =");
-                        EditarCategoria();
-                        break;
-
+                        Console.WriteLine("= Cadastrar SubCategoria");
+                        CadastrarSub();
+                        LimpaTela();
+                        break ;
                     case "3":
-                        Console.WriteLine("== Pesquisar na Lista de categoria ==");
-                        PesquisarNaLista();
+                        Console.WriteLine("= Editar Categoria =");
+                        Editar();
+                        LimpaTela();
                         break;
 
                     case "4":
-                        Console.WriteLine("= Menu =");
+                        Console.WriteLine("== Pesquisar na Lista de categoria ==");
+                        PesquisarNaLista();
+                        LimpaTela();
+                        break;
+
+                    case "5":
+                        Console.WriteLine("= Lista Completa =");
                         MostarLista();
+                        LimpaTela();
                         break;
 
                     case "0":
@@ -69,33 +79,52 @@ namespace CategoriaRefatoracao
 
         public void CadastrarCategoria()
         {
-            string nome = Console.ReadLine();
             Categoria categoria = new Categoria();
+            string nome = Console.ReadLine();
             categoria.Cadastrar(nome);
-            listaDeCategoria.Add(categoria);
 
             if (categoria.VerificarLetras(nome))
             {
+                listaDeCategoria.Add(categoria);
                 foreach (Categoria item in listaDeCategoria)
                 {
-                    categoria._id++;
+                    categoria.Id++;
                 }
-                Console.WriteLine($"O id é : ================= {categoria._id}");
-                Console.WriteLine($"O nome da Categoria é:==== {categoria._nome}");
-                Console.WriteLine($"Criada em :=============== {categoria._dataCriacao}");
-                Console.WriteLine($"O status está:============ {categoria._status} \n");
+                Console.WriteLine($"O id é : ================= {categoria.Id}");
+                Console.WriteLine($"O nome da Categoria é:==== {categoria.Nome}");
+                Console.WriteLine($"Criada em :=============== {categoria.DataCriacao}");
+                Console.WriteLine($"O status está:============ {categoria.Status} \n");
                 Console.WriteLine("Aperte enter para retornar ao menu");
-                LimpaTela();
             }
         }
 
-        public void EditarCategoria()
+        public void CadastrarSub()
+        {
+            SubCategoria subCategoria = new SubCategoria();
+            Console.Write("Digite o nome da subCategoria :");
+            string nome = Console.ReadLine();
+            subCategoria.Cadastrar(nome);
+
+            if (subCategoria.VerificarLetras(nome))
+            {
+                listaDeCategoria.Add(subCategoria);
+                foreach (Categoria item in listaDeCategoria)
+                {
+                    subCategoria.Id++;
+                }
+                Console.WriteLine($"O id é : ==================== {subCategoria.Id}");
+                Console.WriteLine($"O nome da SubCategoria é:==== {subCategoria.Nome}");
+                Console.WriteLine($"Criada em :================== {subCategoria.DataCriacao}");
+                Console.WriteLine($"O status está:=============== {subCategoria.Status} \n");
+                Console.WriteLine("Aperte enter para retornar ao menu");
+            }
+        }
+        public void Editar()
         {
             MostarLista();
-
             Console.WriteLine("Qual o Id da categoria deseja alterar ?");
             int numeroId = Convert.ToInt32(Console.ReadLine());
-            var categoria = listaDeCategoria.Where(item => item._id.Equals(numeroId));
+            var categoria = listaDeCategoria.Where(item => item.Id.Equals(numeroId));
 
             Console.WriteLine("digite o novo nome da categoria");
             string novoNome = Console.ReadLine();
@@ -110,37 +139,30 @@ namespace CategoriaRefatoracao
                     item.Editar(novoNome);
                 }
             }
-            LimpaTela();
         }
 
         public void PesquisarNaLista()
         {
-            Console.WriteLine("Digite o nome da categoria que está procurando");
+            Console.WriteLine("Digite o nome que está procurando");
             string nomeNaLista = Console.ReadLine();
-            int numeroDeLetras = nomeNaLista.Length;
-
-            var pesquisarNaLista = listaDeCategoria.FindAll(item => item._nome.ToUpper().
-                Substring(0, numeroDeLetras).Equals(nomeNaLista.ToUpper()));
+            var pesquisarNaLista = listaDeCategoria.FindAll(item => item.Nome.ToUpper().StartsWith(nomeNaLista.ToUpper()));
 
             if (pesquisarNaLista.Count() == 0)
             {
-                Console.WriteLine("A Categoria pesquisada é nula ou não existe");
+                Console.WriteLine($"O nome pesquisado é nula ou não existe");
             }
             else
             {
-
                 foreach (Categoria item in pesquisarNaLista)
                 {
-
-                    Console.WriteLine($"O id é : ================= {item._id}");
-                    Console.WriteLine($"O nome da Categoria é:==== {item._nome}");
-                    Console.WriteLine($"Criada em :=============== {item._dataCriacao}");
-                    Console.WriteLine($"O status está:============ {item._status} ");
-                    if (item._dateAtualizacao.HasValue)
+                    Console.WriteLine($"O id é : ================= {item.Id}");
+                    Console.WriteLine($"O nome da Categoria é:==== {item.Nome}");
+                    Console.WriteLine($"Criada em :=============== {item.DataCriacao}");
+                    Console.WriteLine($"O status está:============ {item.Status} ");
+                    if (item.DateAtualizacao.HasValue)
                     {
-                        Console.WriteLine($"Data da ultima atualização {item._dateAtualizacao}\n");
+                        Console.WriteLine($"Data da ultima atualização {item.DateAtualizacao}\n");
                     }
-                    LimpaTela();
                 }
             }
         }
@@ -150,19 +172,19 @@ namespace CategoriaRefatoracao
 
             foreach (Categoria item in listaDeCategoria)
             {
-
-                Console.WriteLine($"O id é : ================= {item._id}");
-                Console.WriteLine($"O nome da Categoria é:==== {item._nome}");
-                Console.WriteLine($"Criada em :=============== {item._dataCriacao}");
-                Console.WriteLine($"O status está:============ {item._status} ");
-                if (item._dateAtualizacao.HasValue)
+                Console.WriteLine($"O id é : ================= {item.Id}");
+                Console.WriteLine($"O nome da Categoria é:==== {item.Nome}");
+                Console.WriteLine($"Criada em :=============== {item.DataCriacao}");
+                Console.WriteLine($"O status está:============ {item.Status} ");
+                if (item.DateAtualizacao.HasValue)
                 {
-                    Console.WriteLine($"Data da ultima atualização {item._dateAtualizacao}\n");
+                    Console.WriteLine($"Data da ultima atualização {item.DateAtualizacao}\n");
                 }
                 Console.WriteLine();
             }
         }
 
+        
         public void LimpaTela()
         {
             Console.WriteLine();

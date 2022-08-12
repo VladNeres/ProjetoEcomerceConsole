@@ -9,25 +9,25 @@ namespace CategoriaRefatoracao
 {
     public class Categoria
     {
-        public int _id { get; set; }
-        public string _nome { get; protected set; }
-        public string _status { get; protected set; }
-        public DateTime _dataCriacao { get; protected set; }
-        public DateTime? _dateAtualizacao { get; protected set; }
-        List<Categoria> _categorias = new List<Categoria>();
+        public int Id { get; set; }
+        public string Nome { get; protected set; }
+        public string Status { get; protected set; }
+        public DateTime DataCriacao { get; protected set; }
+        public DateTime? DateAtualizacao { get; protected set; }
+        
 
         public Categoria(string nome)
         {
-            _nome = nome;
-            _status = "Ativo";
-            _dataCriacao = DateTime.Now;
+            Nome = nome;
+            Status = "Ativo";
+            DataCriacao = DateTime.Now;
         }
         public Categoria()
         {
-            _nome = "";
-            _id = 0;
-            _status = "Ativo";
-            _dataCriacao = DateTime.Now;
+            Nome = "";
+            Id = 0;
+            Status = "Ativo";
+            DataCriacao = DateTime.Now;
 
         }
 
@@ -47,7 +47,7 @@ namespace CategoriaRefatoracao
             Console.WriteLine("Digite o nome da categoria");
             if (VerificarLetras(nomeDaClasse))
             {
-                _nome = nomeDaClasse;
+                Nome = nomeDaClasse;
             }
             else
             {
@@ -71,12 +71,12 @@ namespace CategoriaRefatoracao
                     switch (menuOpcao.ToUpper())
                     {
                         case "S":
-                            _status = "Inativo";
+                            Status = "Inativo";
                             loopStatus = false;
                             break;
 
                         case "N":
-                            _status = "Ativo";
+                            Status = "Ativo";
                             loopStatus = false;
                             break;
 
@@ -86,14 +86,19 @@ namespace CategoriaRefatoracao
                     }
                 }
 
-                Console.WriteLine($"|A Categoria  ({_nome}) criada na data: ({_dataCriacao})|");
+                Console.WriteLine($"|A Categoria  ({Nome}) criada na data: ({DataCriacao})|");
                 Console.WriteLine("==========================================================");
-                _nome = nomeEditar;
-                _dateAtualizacao = DateTime.Now;
-                Console.WriteLine($"A categoria de ID========= ({_id})");
-                Console.WriteLine($"Foi atualizada para======= ({_nome})");
-                Console.WriteLine($"Na data=================== ({_dateAtualizacao})");
-                Console.WriteLine($"O status está============= ({_status})");
+                Nome = nomeEditar;
+                DateAtualizacao = DateTime.Now;
+                Console.WriteLine($"A categoria de ID========= ({Id})");
+                Console.WriteLine($"Foi atualizada para======= ({Nome})");
+                Console.WriteLine($"Na data=================== ({DateAtualizacao})");
+                Console.WriteLine($"O status está============= ({Status})");
+            }
+            else
+            { Console.WriteLine("(Atenção!)\n" +
+                                  "A categoria deve ser cadastrada apenas com letras (digite entre 1 e 50 caracteres)");
+            
             }
 
         }

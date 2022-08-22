@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Diretorioazure\\T2-VladmirNeres\\CategoriaRefatoração\\CategoriaRefatoração\\CategoriaRefatoracao.csproj",
+      "projectUniqueName": "C:\\Users\\ClearTech\\Documents\\Sprints\\CategoriaRefatoração\\CategoriaRefatoração\\CategoriaRefatoracao.csproj",
       "projectName": "CategoriaRefatoracao",
-      "projectPath": "C:\\Diretorioazure\\T2-VladmirNeres\\CategoriaRefatoração\\CategoriaRefatoração\\CategoriaRefatoracao.csproj",
+      "projectPath": "C:\\Users\\ClearTech\\Documents\\Sprints\\CategoriaRefatoração\\CategoriaRefatoração\\CategoriaRefatoracao.csproj",
       "packagesPath": "C:\\Users\\ClearTech\\.nuget\\packages\\",
-      "outputPath": "C:\\Diretorioazure\\T2-VladmirNeres\\CategoriaRefatoração\\CategoriaRefatoração\\obj\\",
+      "outputPath": "C:\\Users\\ClearTech\\Documents\\Sprints\\CategoriaRefatoração\\CategoriaRefatoração\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\ClearTech\\AppData\\Roaming\\NuGet\\NuGet.Config",

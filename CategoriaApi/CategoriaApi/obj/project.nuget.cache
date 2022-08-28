@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "WJA7whWZiz8oZPZwufc/XqxVtaG079oCMjwaHydiZ5Rbfs8JXxclIZ1SkGOBsYaAdtFUsnMtlhzfshR/tGNL3w==",
+  "dgSpecHash": "l0mFI6muxl7OEJh92Yej/VgkoU0qHSjdtRN+KMUpGHtVRsbBothsRe4N96N0wtrVwi2JFUuRl292xNT2mdCfKA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\ClearTech\\Documents\\Sprints\\CategoriaApi\\CategoriaApi\\CategoriaApi.csproj",
+  "projectFilePath": "C:\\Users\\ClearTech\\Documents\\Projetos de estudo C#\\CategoriaApi\\CategoriaApi\\CategoriaApi.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\ClearTech\\.nuget\\packages\\google.protobuf\\3.19.4\\google.protobuf.3.19.4.nupkg.sha512",
     "C:\\Users\\ClearTech\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",

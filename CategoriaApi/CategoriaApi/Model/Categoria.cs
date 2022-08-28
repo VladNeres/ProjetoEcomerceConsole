@@ -13,7 +13,8 @@ namespace CategoriaApi.Model
         public string Nome { get; set; }
         [Required]
         public bool Status { get; set; } 
-        public string DataCriacao { get; set; } = DateTime.Now.ToString("dd-MM-yyyy:HH-mm-ss");
+        public string DataCriacao { get; set; } = DateTime.Now.ToString("dd-MM-yyyy:HH:mm:ss");
+        public string DataAlteracao { get; set; } 
     }
 }
  

@@ -92,3 +92,9 @@ C:\Users\ClearTech\Documents\Sprints\CategoriaApi\CategoriaApi\obj\Debug\net5.0\
 C:\Users\ClearTech\Documents\Sprints\CategoriaApi\CategoriaApi\obj\Debug\net5.0\CategoriaApi.pdb
 C:\Users\ClearTech\Documents\Sprints\CategoriaApi\CategoriaApi\obj\Debug\net5.0\CategoriaApi.genruntimeconfig.cache
 C:\Users\ClearTech\Documents\Sprints\CategoriaApi\CategoriaApi\obj\Debug\net5.0\ref\CategoriaApi.dll
+C:\Users\ClearTech\Documents\Sprints\CategoriaApi\CategoriaApi\bin\Debug\net5.0\AutoMapper.dll
+C:\Users\ClearTech\Documents\Sprints\CategoriaApi\CategoriaApi\bin\Debug\net5.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+C:\Users\ClearTech\Documents\Sprints\CategoriaApi\CategoriaApi\bin\Debug\net5.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Users\ClearTech\Documents\Sprints\CategoriaApi\CategoriaApi\bin\Debug\net5.0\Microsoft.Extensions.Options.dll
+C:\Users\ClearTech\Documents\Sprints\CategoriaApi\CategoriaApi\bin\Debug\net5.0\Microsoft.Extensions.Primitives.dll
+C:\Users\ClearTech\Documents\Sprints\CategoriaApi\CategoriaApi\bin\Debug\net5.0\System.Runtime.CompilerServices.Unsafe.dll

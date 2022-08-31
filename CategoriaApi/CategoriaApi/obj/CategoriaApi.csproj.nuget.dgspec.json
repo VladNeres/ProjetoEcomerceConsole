@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\ClearTech\\Documents\\Projetos de estudo C#\\CategoriaApi\\CategoriaApi\\CategoriaApi.csproj": {}
+    "C:\\Users\\ClearTech\\Documents\\Sprints\\CategoriaApi\\CategoriaApi\\CategoriaApi.csproj": {}
   },
   "projects": {
-    "C:\\Users\\ClearTech\\Documents\\Projetos de estudo C#\\CategoriaApi\\CategoriaApi\\CategoriaApi.csproj": {
+    "C:\\Users\\ClearTech\\Documents\\Sprints\\CategoriaApi\\CategoriaApi\\CategoriaApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\ClearTech\\Documents\\Projetos de estudo C#\\CategoriaApi\\CategoriaApi\\CategoriaApi.csproj",
+        "projectUniqueName": "C:\\Users\\ClearTech\\Documents\\Sprints\\CategoriaApi\\CategoriaApi\\CategoriaApi.csproj",
         "projectName": "CategoriaApi",
-        "projectPath": "C:\\Users\\ClearTech\\Documents\\Projetos de estudo C#\\CategoriaApi\\CategoriaApi\\CategoriaApi.csproj",
+        "projectPath": "C:\\Users\\ClearTech\\Documents\\Sprints\\CategoriaApi\\CategoriaApi\\CategoriaApi.csproj",
         "packagesPath": "C:\\Users\\ClearTech\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\ClearTech\\Documents\\Projetos de estudo C#\\CategoriaApi\\CategoriaApi\\obj\\",
+        "outputPath": "C:\\Users\\ClearTech\\Documents\\Sprints\\CategoriaApi\\CategoriaApi\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\ClearTech\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -40,6 +40,10 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "dependencies": {
+            "AutoMapper.Extensions.Microsoft.DependencyInjection": {
+              "target": "Package",
+              "version": "[11.0.0, )"
+            },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
               "version": "[5.0.17, )"

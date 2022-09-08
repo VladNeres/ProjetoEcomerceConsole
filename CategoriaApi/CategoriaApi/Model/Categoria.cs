@@ -7,16 +7,20 @@ namespace CategoriaApi.Model
     public class Categoria
     {
         [Key]
+        [Required]
         public int Id { get; set; }
         [Required (ErrorMessage = "O campo nome é obrigatório")]
         [StringLength (50, ErrorMessage = "O campo nome deve conter no maximo 50 caracteres")]
-        [RegularExpression( @"[a-zA-Zá-úÁ-Ú' '\s]{1,20}", ErrorMessage = "O campo nome deve conter apenas letras")]
+        [RegularExpression( @"[a-zA-Zá-úÁ-Ú' '\s]{1,30}", ErrorMessage = "O campo nome deve conter apenas letras")]
         public string Nome { get; set; }
-        [Required]  
-        public bool Status { get; set; }
-        public string DataCriacao { get; set; } = DateTime.Now.ToString("dd-MM-yyyy  HH:mm:ss");
         
-        public string DataAlteracao { get; set; } 
+        public bool Status { get; set; } 
+        public DateTime DataCriacao { get; set; } 
+        
+        public DateTime DataAtualizacao{ get; set; }
+        [JsonIgnore]
+        public virtual SubCategoria SubCategoria { get; set; }
+
     }
 }
- 
+ ;

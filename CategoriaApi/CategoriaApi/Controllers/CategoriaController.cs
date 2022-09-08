@@ -2,7 +2,7 @@
 
 using AutoMapper;
 using CategoriaApi.Data;
-using CategoriaApi.Data.Dto;
+using CategoriaApi.Data.Dto.DtoCategoria;
 using CategoriaApi.Model;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -12,40 +12,39 @@ using System.Linq;
 namespace CategoriaApi.Controllers
 {
     [ApiController]
-        [Route("[controller]")]
+    [Route("[controller]")]
     public class CategoriaController : ControllerBase
     {
-        private CategoriaContext _context;
+        private DatabaseContext _context;
         private IMapper _mapper;
 
-        public CategoriaController(CategoriaContext context, IMapper mapper)
+        public CategoriaController(DatabaseContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
         }
 
         [HttpPost]
-        public IActionResult AdicionarCategoria([FromBody] CreateCategoriaDto categoria)
+        public IActionResult AdicionarCategoria([FromBody] CreateCategoriaDto categoriaDto)
         {
-            Categoria categoriaDto = _mapper.Map<Categoria>(categoria);
-            if (categoria.Status == true)
-            {
-                if (categoria.Nome != categoriaDto.Nome)
-                {
-                    _context.Categorias.Add(categoriaDto);
-                    _context.SaveChanges();
-                    Console.WriteLine(categoria.Nome);
-                    return CreatedAtAction(nameof(GetCategoriaPorId), new { id = categoriaDto.Id }, categoria);
 
-                }
-                else
+            Categoria categoriaNome = _context.Categorias.FirstOrDefault(categoriaNome => categoriaNome.Nome.ToUpper() == categoriaDto.Nome.ToUpper());
+            if (categoriaDto.Nome.Length >= 3 && categoriaDto.Status == true)
+            {
+                if(categoriaNome == null)
                 {
-                    return BadRequest("Essa categoria ja existe");
+                    Categoria categoria = _mapper.Map<Categoria>(categoriaDto);
+
+                            _context.Categorias.Add(categoria);
+                            _context.SaveChanges();
+                            Console.WriteLine(categoria.Nome);
+                            return CreatedAtAction(nameof(GetCategoriaPorId), new { id = categoria.Id }, categoriaDto);                
                 }
-                
+                return BadRequest("(Atenção)!.\n A categoria já existe!");
             }
-            else
-            return BadRequest("A categoria deve ser criada com o status (true)");
+                return BadRequest("Para criar uma categoria,o campo (Nome) deve conter de 3 a 50 caracteres\n" +
+                    "e o Status deve ser verdadeiro (true)");
+            
         }
 
         [HttpPut("{id}")]
@@ -78,6 +77,7 @@ namespace CategoriaApi.Controllers
         public IActionResult GetCategoria()
         {
             return Ok(_context.Categorias);
+
         }
 
 
@@ -89,6 +89,7 @@ namespace CategoriaApi.Controllers
             {
                 ReaderCategoriaDto reader = _mapper.Map<ReaderCategoriaDto>(categoria);
                 return Ok(categoria);
+
             }
             return NotFound("Não encontrado");
         }

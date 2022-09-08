@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
-using CategoriaApi.Data;
-using CategoriaApi.Data.Dto;
+using CategoriaApi.Data.Dto.DtoCategoria;
 using CategoriaApi.Model;
 
 namespace CategoriaApi.Profiles

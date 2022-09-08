@@ -98,3 +98,5 @@ C:\Users\ClearTech\Documents\Sprints\CategoriaApi\CategoriaApi\bin\Debug\net5.0\
 C:\Users\ClearTech\Documents\Sprints\CategoriaApi\CategoriaApi\bin\Debug\net5.0\Microsoft.Extensions.Options.dll
 C:\Users\ClearTech\Documents\Sprints\CategoriaApi\CategoriaApi\bin\Debug\net5.0\Microsoft.Extensions.Primitives.dll
 C:\Users\ClearTech\Documents\Sprints\CategoriaApi\CategoriaApi\bin\Debug\net5.0\System.Runtime.CompilerServices.Unsafe.dll
+C:\Users\ClearTech\Documents\Sprints\CategoriaApi\CategoriaApi\bin\Debug\net5.0\Castle.Core.dll
+C:\Users\ClearTech\Documents\Sprints\CategoriaApi\CategoriaApi\bin\Debug\net5.0\Microsoft.EntityFrameworkCore.Proxies.dll

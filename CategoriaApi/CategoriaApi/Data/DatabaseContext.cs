@@ -11,10 +11,10 @@ namespace CategoriaApi.Data
         }
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<Categoria>().
-                HasOne(categoria => categoria.SubCategoria).
-                WithOne(subCategoria => subCategoria.Categoria).
-                HasForeignKey<SubCategoria>(subCategoria => subCategoria.CategoriaId);
+            builder.Entity<SubCategoria>().
+                HasOne(subCategoria => subCategoria.Categoria).
+                WithMany(categoria => categoria.SubCategoria).
+                HasForeignKey(subCategoria => subCategoria.CategoriaId);
         }
         public DbSet<Categoria> Categorias { get; set; }
         public DbSet<SubCategoria> SubCategorias { get; set; }

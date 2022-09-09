@@ -27,7 +27,8 @@ namespace CategoriaApi.Controllers
         public IActionResult CriarSubCategoria([FromBody] CreateSubCategoriaDto subCategoriaDto)
         {
            SubCategoria subCategoriaNome = _context.SubCategorias.FirstOrDefault(subCategoria=> subCategoria.Nome.ToUpper()==subCategoriaDto.Nome.ToUpper());
-            
+            try
+            {
 
                 if(subCategoriaDto.Nome.Length>=3)
                 {
@@ -43,6 +44,12 @@ namespace CategoriaApi.Controllers
                 }
                 return BadRequest("A categoria deve conter entre 3 e 50 caracteres");
             
+            }
+            catch (Exception)
+            {
+                return BadRequest("É necessario informar o Id da Categoria em que a subcategoria será armazenado");
+            }
+
             
         }
 

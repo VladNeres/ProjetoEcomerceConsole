@@ -29,6 +29,7 @@ namespace CategoriaApi.Controllers
         {
 
             Categoria categoriaNome = _context.Categorias.FirstOrDefault(categoriaNome => categoriaNome.Nome.ToUpper() == categoriaDto.Nome.ToUpper());
+            
             if (categoriaDto.Nome.Length >= 3 && categoriaDto.Status == true)
             {
                 if(categoriaNome == null)

@@ -36,6 +36,8 @@ namespace CategoriaApi.Controllers
                     {
 
                         SubCategoria subCategoria= _mapper.Map<SubCategoria>(subCategoriaDto);
+                        subCategoria.Status = true;
+                        subCategoria.DataCriacao = DateTime.Now;
                         _context.SubCategorias.Add(subCategoria);
                         _context.SaveChanges();
                         return CreatedAtAction(nameof(GetSubCategoriaPorId), new { id = subCategoria.Id }, subCategoriaDto);
@@ -62,6 +64,7 @@ namespace CategoriaApi.Controllers
                 return NotFound();
             }
             _mapper.Map(subCategoriaDto, subCategoria);
+            subCategoria.DataAtualizacao = DateTime.Now;
             _context.SaveChanges();
             return NoContent();
         }

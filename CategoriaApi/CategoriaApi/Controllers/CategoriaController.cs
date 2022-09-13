@@ -30,12 +30,13 @@ namespace CategoriaApi.Controllers
 
             Categoria categoriaNome = _context.Categorias.FirstOrDefault(categoriaNome => categoriaNome.Nome.ToUpper() == categoriaDto.Nome.ToUpper());
             
-            if (categoriaDto.Nome.Length >= 3 && categoriaDto.Status == true)
+            if (categoriaDto.Nome.Length >= 3 )
             {
                 if(categoriaNome == null)
                 {
                     Categoria categoria = _mapper.Map<Categoria>(categoriaDto);
-
+                     categoria.DataCriacao = DateTime.Now;
+                     categoria.Status = true;
                             _context.Categorias.Add(categoria);
                             _context.SaveChanges();
                             Console.WriteLine(categoria.Nome);
@@ -57,6 +58,7 @@ namespace CategoriaApi.Controllers
                 return NotFound();
             }
             _mapper.Map(categoriaUpdateDto, categoria);
+            categoria.DataAtualizacao = DateTime.Now;
             _context.SaveChanges();
             return NoContent();
         }

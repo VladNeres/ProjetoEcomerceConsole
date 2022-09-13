@@ -14,15 +14,8 @@ namespace CategoriaApi.Model
         [StringLength (50, ErrorMessage = "O campo nome deve conter no maximo 50 caracteres")]
         [RegularExpression( @"[a-zA-Zá-úÁ-Ú' '\s]{1,30}", ErrorMessage = "O campo nome deve conter apenas letras")]
         public string Nome { get; set; }
-
-        internal object Select(Func<object, object> value)
-        {
-            throw new NotImplementedException();
-        }
-
         public bool Status { get; set; } 
         public DateTime DataCriacao { get; set; } 
-        
         public DateTime DataAtualizacao{ get; set; }
         [JsonIgnore]
         public virtual List<SubCategoria> SubCategoria { get; set; }

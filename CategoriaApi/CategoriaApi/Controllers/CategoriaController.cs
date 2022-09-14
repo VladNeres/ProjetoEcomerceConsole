@@ -29,24 +29,24 @@ namespace CategoriaApi.Controllers
         {
 
             Categoria categoriaNome = _context.Categorias.FirstOrDefault(categoriaNome => categoriaNome.Nome.ToUpper() == categoriaDto.Nome.ToUpper());
-            
-            if (categoriaDto.Nome.Length >= 3 )
+
+            if (categoriaDto.Nome.Length >= 3)
             {
-                if(categoriaNome == null)
+                if (categoriaNome == null)
                 {
                     Categoria categoria = _mapper.Map<Categoria>(categoriaDto);
-                     categoria.DataCriacao = DateTime.Now;
-                     categoria.Status = true;
-                            _context.Categorias.Add(categoria);
-                            _context.SaveChanges();
-                            Console.WriteLine(categoria.Nome);
-                            return CreatedAtAction(nameof(GetCategoriaPorId), new { id = categoria.Id }, categoriaDto);                
+                    categoria.DataCriacao = DateTime.Now;
+                    categoria.Status = true;
+                    _context.Categorias.Add(categoria);
+                    _context.SaveChanges();
+                    Console.WriteLine(categoria.Nome);
+                    return CreatedAtAction(nameof(GetCategoriaPorId), new { id = categoria.Id }, categoriaDto);
                 }
                 return BadRequest("(Atenção)!.\n A categoria já existe!");
             }
-                return BadRequest("Para criar uma categoria,o campo (Nome) deve conter de 3 a 50 caracteres\n" +
-                    "e o Status deve ser verdadeiro (true)");
-            
+            return BadRequest("Para criar uma categoria,o campo (Nome) deve conter de 3 a 50 caracteres\n" +
+                "e o Status deve ser verdadeiro (true)");
+
         }
 
         [HttpPut("{id}")]
@@ -76,22 +76,31 @@ namespace CategoriaApi.Controllers
             return NoContent();
         }
 
-        [HttpGet ]
-        public IActionResult GetCategoria([FromQuery] string nomeCategoria)
+
+        [HttpGet]
+        public IActionResult GetCategoria([FromQuery] string nomeCategoria, [FromQuery] bool? status)
         {
-            List<Categoria> categorias = _context.Categorias.ToList(); 
-           if (categorias == null)
-           {
-            return NotFound();
-           }
-           if (!string.IsNullOrEmpty(nomeCategoria))
-           {
+            List<Categoria> categorias = _context.Categorias.ToList();
+            if (categorias == null)
+            {
+                return NotFound();
+            }
+            if (!string.IsNullOrEmpty(nomeCategoria))
+            {
                 IEnumerable<Categoria> query = from categoria in categorias
-                                               where categoria.Nome.ToUpper().StartsWith(nomeCategoria.ToUpper()) 
+                                               where categoria.Nome.ToUpper().StartsWith(nomeCategoria.ToUpper())
                                                select categoria;
                 categorias = query.ToList();
 
-           }
+            }
+            if(status == true || status== false)
+            {
+                IEnumerable<Categoria> query= from categoria in categorias
+                                              select categoria;
+                categorias=query.ToList();
+            }
+            
+            
             List<ReaderCategoriaDto> readDto = _mapper.Map<List<ReaderCategoriaDto>>(categorias);
             return Ok(readDto);
         }

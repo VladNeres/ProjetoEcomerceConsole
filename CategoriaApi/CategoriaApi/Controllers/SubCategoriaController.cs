@@ -83,9 +83,9 @@ namespace CategoriaApi.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetSubCategorias([FromQuery] string nomeSubCategoria)
+        public IActionResult GetSubCategorias([FromQuery] string nomeSubCategoria, [FromQuery] bool? statusSubCategoria)
         {
-           List <SubCategoria> subCategorias= _context.SubCategorias.ToList();
+            List<SubCategoria> subCategorias = _context.SubCategorias.ToList();
             if (subCategorias == null)
             {
                 return NotFound();
@@ -97,9 +97,19 @@ namespace CategoriaApi.Controllers
                                                   select subCategoria;
                 subCategorias = query.ToList();
             }
+            if (statusSubCategoria == true || statusSubCategoria == false)
+            {
+                IEnumerable<SubCategoria> query = from subCategoria in subCategorias
+                                                  where subCategoria.Status == statusSubCategoria
+                                                  select subCategoria;
+                subCategorias = query.ToList();
+            }
             List<ReadSubCategoriaDto> readSubDto = _mapper.Map<List<ReadSubCategoriaDto>>(subCategorias);
             return Ok(subCategorias);
         }
+
+
+
 
         [HttpGet("{id}")]
 

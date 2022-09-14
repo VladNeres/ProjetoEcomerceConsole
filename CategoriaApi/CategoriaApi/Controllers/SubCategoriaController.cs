@@ -83,9 +83,22 @@ namespace CategoriaApi.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetSubCategorias()
+        public IActionResult GetSubCategorias([FromQuery] string nomeSubCategoria)
         {
-            return Ok(_context.SubCategorias);
+           List <SubCategoria> subCategorias= _context.SubCategorias.ToList();
+            if (subCategorias == null)
+            {
+                return NotFound();
+            }
+            if (!string.IsNullOrEmpty(nomeSubCategoria))
+            {
+                IEnumerable<SubCategoria> query = from subCategoria in subCategorias
+                                                  where subCategoria.Nome.StartsWith(nomeSubCategoria.ToUpper())
+                                                  select subCategoria;
+                subCategorias = query.ToList();
+            }
+            List<ReadSubCategoriaDto> readSubDto = _mapper.Map<List<ReadSubCategoriaDto>>(subCategorias);
+            return Ok(subCategorias);
         }
 
         [HttpGet("{id}")]

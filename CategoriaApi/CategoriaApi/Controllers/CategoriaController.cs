@@ -77,10 +77,23 @@ namespace CategoriaApi.Controllers
         }
 
         [HttpGet ]
-        public IActionResult GetCategoria()
+        public IActionResult GetCategoria([FromQuery] string nomeCategoria)
         {
-            return Ok(_context.Categorias);
+            List<Categoria> categorias = _context.Categorias.ToList(); 
+           if (categorias == null)
+           {
+            return NotFound();
+           }
+           if (!string.IsNullOrEmpty(nomeCategoria))
+           {
+                IEnumerable<Categoria> query = from categoria in categorias
+                                               where categoria.Nome.ToUpper().StartsWith(nomeCategoria.ToUpper()) 
+                                               select categoria;
+                categorias = query.ToList();
 
+           }
+            List<ReaderCategoriaDto> readDto = _mapper.Map<List<ReaderCategoriaDto>>(categorias);
+            return Ok(readDto);
         }
 
 

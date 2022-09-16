@@ -52,13 +52,23 @@ namespace CategoriaApi.Controllers
         [HttpPut("{id}")]
         public IActionResult EditarCategoria(int id, [FromBody] UpdateCategoriaDto categoriaUpdateDto)
         {
-            Categoria categoria = _context.Categorias.FirstOrDefault(categoria => categoria.Id == id);
-            if (categoria == null)
+            Categoria categorias = _context.Categorias.FirstOrDefault(categoria => categoria.Id == id);
+            IEnumerable<SubCategoria> subCategorias = _context.SubCategorias.Where(sub => sub.CategoriaId == id);
+
+            if (categorias == null)
             {
                 return NotFound();
             }
-            _mapper.Map(categoriaUpdateDto, categoria);
-            categoria.DataAtualizacao = DateTime.Now;
+            if (categoriaUpdateDto.Status == false)
+            {
+                foreach (var subCategoria in subCategorias)
+                {
+                    subCategoria.Status = false;
+                }
+            }
+            _mapper.Map(categoriaUpdateDto, categorias);
+            categorias.DataAtualizacao = DateTime.Now;
+
             _context.SaveChanges();
             return NoContent();
         }
@@ -78,7 +88,8 @@ namespace CategoriaApi.Controllers
 
 
         [HttpGet]
-        public IActionResult GetCategoria([FromQuery] string nomeCategoria, [FromQuery] bool? status)
+        public IActionResult GetCategoria([FromQuery] string nomeCategoria, [FromQuery] bool? status, [FromQuery] int quantidadeDeCategorias,
+            [FromQuery] string ordem, [FromQuery] bool? temSub)
         {
             List<Categoria> categorias = _context.Categorias.ToList();
             if (categorias == null)
@@ -88,21 +99,58 @@ namespace CategoriaApi.Controllers
             if (!string.IsNullOrEmpty(nomeCategoria))
             {
                 IEnumerable<Categoria> query = from categoria in categorias
+                                               orderby categoria.Nome ascending
                                                where categoria.Nome.ToUpper().StartsWith(nomeCategoria.ToUpper())
                                                select categoria;
+
                 categorias = query.ToList();
 
             }
-            if(status == true || status== false)
+            if (status == true || status == false)
             {
-                IEnumerable<Categoria> query= from categoria in categorias
-                                              select categoria;
-                categorias=query.ToList();
+                IEnumerable<Categoria> query = from categoria in categorias
+                                               where categoria.Status == status
+                                               select categoria;
+                categorias = query.ToList();
             }
-            
-            
+            if (quantidadeDeCategorias > 0)
+            {
+                IEnumerable<Categoria> query = from categoria in categorias.Take(quantidadeDeCategorias)
+                                               select categoria;
+                categorias = query.ToList();
+            }
+            if (!string.IsNullOrEmpty(ordem) && ordem.ToUpper() == "CRESCENTE")
+            {
+                IEnumerable<Categoria> query = from categoria in categorias
+                                               orderby categoria.Nome ascending
+                                               select categoria;
+                categorias = query.ToList();
+            }
+            if (!string.IsNullOrEmpty(ordem) && ordem.ToUpper() == "DECRESCENTE")
+            {
+                IEnumerable<Categoria> querydecres = from categoria in categorias
+                                                     orderby categoria.Nome descending
+                                                     select categoria;
+                categorias = querydecres.ToList();
+            }
+            if (temSub == true && temSub != null)
+            {
+                IEnumerable<Categoria> query = from categoria in categorias
+                                               where categoria.SubCategoria.Count() > 0
+                                               select categoria;
+                categorias = query.ToList();
+            }
+            if (temSub == false && temSub != null)
+            {
+                IEnumerable<Categoria> query = from categoria in categorias
+                                               where categoria.SubCategoria.Count() == 0
+                                               select categoria;
+                categorias = query.ToList();
+            }
+
             List<ReaderCategoriaDto> readDto = _mapper.Map<List<ReaderCategoriaDto>>(categorias);
             return Ok(readDto);
+
         }
 
 

@@ -83,7 +83,8 @@ namespace CategoriaApi.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetSubCategorias([FromQuery] string nomeSubCategoria, [FromQuery] bool? statusSubCategoria)
+        public IActionResult GetSubCategorias([FromQuery] string nomeSubCategoria, [FromQuery] bool? statusSubCategoria, [FromQuery] string ordem,
+           int quantidadeSub)
         {
             List<SubCategoria> subCategorias = _context.SubCategorias.ToList();
             if (subCategorias == null)
@@ -93,7 +94,7 @@ namespace CategoriaApi.Controllers
             if (!string.IsNullOrEmpty(nomeSubCategoria))
             {
                 IEnumerable<SubCategoria> query = from subCategoria in subCategorias
-                                                  where subCategoria.Nome.StartsWith(nomeSubCategoria.ToUpper())
+                                                  where subCategoria.Nome.ToUpper().StartsWith(nomeSubCategoria.ToUpper())
                                                   select subCategoria;
                 subCategorias = query.ToList();
             }
@@ -104,9 +105,33 @@ namespace CategoriaApi.Controllers
                                                   select subCategoria;
                 subCategorias = query.ToList();
             }
+            if (string.IsNullOrEmpty(ordem) && ordem.ToUpper() == "CRESCENTE")
+            {
+                IEnumerable<SubCategoria> query = from subCategoria in subCategorias
+                                                  orderby subCategoria.Nome ascending
+                                                  where subCategoria.Nome == ordem
+                                                  select subCategoria;
+                subCategorias = query.ToList();
+            }
+            if (string.IsNullOrEmpty(ordem) && ordem.ToUpper() == "DECRESCENTE")
+            {
+                IEnumerable<SubCategoria> query = from subCategoria in subCategorias
+                                                  orderby subCategoria.Nome descending
+                                                  where subCategoria.Nome == ordem
+                                                  select subCategoria;
+                subCategorias = query.ToList();
+            }
+            if (quantidadeSub > 0)
+            {
+                IEnumerable<SubCategoria> query = from subCategoria in subCategorias.Take(quantidadeSub)
+                                                  select subCategoria;
+
+            }
+
             List<ReadSubCategoriaDto> readSubDto = _mapper.Map<List<ReadSubCategoriaDto>>(subCategorias);
             return Ok(subCategorias);
         }
+
 
 
 

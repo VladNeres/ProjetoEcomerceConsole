@@ -29,11 +29,10 @@ namespace CategoriaApi.Controllers
         {
 
             Categoria categoriaNome = _context.Categorias.FirstOrDefault(categoriaNome => categoriaNome.Nome.ToUpper() == categoriaDto.Nome.ToUpper());
-
             if (categoriaDto.Nome.Length >= 3)
             {
-                if (categoriaNome == null)
-                {
+               if (categoriaNome == null)
+               {
                     Categoria categoria = _mapper.Map<Categoria>(categoriaDto);
                     categoria.DataCriacao = DateTime.Now;
                     categoria.Status = true;
@@ -41,11 +40,10 @@ namespace CategoriaApi.Controllers
                     _context.SaveChanges();
                     Console.WriteLine(categoria.Nome);
                     return CreatedAtAction(nameof(GetCategoriaPorId), new { id = categoria.Id }, categoriaDto);
-                }
-                return BadRequest("(Atenção)!.\n A categoria já existe!");
+               }
+                return BadRequest("(Atenção)\n  A categoria já existe!");
             }
-            return BadRequest("Para criar uma categoria,o campo (Nome) deve conter de 3 a 50 caracteres\n" +
-                "e o Status deve ser verdadeiro (true)");
+            return BadRequest("Para criar uma categoria,o campo (Nome) deve conter de 3 a 50 caracteres");
 
         }
 

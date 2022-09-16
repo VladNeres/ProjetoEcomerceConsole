@@ -105,19 +105,17 @@ namespace CategoriaApi.Controllers
                                                   select subCategoria;
                 subCategorias = query.ToList();
             }
-            if (string.IsNullOrEmpty(ordem) && ordem.ToUpper() == "CRESCENTE")
+            if (!string.IsNullOrEmpty(ordem) && ordem.ToUpper() == "CRESCENTE")
             {
                 IEnumerable<SubCategoria> query = from subCategoria in subCategorias
                                                   orderby subCategoria.Nome ascending
-                                                  where subCategoria.Nome == ordem
                                                   select subCategoria;
                 subCategorias = query.ToList();
             }
-            if (string.IsNullOrEmpty(ordem) && ordem.ToUpper() == "DECRESCENTE")
+            if (!string.IsNullOrEmpty(ordem) && ordem.ToUpper() == "DECRESCENTE")
             {
                 IEnumerable<SubCategoria> query = from subCategoria in subCategorias
                                                   orderby subCategoria.Nome descending
-                                                  where subCategoria.Nome == ordem
                                                   select subCategoria;
                 subCategorias = query.ToList();
             }

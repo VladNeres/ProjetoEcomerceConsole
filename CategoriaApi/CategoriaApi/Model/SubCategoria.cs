@@ -11,7 +11,7 @@ namespace CategoriaApi.Model
        public int Id { get; set; }
         [Required]
         [StringLength(50, ErrorMessage = "O campo nome é obrigatório")]
-        [RegularExpression(@"[a-zA-Zá-úÁ-Ú' '\s]{1,20}", ErrorMessage=  "O campo nome deve conter apenas letras")]
+        [RegularExpression(@"[a-zA-Zá-úÁ-Ú' '\s]{1,1000}", ErrorMessage=  "O campo nome deve conter apenas letras")]
         public string Nome { get; set; }
         public bool Status { get; set; } 
         public DateTime DataCriacao { get; set; }

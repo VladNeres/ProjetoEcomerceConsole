@@ -29,10 +29,11 @@ namespace CategoriaApi.Controllers
         {
 
             Categoria categoriaNome = _context.Categorias.FirstOrDefault(categoriaNome => categoriaNome.Nome.ToUpper() == categoriaDto.Nome.ToUpper());
-            if (categoriaDto.Nome.Length >= 3)
+            
+            if (categoriaDto.Nome.Length >= 3 && categoriaDto.Nome.Length<=50)
             {
-               if (categoriaNome == null)
-               {
+                if (categoriaNome == null)
+                {
                     Categoria categoria = _mapper.Map<Categoria>(categoriaDto);
                     categoria.DataCriacao = DateTime.Now;
                     categoria.Status = true;
@@ -40,10 +41,10 @@ namespace CategoriaApi.Controllers
                     _context.SaveChanges();
                     Console.WriteLine(categoria.Nome);
                     return CreatedAtAction(nameof(GetCategoriaPorId), new { id = categoria.Id }, categoriaDto);
-               }
-                return BadRequest("(Atenção)\n  A categoria já existe!");
+                }
+                return BadRequest("(Atenção)!.\n A categoria já existe!");
             }
-            return BadRequest("Para criar uma categoria,o campo (Nome) deve conter de 3 a 50 caracteres");
+            return BadRequest("É necessario informar de 3 a 50 caracteres");
 
         }
 
@@ -51,22 +52,21 @@ namespace CategoriaApi.Controllers
         public IActionResult EditarCategoria(int id, [FromBody] UpdateCategoriaDto categoriaUpdateDto)
         {
             Categoria categorias = _context.Categorias.FirstOrDefault(categoria => categoria.Id == id);
-            IEnumerable<SubCategoria> subCategorias = _context.SubCategorias.Where(sub => sub.CategoriaId == id);
+           IEnumerable<SubCategoria> subCategorias = _context.SubCategorias.Where(sub=>sub.CategoriaId==id);
 
             if (categorias == null)
             {
                 return NotFound();
             }
-            if (categoriaUpdateDto.Status == false)
+            if (categoriaUpdateDto.Status == false || categoriaUpdateDto.Status ==true)
             {
                 foreach (var subCategoria in subCategorias)
                 {
-                    subCategoria.Status = false;
+                    subCategoria.Status = categoriaUpdateDto.Status ;
                 }
             }
             _mapper.Map(categoriaUpdateDto, categorias);
             categorias.DataAtualizacao = DateTime.Now;
-
             _context.SaveChanges();
             return NoContent();
         }
@@ -87,7 +87,7 @@ namespace CategoriaApi.Controllers
 
         [HttpGet]
         public IActionResult GetCategoria([FromQuery] string nomeCategoria, [FromQuery] bool? status, [FromQuery] int quantidadeDeCategorias,
-            [FromQuery] string ordem, [FromQuery] bool? temSub)
+            [FromQuery] string ordem , [FromQuery] bool? temSub)
         {
             List<Categoria> categorias = _context.Categorias.ToList();
             if (categorias == null)
@@ -111,7 +111,7 @@ namespace CategoriaApi.Controllers
                                                select categoria;
                 categorias = query.ToList();
             }
-            if (quantidadeDeCategorias > 0)
+            if (quantidadeDeCategorias > 0 )
             {
                 IEnumerable<Categoria> query = from categoria in categorias.Take(quantidadeDeCategorias)
                                                select categoria;
@@ -145,7 +145,8 @@ namespace CategoriaApi.Controllers
                                                select categoria;
                 categorias = query.ToList();
             }
-
+           
+            
             List<ReaderCategoriaDto> readDto = _mapper.Map<List<ReaderCategoriaDto>>(categorias);
             return Ok(readDto);
 

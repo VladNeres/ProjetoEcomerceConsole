@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Diretorioazure\\T2-VladmirNeres\\CategoriaApi\\CategoriaApi\\CategoriaApi.csproj": {}
+    "C:\\Users\\ClearTech\\Documents\\Sprints\\CategoriaApi\\CategoriaApi\\CategoriaApi.csproj": {}
   },
   "projects": {
-    "C:\\Diretorioazure\\T2-VladmirNeres\\CategoriaApi\\CategoriaApi\\CategoriaApi.csproj": {
+    "C:\\Users\\ClearTech\\Documents\\Sprints\\CategoriaApi\\CategoriaApi\\CategoriaApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Diretorioazure\\T2-VladmirNeres\\CategoriaApi\\CategoriaApi\\CategoriaApi.csproj",
+        "projectUniqueName": "C:\\Users\\ClearTech\\Documents\\Sprints\\CategoriaApi\\CategoriaApi\\CategoriaApi.csproj",
         "projectName": "CategoriaApi",
-        "projectPath": "C:\\Diretorioazure\\T2-VladmirNeres\\CategoriaApi\\CategoriaApi\\CategoriaApi.csproj",
+        "projectPath": "C:\\Users\\ClearTech\\Documents\\Sprints\\CategoriaApi\\CategoriaApi\\CategoriaApi.csproj",
         "packagesPath": "C:\\Users\\ClearTech\\.nuget\\packages\\",
-        "outputPath": "C:\\Diretorioazure\\T2-VladmirNeres\\CategoriaApi\\CategoriaApi\\obj\\",
+        "outputPath": "C:\\Users\\ClearTech\\Documents\\Sprints\\CategoriaApi\\CategoriaApi\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\ClearTech\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -44,6 +44,14 @@
               "target": "Package",
               "version": "[11.0.0, )"
             },
+            "Dapper": {
+              "target": "Package",
+              "version": "[2.0.123, )"
+            },
+            "Dapper.Contrib": {
+              "target": "Package",
+              "version": "[2.0.78, )"
+            },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
               "version": "[5.0.17, )"
@@ -65,6 +73,10 @@
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[5.6.3, )"
+            },
+            "System.Data.SqlClient": {
+              "target": "Package",
+              "version": "[4.8.3, )"
             }
           },
           "imports": [

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
@@ -9,9 +10,9 @@ namespace CategoriaApi.Model
         [Key]
         [Required]
        public int Id { get; set; }
-        [Required]
-        [StringLength(50, ErrorMessage = "O campo nome é obrigatório")]
-        [RegularExpression(@"[a-zA-Zá-úÁ-Ú' '\s]{1,1000}", ErrorMessage=  "O campo nome deve conter apenas letras")]
+        [Required(ErrorMessage ="O campo nome é obrigatório")]
+        [StringLength(50, ErrorMessage = "O Campo nome excedeu o limite de 50 caracteres ")]
+        [RegularExpression(@"[a-zA-Zá-úÁ-Ú' '\s]{1,50}", ErrorMessage=  "O campo nome deve conter apenas letras")]
         public string Nome { get; set; }
         public bool Status { get; set; } 
         public DateTime DataCriacao { get; set; }
@@ -20,6 +21,8 @@ namespace CategoriaApi.Model
         public int CategoriaId { get; set; }
         [JsonIgnore]
         public virtual Categoria Categoria { get; set; }
+        [JsonIgnore]
+        public virtual List<Produto> Produtos { get;set; }
 
         
     }

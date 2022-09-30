@@ -42,6 +42,55 @@ namespace CategoriaApi.Migrations
                     b.ToTable("Categorias");
                 });
 
+            modelBuilder.Entity("CategoriaApi.Model.Produto", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<double>("Altura")
+                        .HasColumnType("double");
+
+                    b.Property<double>("Comprimento")
+                        .HasColumnType("double");
+
+                    b.Property<DateTime>("DataAtualizacao")
+                        .HasColumnType("datetime");
+
+                    b.Property<DateTime>("DataCriacao")
+                        .HasColumnType("datetime");
+
+                    b.Property<string>("Descricao")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<double>("Largura")
+                        .HasColumnType("double");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("varchar(128)");
+
+                    b.Property<double>("Peso")
+                        .HasColumnType("double");
+
+                    b.Property<int>("QuantidadeEmEstoque")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SubCategoriaId")
+                        .HasColumnType("int");
+
+                    b.Property<double>("Valor")
+                        .HasColumnType("double");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SubCategoriaId");
+
+                    b.ToTable("Produtos");
+                });
+
             modelBuilder.Entity("CategoriaApi.Model.SubCategoria", b =>
                 {
                     b.Property<int>("Id")
@@ -72,6 +121,17 @@ namespace CategoriaApi.Migrations
                     b.ToTable("SubCategorias");
                 });
 
+            modelBuilder.Entity("CategoriaApi.Model.Produto", b =>
+                {
+                    b.HasOne("CategoriaApi.Model.SubCategoria", "Subcategoria")
+                        .WithMany("Produtos")
+                        .HasForeignKey("SubCategoriaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Subcategoria");
+                });
+
             modelBuilder.Entity("CategoriaApi.Model.SubCategoria", b =>
                 {
                     b.HasOne("CategoriaApi.Model.Categoria", "Categoria")
@@ -86,6 +146,11 @@ namespace CategoriaApi.Migrations
             modelBuilder.Entity("CategoriaApi.Model.Categoria", b =>
                 {
                     b.Navigation("SubCategoria");
+                });
+
+            modelBuilder.Entity("CategoriaApi.Model.SubCategoria", b =>
+                {
+                    b.Navigation("Produtos");
                 });
 #pragma warning restore 612, 618
         }

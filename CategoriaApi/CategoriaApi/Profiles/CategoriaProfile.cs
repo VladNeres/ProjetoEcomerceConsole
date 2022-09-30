@@ -20,7 +20,10 @@ namespace CategoriaApi.Profiles
                 {
                     subCategoria.Id,
                     subCategoria.Nome,
-                    subCategoria.Status
+                    subCategoria.Status,
+                    subCategoria.DataCriacao,
+                    subCategoria.Produtos
+
                 })));
         //.ForMember(categoria => categoria.DataCriacao, opt => opt
         //        .MapFrom(src => ((DateTime)src.DataCriacao).ToString("dd-MM-yyyy HH:mm:ss")));

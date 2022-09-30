@@ -3,6 +3,7 @@ using CategoriaApi.Model;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace CategoriaApi.Data.Dto.DtoCategoria
 {
@@ -19,6 +20,7 @@ namespace CategoriaApi.Data.Dto.DtoCategoria
         public bool Status { get; set; }
         public string DataCriacao { get; set; }
         public string DataAtualizacao { get; set; }
+        
         public object SubCategoria { get; set; }
 
 

@@ -30,7 +30,7 @@ namespace CategoriaApi.Controllers
             try
             {
 
-                if(subCategoriaDto.Nome.Length>=3)
+                if(subCategoriaDto.Nome.Length>=3 && subCategoriaDto.Nome.Length<=50)
                 {
                     if(subCategoriaNome== null)
                     {
@@ -49,7 +49,7 @@ namespace CategoriaApi.Controllers
             }
             catch (Exception)
             {
-                return BadRequest("É necessario informar o Id da Categoria em que a subcategoria será armazenado");
+                return BadRequest("É necessario Informar um Id da categoria em que deseja registrar a Subcategoria");
             }
 
             
@@ -84,7 +84,7 @@ namespace CategoriaApi.Controllers
 
         [HttpGet]
         public IActionResult GetSubCategorias([FromQuery] string nomeSubCategoria, [FromQuery] bool? statusSubCategoria, [FromQuery] string ordem,
-           int quantidadeSub)
+            int quantidadeSub)
         {
             List<SubCategoria> subCategorias = _context.SubCategorias.ToList();
             if (subCategorias == null)
@@ -121,15 +121,16 @@ namespace CategoriaApi.Controllers
             }
             if (quantidadeSub > 0)
             {
-                IEnumerable<SubCategoria> query = from subCategoria in subCategorias.Take(quantidadeSub)
-                                                  select subCategoria;
+                IEnumerable<SubCategoria> query= from subCategoria in subCategorias.Take(quantidadeSub)
+                                                 select subCategoria;
 
+                subCategorias = query.ToList();
             }
+            
 
             List<ReadSubCategoriaDto> readSubDto = _mapper.Map<List<ReadSubCategoriaDto>>(subCategorias);
             return Ok(subCategorias);
         }
-
 
 
 

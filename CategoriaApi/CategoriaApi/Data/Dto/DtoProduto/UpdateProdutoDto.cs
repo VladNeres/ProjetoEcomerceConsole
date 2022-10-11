@@ -26,6 +26,8 @@ namespace CategoriaApi.Data.Dto.DtoProduto
 
         [Required(ErrorMessage = "O Campo de quantidade em estoque é obrigatório")]
         public int QuantidadeEmEstoque { get; set; }
+
+        public bool Status { get; set; }
        
     }
 }

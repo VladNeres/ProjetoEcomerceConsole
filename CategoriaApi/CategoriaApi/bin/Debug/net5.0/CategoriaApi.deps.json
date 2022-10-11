@@ -36,6 +36,7 @@
           "AutoMapper.Extensions.Microsoft.DependencyInjection": "11.0.0",
           "Dapper": "2.0.123",
           "Dapper.Contrib": "2.0.78",
+          "FluentResults": "2.5.0",
           "Microsoft.EntityFrameworkCore": "5.0.17",
           "Microsoft.EntityFrameworkCore.Proxies": "5.0.17",
           "Microsoft.EntityFrameworkCore.Tools": "5.0.17",
@@ -402,6 +403,17 @@
         },
         "compile": {
           "lib/net5.0/Dapper.Contrib.dll": {}
+        }
+      },
+      "FluentResults/2.5.0": {
+        "runtime": {
+          "lib/netstandard2.1/FluentResults.dll": {
+            "assemblyVersion": "2.5.0.0",
+            "fileVersion": "2.5.0.0"
+          }
+        },
+        "compile": {
+          "lib/netstandard2.1/FluentResults.dll": {}
         }
       },
       "Google.Protobuf/3.19.4": {
@@ -3356,6 +3368,13 @@
       "sha512": "sha512-sUfDVIf8LlHNiz3MfUFodeyRiemfN1JFkPxYjCxFWlwNPg1iQ49mB+0E89TkywWs4X8fiRWOVDQgtH5FtzK5Kw==",
       "path": "dapper.contrib/2.0.78",
       "hashPath": "dapper.contrib.2.0.78.nupkg.sha512"
+    },
+    "FluentResults/2.5.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-qjPwIRf1f0lHMAWPHQo2SkErIUbisjfNqv8Hem3g0qw7Q000T8cSh8H+/07sviRU63yI5XveBaJM/GrPsI2fNA==",
+      "path": "fluentresults/2.5.0",
+      "hashPath": "fluentresults.2.5.0.nupkg.sha512"
     },
     "Google.Protobuf/3.19.4": {
       "type": "package",

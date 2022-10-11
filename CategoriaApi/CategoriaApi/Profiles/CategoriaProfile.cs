@@ -14,7 +14,7 @@ namespace CategoriaApi.Profiles
 
             CreateMap<CreateCategoriaDto, Categoria>();
             CreateMap<UpdateCategoriaDto, Categoria>();
-            CreateMap<Categoria, ReaderCategoriaDto>()
+            CreateMap<Categoria, ReadCategoriaDto>()
                .ForMember(categoria => categoria.SubCategoria, opts => opts
                 .MapFrom(categoria => categoria.SubCategoria.Select(subCategoria => new
                 {

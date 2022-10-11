@@ -1,5 +1,6 @@
- using CategoriaApi.Data;
+using CategoriaApi.Data;
 using CategoriaApi.Repository;
+using CategoriaApi.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -10,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -33,13 +35,16 @@ namespace CategoriaApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<DatabaseContext>(opt => opt.UseLazyLoadingProxies().UseMySQL(Configuration.GetConnectionString("CategoriaConnection")));
+            services.AddScoped<ProdutoServices>();
+            services.AddScoped<CategoriaServices>();
+            
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "CategoriaApi", Version = "v1" });
             });
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-            services.AddTransient<IDbConnection>((sp)=> new SqlConnection(Configuration.GetConnectionString("CategoriaConnection")));
+            services.AddTransient<IDbConnection>((sp)=> new MySqlConnection(Configuration.GetConnectionString("CategoriaConnection")));
             services.AddScoped<ProdutoRepository>();
         }
 

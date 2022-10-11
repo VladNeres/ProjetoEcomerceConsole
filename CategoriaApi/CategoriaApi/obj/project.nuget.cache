@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "EdsjrNyinTcgxw62VIPu2nQKJF03wj1nGQtElkQjuepvG02pc3nEDbd/VPKoEVoZMamye927rFLIQm+8gRBl0w==",
+  "dgSpecHash": "cem7Yd2K6V8GL1JtUKyjr5/iT7XXFPuvr/09kJus2gwYdn/NGgR1uGJud+VdzedyYmbM5y69oIfx7YubLXDrAA==",
   "success": true,
   "projectFilePath": "C:\\Users\\ClearTech\\Documents\\Sprints\\CategoriaApi\\CategoriaApi\\CategoriaApi.csproj",
   "expectedPackageFiles": [
@@ -9,6 +9,7 @@
     "C:\\Users\\ClearTech\\.nuget\\packages\\castle.core\\4.4.1\\castle.core.4.4.1.nupkg.sha512",
     "C:\\Users\\ClearTech\\.nuget\\packages\\dapper\\2.0.123\\dapper.2.0.123.nupkg.sha512",
     "C:\\Users\\ClearTech\\.nuget\\packages\\dapper.contrib\\2.0.78\\dapper.contrib.2.0.78.nupkg.sha512",
+    "C:\\Users\\ClearTech\\.nuget\\packages\\fluentresults\\2.5.0\\fluentresults.2.5.0.nupkg.sha512",
     "C:\\Users\\ClearTech\\.nuget\\packages\\google.protobuf\\3.19.4\\google.protobuf.3.19.4.nupkg.sha512",
     "C:\\Users\\ClearTech\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\ClearTech\\.nuget\\packages\\k4os.compression.lz4\\1.2.6\\k4os.compression.lz4.1.2.6.nupkg.sha512",

@@ -59,14 +59,22 @@ namespace CategoriaApi.Controllers
         public IActionResult EditarSubCategoria(int id, [FromBody] UpdateSubCategoriaDto subCategoriaDto) 
         {
             SubCategoria subCategoria = _context.SubCategorias.FirstOrDefault(subCategoria => subCategoria.Id == id);
-            if(subCategoria== null)
+            IEnumerable<Produto> produto = _context.Produtos.Where(produto => produto.SubCategoriaId == id);
+            if (subCategoria== null)
             {
                 return NotFound();
             }
-            _mapper.Map(subCategoriaDto, subCategoria);
-            subCategoria.DataAtualizacao = DateTime.Now;
-            _context.SaveChanges();
-            return NoContent();
+            if (subCategoria.Status== false || subCategoria.Status==true)
+            {
+                foreach(var item in produto)
+                {
+                    item.Status = subCategoria.Status;
+                }
+                _mapper.Map(subCategoriaDto, subCategoria);
+                subCategoria.DataAtualizacao = DateTime.Now;
+                _context.SaveChanges();
+            }
+                return NoContent();
         }
 
         [HttpDelete("{id}")]
@@ -126,10 +134,10 @@ namespace CategoriaApi.Controllers
 
                 subCategorias = query.ToList();
             }
-            
+
 
             List<ReadSubCategoriaDto> readSubDto = _mapper.Map<List<ReadSubCategoriaDto>>(subCategorias);
-            return Ok(subCategorias);
+            return Ok(readSubDto);
         }
 
 

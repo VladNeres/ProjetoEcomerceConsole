@@ -62,7 +62,8 @@ namespace CategoriaApi.Migrations
 
                     b.Property<string>("Descricao")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(512)
+                        .HasColumnType("varchar(512)");
 
                     b.Property<double>("Largura")
                         .HasColumnType("double");
@@ -77,6 +78,9 @@ namespace CategoriaApi.Migrations
 
                     b.Property<int>("QuantidadeEmEstoque")
                         .HasColumnType("int");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<int>("SubCategoriaId")
                         .HasColumnType("int");

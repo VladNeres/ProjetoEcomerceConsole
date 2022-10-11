@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace CategoriaApi.Data.Dto.DtoProduto
 {
@@ -33,6 +34,8 @@ namespace CategoriaApi.Data.Dto.DtoProduto
         public int QuantidadeEmEstoque { get; set; }
 
         public int SubCategoriaId { get; set; }
+
+        public DateTime DataCriacao { get; set; }
         
 
     }

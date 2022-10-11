@@ -2,6 +2,7 @@
 using CategoriaApi.Data.Dto.DtoSubCategoria;
 using CategoriaApi.Model;
 using System;
+using System.Linq;
 
 namespace CategoriaApi.Profiles
 {
@@ -13,8 +14,18 @@ namespace CategoriaApi.Profiles
             CreateMap<CreateSubCategoriaDto, SubCategoria>();
             CreateMap<UpdateSubCategoriaDto, SubCategoria>();
             CreateMap<SubCategoria, ReadSubCategoriaDto>()
-                .ForMember(categoria => categoria.DataCriacao, opt => opt
-                .MapFrom(src => ((DateTime)src.DataCriacao).ToString("dd-MM-yyyy HH:mm:ss")));
+                .ForMember(subCategoria => subCategoria.Produtos, opts => opts
+                .MapFrom(subCategoria => subCategoria.Produtos.Select(produto => new
+                {
+                    produto.Id,
+                    produto.Nome,
+                    produto.Valor,
+                    produto.QuantidadeEmEstoque,
+                    produto.Status,
+                    produto.DataCriacao,
+                    produto.DataAtualizacao
+                }
+                )));
         }
     }
 }

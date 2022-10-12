@@ -4,6 +4,9 @@ using AutoMapper;
 using CategoriaApi.Data;
 using CategoriaApi.Data.Dto.DtoProduto;
 using CategoriaApi.Model;
+using CategoriaApi.Repository;
+using CategoriaApi.Services;
+using FluentResults;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections;
@@ -16,13 +19,12 @@ namespace CategoriaApi.Controllers
     [Route("[controller]")]
     public class ProdutoController : ControllerBase
     {
-        private DatabaseContext _context;
-        private IMapper _mapper;
-
-        public ProdutoController(DatabaseContext context, IMapper mapper)
+        private ProdutoRepository _produtoRepository;
+        private ProdutoServices _produtoServices;
+        public ProdutoController(ProdutoServices services, ProdutoRepository repository)
         {
-            _context = context;
-            _mapper = mapper;
+             _produtoServices = services;
+            _produtoRepository = repository;
         }
 
         [HttpPost]
@@ -30,78 +32,58 @@ namespace CategoriaApi.Controllers
         {
             try
             {
-                List<SubCategoria> listaSub = _context.SubCategorias.ToList();
-               SubCategoria subCategorias = _context.SubCategorias.FirstOrDefault(sub=>sub.Id !=0);
-                IEnumerable <Produto> produtoId= _context.Produtos.Where(prod=> prod.SubCategoriaId == (subCategorias.Id));
 
+                ReadProdutoDto prodServices = _produtoServices.AdicionarProduto(produtoDto);
+                return CreatedAtAction(nameof(GetProdutoPorId), new { Id = prodServices.Id }, prodServices);
 
-                if (produtoId == null)
-                {
-
-                       if( subCategorias.Status==false )
-                       {
-                         return BadRequest("Não é possivel criar um produto em uma subCategoria inativa");
-                       }
-                    return BadRequest("Não é possivel criar um produto em uma subCategoria inativa");
-
-                }
-                Produto produto = _mapper.Map<Produto>(produtoDto);
-                    produto.DataCriacao = DateTime.Now;
-                    _context.Produtos.Add(produto);
-                    _context.SaveChanges();
-                    return CreatedAtAction(nameof(GetProdutoPorId), new { Id = produto.Id }, produto);
+            }
+            catch (NullReferenceException)
+            {
+                return BadRequest("subCategoria não encontrada");
+            }
+            catch (ArgumentException)
+            {
+                return BadRequest("Não é possivel criar um produto em uma subCategoria inativa");
             }
             catch (Exception)
             {
-                return BadRequest("É necessario informar o numero da subcategoria");
+                return BadRequest("É necessario informa o numero da subcategoria que deseja cadastrar o produto");
             }
         }
 
         [HttpPut("{id}")]
         public IActionResult AtualiazarProduto(int id, [FromBody] UpdateProdutoDto produtoDto)
         {
-            Produto produto = _context.Produtos.FirstOrDefault(produto => produto.Id == id);
-            if (produto == null)
-            {
-                return NotFound();
-            }
-            _mapper.Map(produtoDto, produto);
-            produto.DataAtualizacao = DateTime.Now;
-            _context.SaveChanges();
+           Result readDto = _produtoServices.AtualizarProduto(id, produtoDto);
+            if (readDto.IsFailed) return NotFound();
             return NoContent();
         }
-
-        [HttpGet]
-        public IActionResult GetProdutos()
-        {
-            return Ok(_context.Produtos);
-        }
-
-        [HttpGet("{id}")]
-        public IActionResult GetProdutoPorId(int id)
-        {
-            Produto produto = _context.Produtos.FirstOrDefault(produto => produto.Id == id);
-            if (produto != null)
-            {
-                ReadProdutoDto readDto = _mapper.Map<ReadProdutoDto>(produto);
-                return Ok(readDto);
-            }
-            return NotFound();
-        }
-
 
         [HttpDelete("{id}")]
         public IActionResult DeleteProduto( int id)
         {
-            Produto produto = _context.Produtos.FirstOrDefault(prod => prod.Id == id);
-            
-            if(produto == null)
-            {
-                return NotFound();
-            }
-            _context.Produtos.Remove(produto);
-            _context.SaveChanges();
+            Result result = _produtoServices.DeletarProduto(id);
+            if(result.IsFailed) return NotFound();
             return NoContent();
         }
+
+
+
+        [HttpGet("{id}")]
+        public IActionResult GetProdutoPorId(int id)
+        {
+            ReadProdutoDto readDto = _produtoServices.GetProdutoPorId(id);
+            if (readDto != null) return Ok(readDto);
+            return NotFound();
+        }
+
+        [HttpGet]
+        public List<Produto> PesquisaComFiltros([FromQuery] string nome, [FromQuery] bool? status, [FromQuery] double? peso,
+            [FromQuery] double? altura,[FromQuery] double? largura, [FromQuery] double? comprimento, [FromQuery] double? valor,
+            [FromQuery] int? estoque, [FromQuery] string ordem, [FromQuery] int itensPorPagina)
+        {
+            return _produtoRepository.PesquisaComFiltros(nome, status, peso, altura, largura, comprimento, valor, estoque, ordem, itensPorPagina);
+        }
+
     }
 }

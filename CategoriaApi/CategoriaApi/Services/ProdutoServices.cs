@@ -84,10 +84,10 @@ namespace CategoriaApi.Services
             if (produto != null)
             {
                 ReadProdutoDto readDto = _mapper.Map<ReadProdutoDto>(produto);
-
                 return readDto;
             }
             return null;
-        }
+        } 
+
     }
 }

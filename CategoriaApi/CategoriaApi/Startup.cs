@@ -37,7 +37,7 @@ namespace CategoriaApi
             services.AddDbContext<DatabaseContext>(opt => opt.UseLazyLoadingProxies().UseMySQL(Configuration.GetConnectionString("CategoriaConnection")));
             services.AddScoped<ProdutoServices>();
             services.AddScoped<CategoriaServices>();
-            
+            services.AddScoped<SubCategoriaService>();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

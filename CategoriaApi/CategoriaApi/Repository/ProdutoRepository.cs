@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-
 using CategoriaApi.Data;
 using CategoriaApi.Data.Dto.DtoProduto;
 using CategoriaApi.Model;

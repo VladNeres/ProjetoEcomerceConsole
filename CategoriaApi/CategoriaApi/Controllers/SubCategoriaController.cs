@@ -2,6 +2,8 @@
 using CategoriaApi.Data;
 using CategoriaApi.Data.Dto.DtoSubCategoria;
 using CategoriaApi.Model;
+using CategoriaApi.Services;
+using FluentResults;
 using Microsoft.AspNetCore.Mvc;
 using MySql.Data.MySqlClient;
 using System;
@@ -15,144 +17,50 @@ namespace CategoriaApi.Controllers
 
     public class SubCategoriaController: ControllerBase
     {
-        private DatabaseContext _context;
-        private IMapper _mapper;
-        public SubCategoriaController (DatabaseContext context, IMapper mapper)
+        public SubCategoriaService _service;
+        public SubCategoriaController (SubCategoriaService service)
         {
-            _context= context;
-            _mapper=mapper;
+            _service = service;
         }
 
         [HttpPost]
         public IActionResult CriarSubCategoria([FromBody] CreateSubCategoriaDto subCategoriaDto)
         {
-           SubCategoria subCategoriaNome = _context.SubCategorias.FirstOrDefault(subCategoria=> subCategoria.Nome.ToUpper()==subCategoriaDto.Nome.ToUpper());
-            try
-            {
-
-                if(subCategoriaDto.Nome.Length>=3 && subCategoriaDto.Nome.Length<=50)
-                {
-                    if(subCategoriaNome== null)
-                    {
-
-                        SubCategoria subCategoria= _mapper.Map<SubCategoria>(subCategoriaDto);
-                        subCategoria.Status = true;
-                        subCategoria.DataCriacao = DateTime.Now;
-                        _context.SubCategorias.Add(subCategoria);
-                        _context.SaveChanges();
-                        return CreatedAtAction(nameof(GetSubCategoriaPorId), new { id = subCategoria.Id }, subCategoriaDto);
-                    }
-                    return BadRequest("A subCategoria já existe");
-                }
-                return BadRequest("A categoria deve conter entre 3 e 50 caracteres");
-            
-            }
-            catch (Exception)
-            {
-                return BadRequest("É necessario Informar um Id da categoria em que deseja registrar a Subcategoria");
-            }
-
-            
+            ReadSubCategoriaDto subDto = _service.CriarSubCategoria(subCategoriaDto);
+            return CreatedAtAction(nameof(GetSubCategoriaPorId), new { id = subDto.Id }, subDto);
         }
 
         [HttpPut("{id}")]
         public IActionResult EditarSubCategoria(int id, [FromBody] UpdateSubCategoriaDto subCategoriaDto) 
         {
-            SubCategoria subCategoria = _context.SubCategorias.FirstOrDefault(subCategoria => subCategoria.Id == id);
-            IEnumerable<Produto> produto = _context.Produtos.Where(produto => produto.SubCategoriaId == id);
-            if (subCategoria== null)
-            {
-                return NotFound();
-            }
-            if (subCategoria.Status== false || subCategoria.Status==true)
-            {
-                foreach(var item in produto)
-                {
-                    item.Status = subCategoria.Status;
-                }
-                _mapper.Map(subCategoriaDto, subCategoria);
-                subCategoria.DataAtualizacao = DateTime.Now;
-                _context.SaveChanges();
-            }
+            Result sub= _service.EditarSubCategoria(id, subCategoriaDto);
+            if (sub.IsFailed) return NotFound(); 
+            
                 return NoContent();
         }
 
         [HttpDelete("{id}")]
         public IActionResult DeletarSubCategoria(int id)
         {
-            SubCategoria subCategoria = _context.SubCategorias.FirstOrDefault(subCategoria => subCategoria.Id == id);
-            if(subCategoria== null)
-            {
-                return NotFound();
-            }
-            _context.Remove(subCategoria);
-            _context.SaveChanges();
+            Result result = _service.DeletarSubCategoria(id);
+            if(result.IsFailed) return NotFound();
             return NoContent();
         }
 
         [HttpGet]
-        public IActionResult GetSubCategorias([FromQuery] string nomeSubCategoria, [FromQuery] bool? statusSubCategoria, [FromQuery] string ordem,
-            int quantidadeSub)
+        public List<ReadSubCategoriaDto> GetSubCategorias([FromQuery] string nome, [FromQuery] bool? status, [FromQuery] string ordem,
+           [FromQuery] int quantidadePorPagina,[FromQuery] object produto)
         {
-            List<SubCategoria> subCategorias = _context.SubCategorias.ToList();
-            if (subCategorias == null)
-            {
-                return NotFound();
-            }
-            if (!string.IsNullOrEmpty(nomeSubCategoria))
-            {
-                IEnumerable<SubCategoria> query = from subCategoria in subCategorias
-                                                  where subCategoria.Nome.ToUpper().StartsWith(nomeSubCategoria.ToUpper())
-                                                  select subCategoria;
-                subCategorias = query.ToList();
-            }
-            if (statusSubCategoria == true || statusSubCategoria == false)
-            {
-                IEnumerable<SubCategoria> query = from subCategoria in subCategorias
-                                                  where subCategoria.Status == statusSubCategoria
-                                                  select subCategoria;
-                subCategorias = query.ToList();
-            }
-            if (!string.IsNullOrEmpty(ordem) && ordem.ToUpper() == "CRESCENTE")
-            {
-                IEnumerable<SubCategoria> query = from subCategoria in subCategorias
-                                                  orderby subCategoria.Nome ascending
-                                                  select subCategoria;
-                subCategorias = query.ToList();
-            }
-            if (!string.IsNullOrEmpty(ordem) && ordem.ToUpper() == "DECRESCENTE")
-            {
-                IEnumerable<SubCategoria> query = from subCategoria in subCategorias
-                                                  orderby subCategoria.Nome descending
-                                                  select subCategoria;
-                subCategorias = query.ToList();
-            }
-            if (quantidadeSub > 0)
-            {
-                IEnumerable<SubCategoria> query= from subCategoria in subCategorias.Take(quantidadeSub)
-                                                 select subCategoria;
-
-                subCategorias = query.ToList();
-            }
-
-
-            List<ReadSubCategoriaDto> readSubDto = _mapper.Map<List<ReadSubCategoriaDto>>(subCategorias);
-            return Ok(readSubDto);
+            
+            return _service.GetSubCategorias(nome,status,ordem, quantidadePorPagina, produto);
         }
-
-
-
 
         [HttpGet("{id}")]
 
         public IActionResult GetSubCategoriaPorId(int id)
         {
-            SubCategoria subCategoria = _context.SubCategorias.FirstOrDefault(subCategoria => subCategoria.Id == id);
-            if(subCategoria != null)
-            {
-                ReadSubCategoriaDto readerSubCategoria = _mapper.Map<ReadSubCategoriaDto>(subCategoria);
-                return Ok(subCategoria);
-            }
+            ReadSubCategoriaDto readSub = _service.GetSubPorId(id);
+            if(readSub!= null) return Ok(readSub);
             return NotFound();
         }
     }

@@ -7213,11 +7213,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Diretorioazure\\T2-VladmirNeres\\CategoriaApi\\CategoriaApi\\CategoriaApi.csproj",
+      "projectUniqueName": "C:\\Users\\ClearTech\\Documents\\Sprints\\CategoriaApi\\CategoriaApi\\CategoriaApi.csproj",
       "projectName": "CategoriaApi",
-      "projectPath": "C:\\Diretorioazure\\T2-VladmirNeres\\CategoriaApi\\CategoriaApi\\CategoriaApi.csproj",
+      "projectPath": "C:\\Users\\ClearTech\\Documents\\Sprints\\CategoriaApi\\CategoriaApi\\CategoriaApi.csproj",
       "packagesPath": "C:\\Users\\ClearTech\\.nuget\\packages\\",
-      "outputPath": "C:\\Diretorioazure\\T2-VladmirNeres\\CategoriaApi\\CategoriaApi\\obj\\",
+      "outputPath": "C:\\Users\\ClearTech\\Documents\\Sprints\\CategoriaApi\\CategoriaApi\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\ClearTech\\AppData\\Roaming\\NuGet\\NuGet.Config",

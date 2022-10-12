@@ -11,9 +11,9 @@ namespace CategoriaApi.Profiles
         {
             CreateMap<CreateProdutoDto, Produto>();
             CreateMap< UpdateProdutoDto, Produto>();
-            CreateMap<Produto, ReadProdutoDto>()
-               .ForMember(produto => produto.DataCriacao, opt => opt
-               .MapFrom(src => ((DateTime)(src.DataCriacao)).ToString("dd/MM/yyyy HH:mm:ss")));
+            CreateMap<Produto, ReadProdutoDto>();
+                
+                
                
         }
     }

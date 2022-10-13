@@ -59,17 +59,14 @@ namespace CategoriaApi.Services
             {
                 return Result.Fail("Subcategoria não encontrada");
             }
-            if (subCategoria.Status == false || subCategoria.Status == true)
+            if (subCategoria.Produtos.Count() > 0 && subDto.Status != true)
             {
-                foreach (var item in produto)
-                {
-                    item.Status = subCategoria.Status;
-                }
+                return Result.Fail("Não é possivel desativar essa subcategoria pois existem produtos cadastrados");
             }
-                _mapper.Map(subDto, subCategoria);
-                subCategoria.DataAtualizacao = DateTime.Now;
-                _context.SaveChanges();
-                return Result.Ok();
+            _mapper.Map(subDto, subCategoria);
+            subCategoria.DataAtualizacao = DateTime.Now;
+            _context.SaveChanges();
+            return Result.Ok();
         }
         public Result DeletarSubCategoria(int id)
         {

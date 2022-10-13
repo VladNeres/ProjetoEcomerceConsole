@@ -34,7 +34,7 @@ namespace CategoriaApi.Controllers
         public IActionResult EditarSubCategoria(int id, [FromBody] UpdateSubCategoriaDto subCategoriaDto) 
         {
             Result sub= _service.EditarSubCategoria(id, subCategoriaDto);
-            if (sub.IsFailed) return NotFound(); 
+            if (sub.IsFailed) return NotFound("Não é possivel inativar essa subcategoria, pois há produtos cadastrados"); 
             
                 return NoContent();
         }

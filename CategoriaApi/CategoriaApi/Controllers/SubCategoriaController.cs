@@ -48,11 +48,10 @@ namespace CategoriaApi.Controllers
         }
 
         [HttpGet]
-        public List<ReadSubCategoriaDto> GetSubCategorias([FromQuery] string nome, [FromQuery] bool? status, [FromQuery] string ordem,
-           [FromQuery] int quantidadePorPagina,[FromQuery] object produto)
+        public List<ReadSubCategoriaDto> GetSubCategorias([FromQuery] string nome, [FromQuery] bool? status, [FromQuery] string ordem, [FromQuery] int quantidadePorPagina )
         {
             
-            return _service.GetSubCategorias(nome,status,ordem, quantidadePorPagina, produto);
+            return _service.GetSubCategoria(nome,status,ordem, quantidadePorPagina);
         }
 
         [HttpGet("{id}")]

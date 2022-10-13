@@ -84,57 +84,57 @@ namespace CategoriaApi.Services
         }
 
 
-        public List<ReadSubCategoriaDto> GetSubCategorias(string nome, bool? status, string ordem, int quantidadePorPagina, object produtos)
+        public List<ReadSubCategoriaDto> GetSubCategoria(string nome, bool? status, string ordem, int quantidadePorPagina)
         {
+            List<SubCategoria> subcategorias = _context.SubCategorias.ToList(); ;
+            if (subcategorias == null)
+            {
+                return null;
+            }
+            if (!string.IsNullOrEmpty(nome))
+            {
+                IEnumerable<SubCategoria> query = from categoria in subcategorias
+                                               orderby categoria.Nome ascending
+                                               where categoria.Nome.ToUpper().StartsWith(nome.ToUpper())
+                                               select categoria;
 
-            var sql = "SELECT * FROM subcategorias WHERE ";
+                subcategorias = query.ToList();
 
-            if (nome != null)
-            {
-                sql += "Nome LIKE \"%" + nome + "%\" and ";
             }
-            if (status != null)
+            if (status == true || status == false)
             {
-                sql += "Status = @status and ";
+                IEnumerable<SubCategoria> query = from categoria in subcategorias
+                                               where categoria.Status == status
+                                               select categoria;
+                subcategorias = query.ToList();
             }
-            if (ordem!= null)
+            if (quantidadePorPagina > 0)
             {
-                if(ordem.ToUpper() != "DECRESCENTE")
-                {
-                    sql += "Order By Nome";
-                }
-                else
-                {
-                    sql += "Order By Nome Desc";
-                }
+                IEnumerable<SubCategoria> query = from categoria in subcategorias.Take(quantidadePorPagina)
+                                               select categoria;
+                subcategorias = query.ToList();
             }
-            if(quantidadePorPagina >0 )
+            if (!string.IsNullOrEmpty(ordem) && ordem.ToUpper() == "CRESCENTE")
             {
-                sql+= sql.Take(quantidadePorPagina);
+                IEnumerable<SubCategoria> query = from categoria in subcategorias
+                                               orderby categoria.Nome ascending
+                                               select categoria;
+                subcategorias = query.ToList();
             }
-            if (nome == null && status == null)
+            if (!string.IsNullOrEmpty(ordem) && ordem.ToUpper() == "DECRESCENTE")
             {
-                var PosicaoDoWhere = sql.LastIndexOf("WHERE");
-                sql = sql.Remove(PosicaoDoWhere);
+                IEnumerable<SubCategoria> querydecres = from categoria in subcategorias
+                                                     orderby categoria.Nome descending
+                                                     select categoria;
+                subcategorias = querydecres.ToList();
             }
-            else
-            {
-                var posicaoDoAnd = sql.LastIndexOf("and");
-                sql = sql.Remove(posicaoDoAnd);
-            }
-          
-            var result = _dbConnection.Query<ReadSubCategoriaDto>(sql, new
-            {
-                Nome = nome,
-                Status = status,
-             
-            }) ;
 
-            
-            List<ReadSubCategoriaDto> readDto = _mapper.Map<List<ReadSubCategoriaDto>>(result);
+            List<ReadSubCategoriaDto> readDto = _mapper.Map<List<ReadSubCategoriaDto>>(subcategorias);
             return readDto;
+
+
         }
-        
+
         public ReadSubCategoriaDto GetSubPorId(int id)
         {
             SubCategoria subCategoria = _context.SubCategorias.FirstOrDefault(subCategoria => subCategoria.Id == id);

@@ -31,6 +31,11 @@ namespace CategoriaApi.Services
 
             SubCategoria subId = _produtoRepository.SubCategoriaID(produtoDto);
             Produto produtos = _context.Produtos.FirstOrDefault(produtos => produtos.Nome.ToUpper() == produtoDto.Nome.ToUpper());
+
+            if(produtoDto.Nome.Length<3 || produtoDto.Nome.Length>50)
+            {
+                return null;
+            }
             if (subId == null)
             {
                 throw new NullReferenceException();

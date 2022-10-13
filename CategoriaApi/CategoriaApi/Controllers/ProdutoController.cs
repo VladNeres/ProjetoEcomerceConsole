@@ -39,7 +39,7 @@ namespace CategoriaApi.Controllers
             }
             catch (NullReferenceException)
             {
-                return BadRequest("subCategoria não encontrada");
+                return BadRequest("É necessario informa o numero da subcategoria que deseja cadastrar o produto");
             }
             catch (ArgumentException)
             {
@@ -47,7 +47,7 @@ namespace CategoriaApi.Controllers
             }
             catch (Exception)
             {
-                return BadRequest("É necessario informa o numero da subcategoria que deseja cadastrar o produto");
+                return BadRequest("Já existe um produdto com esse nome");
             }
         }
 

@@ -26,15 +26,32 @@ namespace CategoriaApi.Controllers
         [HttpPost]
         public IActionResult CriarSubCategoria([FromBody] CreateSubCategoriaDto subCategoriaDto)
         {
-            ReadSubCategoriaDto subDto = _service.CriarSubCategoria(subCategoriaDto);
-            return CreatedAtAction(nameof(GetSubCategoriaPorId), new { id = subDto.Id }, subDto);
+            try
+            {
+                ReadSubCategoriaDto subDto = _service.CriarSubCategoria(subCategoriaDto);
+                return CreatedAtAction(nameof(GetSubCategoriaPorId), new { id = subDto.Id }, subDto);
+
+            }
+            catch (NullReferenceException)
+            {
+                return BadRequest("Por favor insira uma categoria valida");
+
+            }
+            catch (ArgumentException)
+            {
+                return BadRequest("Não é possivel cadastrar duas subCategorias com o mesmo nome");
+            }
+            catch (Exception)
+            {
+                return BadRequest("O Campo nome deve conter no minimo 3 letras");
+            }
         }
 
         [HttpPut("{id}")]
         public IActionResult EditarSubCategoria(int id, [FromBody] UpdateSubCategoriaDto subCategoriaDto) 
         {
             Result sub= _service.EditarSubCategoria(id, subCategoriaDto);
-            if (sub.IsFailed) return NotFound("Não é possivel inativar essa subcategoria, pois há produtos cadastrados"); 
+            if (sub.IsFailed) return NotFound("Não é possivel alterar essa sub Categoria pois existem produtos cadastrados"); 
             
                 return NoContent();
         }

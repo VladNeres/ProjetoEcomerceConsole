@@ -28,9 +28,9 @@ namespace CategoriaApi.Services
         public ReadSubCategoriaDto CriarSubCategoria(CreateSubCategoriaDto subCategoriaDto)
         {
             SubCategoria subCategoriaNome = _context.SubCategorias.FirstOrDefault(subCategoria => subCategoria.Nome.ToUpper() == subCategoriaDto.Nome.ToUpper());
-            SubCategoria subId = _context.SubCategorias.FirstOrDefault(sub => sub.CategoriaId == null);
+            Categoria subId =  _context.Categorias.FirstOrDefault(sub => sub.Id == subCategoriaDto.CategoriaId) ;
 
-            if(subId == null)
+            if(subId == null )
             {
                 throw new NullReferenceException();
             }
@@ -44,9 +44,9 @@ namespace CategoriaApi.Services
                     subCategoria.DataCriacao = DateTime.Now;
                     _context.SubCategorias.Add(subCategoria);
                     _context.SaveChanges();
-                    return _mapper.Map<ReadSubCategoriaDto>(subCategoriaDto);
+                    return _mapper.Map<ReadSubCategoriaDto>(subCategoria);
                 }
-                throw  new ArgumentException ("A subCategoria já existe");
+                throw  new ArgumentException ("A já existe uma subCategoria com esse nome");
             }
             throw new Exception("A categoria deve conter entre 3 e 50 caracteres");
         }
@@ -59,14 +59,14 @@ namespace CategoriaApi.Services
             {
                 return Result.Fail("Subcategoria não encontrada");
             }
-            if (subCategoria.Produtos.Count() > 0 && subDto.Status != true)
+            if(subCategoria.Produtos.Count()> 0 && subDto.Status!= true)
             {
                 return Result.Fail("Não é possivel desativar essa subcategoria pois existem produtos cadastrados");
             }
-            _mapper.Map(subDto, subCategoria);
-            subCategoria.DataAtualizacao = DateTime.Now;
-            _context.SaveChanges();
-            return Result.Ok();
+                _mapper.Map(subDto, subCategoria);
+                subCategoria.DataAtualizacao = DateTime.Now;
+                _context.SaveChanges();
+                return Result.Ok();
         }
         public Result DeletarSubCategoria(int id)
         {
@@ -90,39 +90,39 @@ namespace CategoriaApi.Services
             }
             if (!string.IsNullOrEmpty(nome))
             {
-                IEnumerable<SubCategoria> query = from categoria in subcategorias
-                                               orderby categoria.Nome ascending
-                                               where categoria.Nome.ToUpper().StartsWith(nome.ToUpper())
-                                               select categoria;
+                IEnumerable<SubCategoria> query = from subcategoria in subcategorias
+                                               orderby subcategoria.Nome ascending
+                                               where subcategoria.Nome.ToUpper().StartsWith(nome.ToUpper())
+                                               select subcategoria;
 
                 subcategorias = query.ToList();
 
             }
             if (status == true || status == false)
             {
-                IEnumerable<SubCategoria> query = from categoria in subcategorias
-                                               where categoria.Status == status
-                                               select categoria;
+                IEnumerable<SubCategoria> query = from subcategoria in subcategorias
+                                               where subcategoria.Status == status
+                                               select subcategoria;
                 subcategorias = query.ToList();
             }
             if (quantidadePorPagina > 0)
             {
-                IEnumerable<SubCategoria> query = from categoria in subcategorias.Take(quantidadePorPagina)
-                                               select categoria;
+                IEnumerable<SubCategoria> query = from subcategoria in subcategorias.Take(quantidadePorPagina)
+                                               select subcategoria;
                 subcategorias = query.ToList();
             }
             if (!string.IsNullOrEmpty(ordem) && ordem.ToUpper() == "CRESCENTE")
             {
-                IEnumerable<SubCategoria> query = from categoria in subcategorias
-                                               orderby categoria.Nome ascending
-                                               select categoria;
+                IEnumerable<SubCategoria> query = from subcategoria in subcategorias
+                                               orderby subcategoria.Nome ascending
+                                               select subcategoria;
                 subcategorias = query.ToList();
             }
             if (!string.IsNullOrEmpty(ordem) && ordem.ToUpper() == "DECRESCENTE")
             {
-                IEnumerable<SubCategoria> querydecres = from categoria in subcategorias
-                                                     orderby categoria.Nome descending
-                                                     select categoria;
+                IEnumerable<SubCategoria> querydecres = from subcategoria in subcategorias
+                                                     orderby subcategoria.Nome descending
+                                                     select subcategoria;
                 subcategorias = querydecres.ToList();
             }
 

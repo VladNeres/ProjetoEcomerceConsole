@@ -59,7 +59,6 @@ namespace CategoriaApi.Repository
 
         public async Task<bool> UpdateAsync(Produto produto)
         {
-            
             var result = await _dbConnection.UpdateAsync(produto);
             return result;
         }

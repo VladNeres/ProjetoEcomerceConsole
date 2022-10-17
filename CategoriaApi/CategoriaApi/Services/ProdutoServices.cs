@@ -30,11 +30,12 @@ namespace CategoriaApi.Services
         {
 
             SubCategoria subId = _produtoRepository.SubCategoriaID(produtoDto);
-            Produto produtos = _context.Produtos.FirstOrDefault(produtos => produtos.Nome.ToUpper() == produtoDto.Nome.ToUpper());
+            Produto produtoNome = _context.Produtos.FirstOrDefault(produtoNome => produtoNome.Nome.ToUpper() == produtoDto.Nome.ToUpper());
 
-            if(produtoDto.Nome.Length<3 || produtoDto.Nome.Length>50)
+
+            if (produtoDto.Nome.Length<3 || produtoDto.Nome.Length>50)
             {
-                return null;
+                throw new ArgumentException();
             }
             if (subId == null)
             {
@@ -44,16 +45,18 @@ namespace CategoriaApi.Services
             {
                 throw new ArgumentException();
             }
-            if (produtos != null)
+            if (produtoNome == null)
             {
-                throw new Exception();
+                Produto produto = _mapper.Map<Produto>(produtoDto);
+                produto.DataCriacao = DateTime.Now;
+                produto.CategoriaId = subId.CategoriaId;
+                produto.Status = true;
+                _context.Produtos.Add(produto);
+                _context.SaveChanges();
+                return _mapper.Map<ReadProdutoDto>(produto);
+
             }
-            Produto produto = _mapper.Map<Produto>(produtoDto);
-            produto.Status = true;
-            produto.DataCriacao = DateTime.Now;
-            _context.Produtos.Add(produto);
-            _context.SaveChanges();
-            return _mapper.Map<ReadProdutoDto>(produto);
+            throw new Exception();
         }
 
 

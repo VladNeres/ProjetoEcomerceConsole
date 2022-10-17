@@ -39,7 +39,8 @@ namespace CategoriaApi.Controllers
             }
             catch (NullReferenceException)
             {
-                return BadRequest("É necessario informa o numero da subcategoria que deseja cadastrar o produto");
+                return BadRequest("É necessario informa o numero da subcategoria que deseja cadastrar o produto\n" +
+                    "Por favor insira uma subcategoria valida");
             }
             catch (ArgumentException)
             {

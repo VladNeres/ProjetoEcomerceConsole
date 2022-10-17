@@ -17,7 +17,7 @@ namespace CategoriaApi.Model
         public bool Status { get; set; } 
         public DateTime DataCriacao { get; set; }
         public DateTime DataAtualizacao { get; set; }
-        [JsonIgnore]
+ 
         public int CategoriaId { get; set; }
         [JsonIgnore]
         public virtual Categoria Categoria { get; set; }

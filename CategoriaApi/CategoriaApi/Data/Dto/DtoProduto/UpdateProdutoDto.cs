@@ -13,21 +13,23 @@ namespace CategoriaApi.Data.Dto.DtoProduto
         [Required(ErrorMessage = "O Campo descrição é obrigatório")]
         [StringLength(512, ErrorMessage = "Tamanho maximo de 512 caracteres excedido")]
         public string Descricao { get; set; }
-        [Required(ErrorMessage = "O Campo descrição é obrigatório")]
+        [Required(ErrorMessage = "O Campo Peso é obrigatório")]
         public double Peso { get; set; }
-        [Required(ErrorMessage = "O CampopPeso é obrigatório")]
+        [Required(ErrorMessage = "O Campo Altura é obrigatório")]
         public double Altura { get; set; }
-        [Required(ErrorMessage = "O Campo altura é obrigatório")]
-        public double Largura { get; set; }
         [Required(ErrorMessage = "O Campo largura é obrigatório")]
-        public double Comprimento { get; set; }
+        public double Largura { get; set; }
         [Required(ErrorMessage = "O Campo comprimento é obrigatório")]
+        public double Comprimento { get; set; }
+        [Required(ErrorMessage = "O Campo valor é obrigatório")]
         public double Valor { get; set; }
 
         [Required(ErrorMessage = "O Campo de quantidade em estoque é obrigatório")]
         public int QuantidadeEmEstoque { get; set; }
-
+        [Required(ErrorMessage = "O campo status é obrigatório")]
         public bool Status { get; set; }
+        [Required(ErrorMessage = "O campo centro de distribuição é obrigatório")]
+        public string CentroDeDistribuicao { get; set; }
        
     }
 }

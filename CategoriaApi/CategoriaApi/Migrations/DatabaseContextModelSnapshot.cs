@@ -51,6 +51,13 @@ namespace CategoriaApi.Migrations
                     b.Property<double>("Altura")
                         .HasColumnType("double");
 
+                    b.Property<int>("CategoriaId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CentroDeDistribuicao")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<double>("Comprimento")
                         .HasColumnType("double");
 

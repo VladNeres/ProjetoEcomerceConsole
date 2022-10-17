@@ -30,7 +30,7 @@ namespace CategoriaApi.Services
             SubCategoria subCategoriaNome = _context.SubCategorias.FirstOrDefault(subCategoria => subCategoria.Nome.ToUpper() == subCategoriaDto.Nome.ToUpper());
             Categoria subId =  _context.Categorias.FirstOrDefault(sub => sub.Id == subCategoriaDto.CategoriaId) ;
 
-            if(subId == null )
+            if(subId == null || subId.Status== false )
             {
                 throw new NullReferenceException();
             }

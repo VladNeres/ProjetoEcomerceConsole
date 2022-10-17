@@ -34,7 +34,8 @@ namespace CategoriaApi.Controllers
             }
             catch (NullReferenceException)
             {
-                return BadRequest("Por favor insira uma categoria valida");
+                return BadRequest("Não é possivel cadastrar uma subcategoria em uma categoria inativa\n" +
+                    "Por favor insira uma categoria valida");
 
             }
             catch (ArgumentException)

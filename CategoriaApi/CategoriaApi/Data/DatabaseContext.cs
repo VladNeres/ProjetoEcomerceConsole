@@ -20,9 +20,15 @@ namespace CategoriaApi.Data
                 .HasOne(produto => produto.Subcategoria)
                 .WithMany(subCategoria => subCategoria.Produtos)
                 .HasForeignKey(produto => produto.SubCategoriaId);
+
+            builder.Entity<Produto>()
+                .HasOne(produto=> produto.CentrodeDistribuicao)
+                .WithMany(Centro=> Centro.Produtos)
+                .HasForeignKey(Produto=>Produto.CentroDeDistribuicaoId);      
         }
         public DbSet<Categoria> Categorias { get; set; }
         public DbSet<SubCategoria> SubCategorias { get; set; }
         public DbSet<Produto> Produtos { get; set; } 
+        public DbSet<CentroDeDistribuicao> Centros { get; set; }
     }
 }

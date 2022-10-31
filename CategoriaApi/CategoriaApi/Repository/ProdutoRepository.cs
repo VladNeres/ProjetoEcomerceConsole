@@ -18,16 +18,32 @@ namespace CategoriaApi.Repository
     {
 
         private DatabaseContext _context;
-        private IMapper _mapper;
         private readonly IDbConnection _dbConnection;
 
-        public ProdutoRepository(DatabaseContext context, IDbConnection conection,IMapper mapper)
+        public ProdutoRepository(DatabaseContext context, IDbConnection conection)
         {
-            _mapper = mapper;
             _context = context;
             _dbConnection = conection;
         }
 
+        public void AddProduto(Produto produto)
+        {
+            _context.Add(produto);
+            _context.SaveChanges();
+        }
+
+        public async Task<bool> UpdateAsync(Produto produto)
+        {
+            var result = await _dbConnection.UpdateAsync(produto);
+            return result;
+        }
+        public async Task<bool> DeleteAsync(int id)
+        {
+            var result = await _dbConnection.DeleteAsync(new Produto { Id = id });
+            _context.SaveChanges();
+            return result;
+
+        }
         public async Task<Produto> GetByIdAsync(int id)
         {
             var result = await _dbConnection.GetAsync<Produto>(id);
@@ -41,36 +57,30 @@ namespace CategoriaApi.Repository
             return result.ToList();
         }
 
-        public void AddProuto(CreateProdutoDto produtoDto, SubCategoria subCategoria)
-        {
-
-            var produto = _mapper.Map<Produto>(produtoDto);
-            _context.Add(produto);
-            _context.SaveChanges();
-
-        }
-
-        public async Task<bool> DeleteAsync(int id)
-        {
-            var result = await _dbConnection.DeleteAsync(new Produto { Id = id });
-            return result;
-
-        }
-
-        public async Task<bool> UpdateAsync(Produto produto)
-        {
-            var result = await _dbConnection.UpdateAsync(produto);
-            return result;
-        }
-
         public SubCategoria SubCategoriaID(CreateProdutoDto produtoDto)
         {
                 SubCategoria sub= _context.SubCategorias.FirstOrDefault(sub=> sub.Id == produtoDto.SubCategoriaId);
                 return sub;
         }
 
-        public List<Produto>PesquisaComFiltros(string nome, bool? status, double? peso, double? altura, double? largura,
-             double? comprimento, double? valor, int? estoque, string ordem, int itensPorPagina)
+
+        public Produto VerificaSeContemNome(CreateProdutoDto produtoDto)
+        {
+           Produto produto= _context.Produtos.FirstOrDefault(produtoNome => produtoNome.Nome.ToUpper() == produtoDto.Nome.ToUpper());
+            return produto;
+        }
+
+        public Produto RecuperarProdutoPorId(int id)
+        {
+            Produto produto = _context.Produtos.FirstOrDefault(prod => prod.Id == id);
+            return produto;
+        }
+        public void SalvarAlteracoes()
+        {
+            _context.SaveChanges();
+        }
+        public List<Produto> PesquisaComFiltros(string nome, bool? status, double? peso, double? altura, double? largura,
+            double? comprimento, double? valor, int? estoque, string ordem, int itensPorPagina)
         {
             var sql = "SELECT * FROM Produtos WHERE ";
 
@@ -107,7 +117,7 @@ namespace CategoriaApi.Repository
                 sql += "Estoque = @estoque and ";
             }
 
-            if (nome  == null && estoque == null && valor == null && comprimento == null && largura == null &&
+            if (nome == null && estoque == null && valor == null && comprimento == null && largura == null &&
                 altura == null && peso == null && status == null)
             {
                 var PosicaoDoWhere = sql.LastIndexOf("WHERE");

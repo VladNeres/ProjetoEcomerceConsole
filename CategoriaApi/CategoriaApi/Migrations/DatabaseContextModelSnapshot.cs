@@ -42,23 +42,77 @@ namespace CategoriaApi.Migrations
                     b.ToTable("Categorias");
                 });
 
+            modelBuilder.Entity("CategoriaApi.Model.CentroDeDistribuicao", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Bairro")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("varchar(128)");
+
+                    b.Property<string>("CEP")
+                        .IsRequired()
+                        .HasMaxLength(8)
+                        .HasColumnType("varchar(8)");
+
+                    b.Property<string>("Cidade")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("varchar(128)");
+
+                    b.Property<DateTime>("DataAtualizacao")
+                        .HasColumnType("datetime");
+
+                    b.Property<DateTime>("DataCriacao")
+                        .HasColumnType("datetime");
+
+                    b.Property<string>("Logradouro")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256)");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("varchar(128)");
+
+                    b.Property<int>("Numero")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("UF")
+                        .IsRequired()
+                        .HasMaxLength(2)
+                        .HasColumnType("varchar(2)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Centros");
+                });
+
             modelBuilder.Entity("CategoriaApi.Model.Produto", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<double>("Altura")
+                    b.Property<double?>("Altura")
+                        .IsRequired()
                         .HasColumnType("double");
 
                     b.Property<int>("CategoriaId")
                         .HasColumnType("int");
 
-                    b.Property<string>("CentroDeDistribuicao")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("CentroDeDistribuicaoId")
+                        .HasColumnType("int");
 
-                    b.Property<double>("Comprimento")
+                    b.Property<double?>("Comprimento")
+                        .IsRequired()
                         .HasColumnType("double");
 
                     b.Property<DateTime>("DataAtualizacao")
@@ -72,7 +126,8 @@ namespace CategoriaApi.Migrations
                         .HasMaxLength(512)
                         .HasColumnType("varchar(512)");
 
-                    b.Property<double>("Largura")
+                    b.Property<double?>("Largura")
+                        .IsRequired()
                         .HasColumnType("double");
 
                     b.Property<string>("Nome")
@@ -80,7 +135,8 @@ namespace CategoriaApi.Migrations
                         .HasMaxLength(128)
                         .HasColumnType("varchar(128)");
 
-                    b.Property<double>("Peso")
+                    b.Property<double?>("Peso")
+                        .IsRequired()
                         .HasColumnType("double");
 
                     b.Property<int>("QuantidadeEmEstoque")
@@ -92,10 +148,13 @@ namespace CategoriaApi.Migrations
                     b.Property<int>("SubCategoriaId")
                         .HasColumnType("int");
 
-                    b.Property<double>("Valor")
+                    b.Property<double?>("Valor")
+                        .IsRequired()
                         .HasColumnType("double");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CentroDeDistribuicaoId");
 
                     b.HasIndex("SubCategoriaId");
 
@@ -134,11 +193,19 @@ namespace CategoriaApi.Migrations
 
             modelBuilder.Entity("CategoriaApi.Model.Produto", b =>
                 {
+                    b.HasOne("CategoriaApi.Model.CentroDeDistribuicao", "CentrodeDistribuicao")
+                        .WithMany("Produtos")
+                        .HasForeignKey("CentroDeDistribuicaoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("CategoriaApi.Model.SubCategoria", "Subcategoria")
                         .WithMany("Produtos")
                         .HasForeignKey("SubCategoriaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("CentrodeDistribuicao");
 
                     b.Navigation("Subcategoria");
                 });
@@ -157,6 +224,11 @@ namespace CategoriaApi.Migrations
             modelBuilder.Entity("CategoriaApi.Model.Categoria", b =>
                 {
                     b.Navigation("SubCategoria");
+                });
+
+            modelBuilder.Entity("CategoriaApi.Model.CentroDeDistribuicao", b =>
+                {
+                    b.Navigation("Produtos");
                 });
 
             modelBuilder.Entity("CategoriaApi.Model.SubCategoria", b =>

@@ -3,6 +3,7 @@
 using AutoMapper;
 using CategoriaApi.Data;
 using CategoriaApi.Data.Dto.DtoProduto;
+using CategoriaApi.Exceptions;
 using CategoriaApi.Model;
 using CategoriaApi.Repository;
 using CategoriaApi.Services;
@@ -37,18 +38,23 @@ namespace CategoriaApi.Controllers
                 return CreatedAtAction(nameof(GetProdutoPorId), new { Id = prodServices.Id }, prodServices);
 
             }
-            catch (NullReferenceException)
+            catch (NullException)
             {
-                return BadRequest("É necessario informa o numero da subcategoria que deseja cadastrar o produto\n" +
-                    "Por favor insira uma subcategoria valida");
+                return BadRequest("Subcategoria não encontrada, por favor insira uma subcategoria valida");
             }
-            catch (ArgumentException)
+            catch (MinCharacterException)
+            {
+                
+                return BadRequest("O produto deve ser criado com no minimo 3 caracteres");
+
+            }
+            catch (InativeObjectException)
             {
                 return BadRequest("Não é possivel criar um produto em uma subCategoria inativa");
             }
-            catch (Exception)
+            catch (AlreadyExistException )
             {
-                return BadRequest("Já existe um produdto com esse nome");
+                return BadRequest("Já existe um produto com esse nome");
             }
         }
 
@@ -80,7 +86,7 @@ namespace CategoriaApi.Controllers
 
         [HttpGet]
         public List<Produto> PesquisaComFiltros([FromQuery] string nome, [FromQuery] bool? status, [FromQuery] double? peso,
-            [FromQuery] double? altura,[FromQuery] double? largura, [FromQuery] double? comprimento, [FromQuery] double? valor,
+            [FromQuery] double? altura, [FromQuery] double? largura, [FromQuery] double? comprimento, [FromQuery] double? valor,
             [FromQuery] int? estoque, [FromQuery] string ordem, [FromQuery] int itensPorPagina)
         {
             return _produtoRepository.PesquisaComFiltros(nome, status, peso, altura, largura, comprimento, valor, estoque, ordem, itensPorPagina);

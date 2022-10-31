@@ -10,16 +10,20 @@ using Dapper.Contrib.Extensions;
 
 using System.Linq;
 using System.Data;
+using CategoriaApi.Exceptions;
+using CategoriaApi.Repository;
 
 namespace CategoriaApi.Services
 {
     public class SubCategoriaService
     {
-        public DatabaseContext _context;
-        public IMapper _mapper;
-        public readonly IDbConnection _dbConnection;
-        public SubCategoriaService(DatabaseContext context, IMapper mapper, IDbConnection dbConnection)
+        private DatabaseContext _context;
+        private IMapper _mapper;
+        private SubCategoriaRepository _subRepository;
+        private readonly IDbConnection _dbConnection;
+        public SubCategoriaService(DatabaseContext context, IMapper mapper, IDbConnection dbConnection, SubCategoriaRepository repository)
         {
+            _subRepository= repository;
             _context= context;
             _mapper = mapper;
             _dbConnection= dbConnection;
@@ -27,12 +31,12 @@ namespace CategoriaApi.Services
 
         public ReadSubCategoriaDto CriarSubCategoria(CreateSubCategoriaDto subCategoriaDto)
         {
-            SubCategoria subCategoriaNome = _context.SubCategorias.FirstOrDefault(subCategoria => subCategoria.Nome.ToUpper() == subCategoriaDto.Nome.ToUpper());
-            Categoria subId =  _context.Categorias.FirstOrDefault(sub => sub.Id == subCategoriaDto.CategoriaId) ;
+            SubCategoria subCategoriaNome = _subRepository.VerificaSeExistePeloNome(subCategoriaDto);
+            Categoria subId = _subRepository.RecuperaCategoriaPorId(subCategoriaDto);
 
             if(subId == null || subId.Status== false )
             {
-                throw new NullReferenceException();
+                throw new InativeObjectException();
             }
             if (subCategoriaDto.Nome.Length >= 3 && subCategoriaDto.Nome.Length <= 50)
             {
@@ -46,15 +50,14 @@ namespace CategoriaApi.Services
                     _context.SaveChanges();
                     return _mapper.Map<ReadSubCategoriaDto>(subCategoria);
                 }
-                throw  new ArgumentException ("A já existe uma subCategoria com esse nome");
+                throw  new AlreadyExistException("A já existe uma subCategoria com esse nome");
             }
-            throw new Exception("A categoria deve conter entre 3 e 50 caracteres");
+            throw new MinCharacterException("A categoria deve conter entre 3 e 50 caracteres");
         }
 
         public Result EditarSubCategoria(int id, UpdateSubCategoriaDto subDto)
         {
-            SubCategoria subCategoria = _context.SubCategorias.FirstOrDefault(subCategoria => subCategoria.Id == id);
-            IEnumerable<Produto> produto = _context.Produtos.Where(produto => produto.SubCategoriaId == id);
+            SubCategoria subCategoria = _subRepository.RecuperarSubPorId(id);
             if (subCategoria == null)
             {
                 return Result.Fail("Subcategoria não encontrada");
@@ -65,25 +68,24 @@ namespace CategoriaApi.Services
             }
                 _mapper.Map(subDto, subCategoria);
                 subCategoria.DataAtualizacao = DateTime.Now;
-                _context.SaveChanges();
+                _subRepository.SalvarAlteracoes();
                 return Result.Ok();
         }
         public Result DeletarSubCategoria(int id)
         {
-            SubCategoria subCategoria = _context.SubCategorias.FirstOrDefault(subCategoria => subCategoria.Id == id);
+            SubCategoria subCategoria = _subRepository.RecuperarSubPorId(id);
             if (subCategoria == null)
             {
                 return Result.Fail("Subcategoria não encontrada");
             }
-            _context.Remove(subCategoria);
-            _context.SaveChanges();
+            _subRepository.DeletarSubCat(subCategoria);
             return Result.Ok();
         }
 
 
         public List<ReadSubCategoriaDto> GetSubCategoria(string nome, bool? status, string ordem, int quantidadePorPagina)
         {
-            List<SubCategoria> subcategorias = _context.SubCategorias.ToList(); ;
+            List<SubCategoria> subcategorias = _subRepository.RecuperarListaDeSub(); 
             if (subcategorias == null)
             {
                 return null;

@@ -3,6 +3,7 @@
 using AutoMapper;
 using CategoriaApi.Data;
 using CategoriaApi.Data.Dto.DtoCategoria;
+using CategoriaApi.Exceptions;
 using CategoriaApi.Model;
 using CategoriaApi.Services;
 using FluentResults;
@@ -32,11 +33,11 @@ namespace CategoriaApi.Controllers
                 ReadCategoriaDto readCategoria = _categoriaServices.AdicionarCategoria(categoriaDto);
                 return CreatedAtAction(nameof(GetCategoriaPorId), new { id = readCategoria.Id }, readCategoria);
             }
-            catch (ArgumentException)
+            catch (AlreadyExistException)
             {
                 return BadRequest("A categoria ja existe");
             }
-            catch (Exception)
+            catch (MinCharacterException)
             {
                 return BadRequest("É necessario informar de 3 a 50 caracteres");
             }

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using CategoriaApi.Data;
 using CategoriaApi.Data.Dto.DtoSubCategoria;
+using CategoriaApi.Exceptions;
 using CategoriaApi.Model;
 using CategoriaApi.Services;
 using FluentResults;
@@ -32,17 +33,16 @@ namespace CategoriaApi.Controllers
                 return CreatedAtAction(nameof(GetSubCategoriaPorId), new { id = subDto.Id }, subDto);
 
             }
-            catch (NullReferenceException)
+            catch (InativeObjectException)
             {
                 return BadRequest("Não é possivel cadastrar uma subcategoria em uma categoria inativa\n" +
                     "Por favor insira uma categoria valida");
-
             }
-            catch (ArgumentException)
+            catch (AlreadyExistException)
             {
                 return BadRequest("Não é possivel cadastrar duas subCategorias com o mesmo nome");
             }
-            catch (Exception)
+            catch (MinCharacterException)
             {
                 return BadRequest("O Campo nome deve conter no minimo 3 letras");
             }

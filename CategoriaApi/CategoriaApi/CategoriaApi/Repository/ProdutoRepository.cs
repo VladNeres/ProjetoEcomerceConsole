@@ -87,7 +87,7 @@ namespace CategoriaApi.Repository
         }
 
         public List<Produto>PesquisaComFiltros(string nome, bool? status, double? peso, double? altura, double? largura,
-             double? comprimento, double? valor, int? estoque, string ordem, int itensPorPagina)
+             double? comprimento, double? valor, int? estoque, string ordem, int itensPorPagina, int pagina)
         {
             var sql = "SELECT * FROM Produtos WHERE ";
 
@@ -162,8 +162,12 @@ namespace CategoriaApi.Repository
                 Valor = valor,
                 Estoque = estoque
             });
-
-            var resultadoSemPaginacao = result.Skip(0).Take(25).ToList();
+            if(pagina>0 && itensPorPagina>0 )
+            {
+                var resultado = result.Skip((pagina -1)* itensPorPagina).Take(itensPorPagina).ToList();
+                return resultado;
+            }
+            var resultadoSemPaginacao = result.Skip(0).Take(itensPorPagina).ToList();
             return resultadoSemPaginacao;
 
         }

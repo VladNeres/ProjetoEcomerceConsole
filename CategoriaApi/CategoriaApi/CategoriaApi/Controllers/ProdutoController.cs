@@ -82,9 +82,9 @@ namespace CategoriaApi.Controllers
         [HttpGet]
         public List<Produto> PesquisaComFiltros([FromQuery] string nome, [FromQuery] bool? status, [FromQuery] double? peso,
             [FromQuery] double? altura,[FromQuery] double? largura, [FromQuery] double? comprimento, [FromQuery] double? valor,
-            [FromQuery] int? estoque, [FromQuery] string ordem, [FromQuery] int itensPorPagina)
+            [FromQuery] int? estoque, [FromQuery] string ordem, [FromQuery] int itensPorPagina, [FromQuery] int pagina)
         {
-            return _produtoRepository.PesquisaComFiltros(nome, status, peso, altura, largura, comprimento, valor, estoque, ordem, itensPorPagina);
+            return _produtoRepository.PesquisaComFiltros(nome, status, peso, altura, largura, comprimento, valor, estoque, ordem, itensPorPagina, pagina);
         }
 
     }

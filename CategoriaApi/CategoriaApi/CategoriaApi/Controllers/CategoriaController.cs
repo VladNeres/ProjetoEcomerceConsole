@@ -1,16 +1,11 @@
 ﻿
 
-using AutoMapper;
-using CategoriaApi.Data;
 using CategoriaApi.Data.Dto.DtoCategoria;
 using CategoriaApi.Exceptions;
-using CategoriaApi.Model;
 using CategoriaApi.Services;
 using FluentResults;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace CategoriaApi.Controllers
 {

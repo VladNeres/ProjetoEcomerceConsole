@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace CategoriaApi.Data.Dto.CentroDto
 {
@@ -35,6 +36,9 @@ namespace CategoriaApi.Data.Dto.CentroDto
         public string CEP { get; set; }
         [Required(ErrorMessage = "O campo Status é obrigatório")]
         public bool Status { get; set; }
+
+        public DateTime DataCriacao { get; set; }
+        public DateTime DataAlteracao { get; set; }
     }
 
 }

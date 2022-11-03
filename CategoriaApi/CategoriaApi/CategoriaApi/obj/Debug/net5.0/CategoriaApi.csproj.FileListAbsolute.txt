@@ -237,3 +237,7 @@ C:\Users\ClearTech\Documents\Sprints\CategoriaApi\CategoriaApi\CategoriaApi\obj\
 C:\Users\ClearTech\Documents\Sprints\CategoriaApi\CategoriaApi\CategoriaApi\obj\Debug\net5.0\CategoriaApi.pdb
 C:\Users\ClearTech\Documents\Sprints\CategoriaApi\CategoriaApi\CategoriaApi\obj\Debug\net5.0\CategoriaApi.genruntimeconfig.cache
 C:\Users\ClearTech\Documents\Sprints\CategoriaApi\CategoriaApi\CategoriaApi\obj\Debug\net5.0\ref\CategoriaApi.dll
+C:\Users\ClearTech\Documents\Sprints\CategoriaApi\CategoriaApi\CategoriaApi\bin\Debug\net5.0\RestSharp.dll
+C:\Users\ClearTech\Documents\Sprints\CategoriaApi\CategoriaApi\CategoriaApi\bin\Debug\net5.0\RestSharp.Serializers.SystemTextJson.dll
+C:\Users\ClearTech\Documents\Sprints\CategoriaApi\CategoriaApi\CategoriaApi\bin\Debug\net5.0\System.Text.Json.dll
+C:\Users\ClearTech\Documents\Sprints\CategoriaApi\CategoriaApi\CategoriaApi\bin\Debug\net5.0\Newtonsoft.Json.dll

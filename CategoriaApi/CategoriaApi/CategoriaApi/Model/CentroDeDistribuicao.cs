@@ -31,7 +31,7 @@ namespace CategoriaApi.Model
         public string Bairro { get; set; } 
         
         [Required(ErrorMessage ="O campo cidade é obrigatório")]
-        public string Cidade { get; set; }
+        public string Localidade { get; set; }
         [Required(ErrorMessage = "O campo UF é obrigatório")]
         public string UF { get; set; }
         [Required(ErrorMessage = "O campo CEP é obrigatório")]

@@ -56,10 +56,6 @@ namespace CategoriaApi.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Cidade")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<string>("Complemento")
                         .IsRequired()
                         .HasColumnType("text");
@@ -69,6 +65,10 @@ namespace CategoriaApi.Migrations
 
                     b.Property<DateTime>("DataCriacao")
                         .HasColumnType("datetime");
+
+                    b.Property<string>("Localidade")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("Logradouro")
                         .IsRequired()

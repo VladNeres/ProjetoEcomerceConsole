@@ -59,91 +59,98 @@ namespace CategoriaApi.Repository
             _context.SaveChanges();
         }
 
-        public List<CentroDeDistribuicao> GetCentroDeDistribuicao(string nome, bool? status,string cep, string logradouro, int? numero, string uf,
-            string bairro, string localidade,string complemento, string ordem, int itensPorPagina, int pagina)
+        public List<CentroDeDistribuicao> GetCentroDeDistribuicao(string nome, string logradouro, string cep,
+            string bairro, string localidade, string complemento, string uf, int? numero, bool? status,
+            string ordem, int itensPagina, int paginaAtual)
         {
-            var sql = "SELECT * FROM Centros WHERE";
+            var sql = "SELECT * FROM Centros WHERE ";
 
-            if(sql!= null)
+            if (nome != null)
             {
-                sql += "Nome LIKE \"%" + nome + "%\" and"; 
+                sql += "Nome LIKE \"%" + nome + "%\" and ";
             }
-            if (sql!= null)
+            if (logradouro != null)
             {
-                sql += "Status = @status and";
+                sql += "Logradouro LIKE \"%" + logradouro + "%\" and ";
             }
             if (status != null)
             {
-                sql = "CEP LIKE \"%" + cep + "%\" and";
+                sql += "Status = @status and ";
             }
-            if (sql!= null)
+            if (cep != null)
             {
-                sql += "Logradouro \"%" + logradouro + "%\" and";
+                sql += "Cep = @cep and ";
             }
-            if (sql!= null)
+            if (bairro != null)
             {
-                sql += "Bairro LIKE \"%" + bairro + "%\" and";
+                sql += "Bairro LIKE \"%" + bairro + "%\" and ";
             }
-            if(sql!= null)
+            if (localidade != null)
             {
-                sql += "Numero = @numero and";
+                sql += "Localidade LIKE \"%" + localidade + "%\" and ";
             }
-            if(nome!= null)
+            if (complemento != null)
             {
-                sql += "UF= @uf and";
+                sql += "Complemento LIKE \"%" + complemento + "%\" and ";
             }
-            if(sql!= null)
+            if (uf != null)
             {
-                sql += "Localidade LIKE \"%" + localidade + "%\" and";
+                sql += "Uf = @uf and ";
             }
-            if(complemento!= null)
+            if (numero != null)
             {
-                sql += "Complemento  LIKE \"%" + complemento + "%\" and";
+                sql += "Numero = @numero and ";
             }
-            if(nome == null && cep== null&& status== null&& nome== null && status== null && logradouro== null && numero==null
-                && uf== null&&localidade== null)
+
+            if (nome == null && logradouro == null && cep == null && bairro == null && localidade == null && complemento == null &&
+                uf == null && numero == null && status == null)
             {
-                var indexWhere = sql.LastIndexOf("WHERE");
-                var removerWhere = sql.Remove(indexWhere);
+                var PosicaoDoWhere = sql.LastIndexOf("WHERE");
+                sql = sql.Remove(PosicaoDoWhere);
             }
             else
             {
-                var indexAnd = sql.IndexOf("and");
-                var removerAnd=sql.Remove(indexAnd);
+                var posicaoDoAnd = sql.LastIndexOf("and");
+                sql = sql.Remove(posicaoDoAnd);
             }
-            if (sql != null)
+            if (ordem != null)
             {
-                if (ordem != "DECRESCENTE")
+                if (ordem != "desc")
                 {
-                    sql += "ORDER BY Nome";
+                    sql += " ORDER BY Nome";
                 }
                 else
                 {
-                    sql += "ORDER BY Nome Desc";
+                    sql += " ORDER BY Nome DESC";
                 }
             }
-                var result = _dbConnection.Query<CentroDeDistribuicao>(sql, new
-                {
-                    Nome = nome,
-                    Status= status,
-                    Logradouro = logradouro,
-                    Numero = numero,
-                    Uf= uf,
-                    Localidade= localidade,
-                    Bairro= bairro,
-                    CEP= cep,
-                    Complemento = complemento
-                });
 
-                if (pagina>0 && itensPorPagina > 0)
-                {
-                    var quantidade = result.Skip((pagina-1) * itensPorPagina).Take(itensPorPagina).ToList();
-                    return quantidade;
-                }
-                var resultadoSemPaginacao = result.Skip(0).Take(10).ToList();
-                return resultadoSemPaginacao;
-            
+            var result = _dbConnection.Query<CentroDeDistribuicao>(sql, new
+            {
+                Nome = nome,
+                Status = status,
+                Logradouro = logradouro,
+                Cep = cep,
+                Bairro = bairro,
+                Localidade = localidade,
+                Complemento = complemento,
+                Uf = uf,
+                Numero = numero
+            });
+
+            if (paginaAtual > 0 && itensPagina > 0 && itensPagina <= 10)
+            {
+                var resultado = result.Skip((paginaAtual - 1) * itensPagina).Take(itensPagina).ToList();
+                return resultado;
+
+            }
+
+            var resultadoSemPaginacao = result.Skip(0).Take(25).ToList();
+            return resultadoSemPaginacao;
 
         }
+
+
     }
 }
+

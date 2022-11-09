@@ -174,3 +174,4 @@ C:\Diretorioazure\T2-VladmirNeres\CategoriaApi\CategoriaApi\obj\Debug\net5.0\Cat
 C:\Diretorioazure\T2-VladmirNeres\CategoriaApi\CategoriaApi\obj\Debug\net5.0\CategoriaApi.genruntimeconfig.cache
 C:\Diretorioazure\T2-VladmirNeres\CategoriaApi\CategoriaApi\obj\Debug\net5.0\ref\CategoriaApi.dll
 C:\Users\ClearTech\Documents\Sprints\CategoriaApi\CategoriaApi\bin\Debug\net5.0\Newtonsoft.Json.dll
+C:\Diretorioazure\T2-VladmirNeres\CategoriaApi\CategoriaApi\bin\Debug\net5.0\Newtonsoft.Json.dll

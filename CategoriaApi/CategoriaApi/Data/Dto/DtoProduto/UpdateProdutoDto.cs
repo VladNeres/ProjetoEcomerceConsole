@@ -29,7 +29,7 @@ namespace CategoriaApi.Data.Dto.DtoProduto
         [Required(ErrorMessage = "O campo status é obrigatório")]
         public bool Status { get; set; }
         [Required(ErrorMessage = "O campo centro de distribuição é obrigatório")]
-        public string CentroDeDistribuicao { get; set; }
+        public int CentroDeDistribuicaoId { get; set; }
        
     }
 }

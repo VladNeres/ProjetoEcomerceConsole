@@ -101,11 +101,12 @@ namespace CategoriaApi.Services
 
         }
 
-        public List<CentroDeDistribuicao> GetCentroDeDistribuicao(string nome, bool? status,string cep, string logradouro, int? numero, string uf,
-             string bairro, string localidade,string complemento, string ordem, int itensPorPagina, int pagina)
+        public List<CentroDeDistribuicao> GetCentroDeDistribuicao(string nome, string logradouro, string cep,
+            string bairro, string localidade, string complemento, string uf, int? numero, bool? status,
+            string ordem, int itensPagina, int paginaAtual)
         {
-            return _repository.GetCentroDeDistribuicao(nome, status,cep, logradouro, numero, uf, bairro, localidade,complemento, ordem,
-                itensPorPagina, pagina);
+            return _repository.GetCentroDeDistribuicao( nome,logradouro, cep,
+             bairro,localidade,complemento, uf,numero,  status, ordem, itensPagina,paginaAtual);
         }
     }
 }

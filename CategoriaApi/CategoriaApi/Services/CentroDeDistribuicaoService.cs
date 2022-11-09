@@ -5,8 +5,12 @@ using CategoriaApi.Exceptions;
 using CategoriaApi.Model;
 using CategoriaApi.Repository;
 using FluentResults;
+using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace CategoriaApi.Services
 {
@@ -21,18 +25,36 @@ namespace CategoriaApi.Services
             _mapper = mapper;
         }
 
-        public ReadCentroDto AddCentroDeDistribuicao(CreateCentroDto centroDto)
+        public async Task <CentroDeDistribuicao> ViaCep(CreateCentroDto centro)
+        {
+                HttpClient client = new HttpClient();
+                var requisicao = await client.GetAsync($"https://viacep.com.br/ws/{centro.CEP}/json/");
+                var resposta = await requisicao.Content.ReadAsStringAsync();
+                if((int) requisicao.StatusCode == 200)
+                {
+                    var endereco = JsonConvert.DeserializeObject<CentroDeDistribuicao>(resposta);
+                    return endereco;
+                }
+            throw new NullException();
+        }
+            
+           
+     
+        public async Task<ReadCentroDto> AddCentroDeDistribuicao(CreateCentroDto centroDto)
         {
             CentroDeDistribuicao categoriaNome = _repository.RetornarNomeDocentro(centroDto);
-
+            CentroDeDistribuicao centroEndereco = _repository.RetornarEndereco(centroDto);
+            
             if (centroDto.Nome.Length >= 3)
             {
-                if (categoriaNome == null)
+                if (categoriaNome == null && centroEndereco== null)
                 {
+                    var endereco= await ViaCep(centroDto);
                     CentroDeDistribuicao centro = _mapper.Map<CentroDeDistribuicao>(centroDto);
+                   
                     centro.DataCriacao = DateTime.Now;
                     centro.Status = true;
-                    _repository.AddCentro(centro);
+                    _repository.AddCentro(centro,endereco);
                     return _mapper.Map<ReadCentroDto>(centro);
 
                 }
@@ -75,8 +97,15 @@ namespace CategoriaApi.Services
                 ReadCentroDto centroDto = _mapper.Map<ReadCentroDto>(centro);
                 return centroDto;
             }
-                throw new NullException();
+                return null;
 
+        }
+
+        public List<CentroDeDistribuicao> GetCentroDeDistribuicao(string nome, bool? status,string cep, string logradouro, int? numero, string uf,
+             string bairro, string localidade,string complemento, string ordem, int itensPorPagina, int pagina)
+        {
+            return _repository.GetCentroDeDistribuicao(nome, status,cep, logradouro, numero, uf, bairro, localidade,complemento, ordem,
+                itensPorPagina, pagina);
         }
     }
 }

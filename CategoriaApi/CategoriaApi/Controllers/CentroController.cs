@@ -6,7 +6,9 @@ using CategoriaApi.Model;
 using CategoriaApi.Services;
 using FluentResults;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace CategoriaApi.Controllers
 {
@@ -26,16 +28,20 @@ namespace CategoriaApi.Controllers
         }
 
         [HttpPost]
-        public IActionResult AdicionarCentro([FromBody] CreateCentroDto centroDto )
+        public async Task<IActionResult> AdicionarCentro([FromBody] CreateCentroDto centroDto )
         {
             try
             {
-                ReadCentroDto readCentro = _service.AddCentroDeDistribuicao(centroDto);
+                ReadCentroDto readCentro = await _service.AddCentroDeDistribuicao(centroDto);
                 return CreatedAtAction(nameof(GetCentroPorId), new { id = readCentro.Id }, readCentro);
             }
             catch (AlreadyExistException)
             {
-                return BadRequest("Esse centro já existe");
+                return BadRequest("Nome ou endereço do centro já existe");
+            }
+            catch (NullException)
+            {
+                return BadRequest("Falha na requisição do endereço");
             }
         }
 
@@ -71,5 +77,13 @@ namespace CategoriaApi.Controllers
             if (readCentro != null) return Ok(readCentro);
             return NotFound("Não encontrado");
        }
+
+        [HttpGet]
+        public List<CentroDeDistribuicao> GetCentroDeDistribuicaos([FromQuery] string nome, [FromQuery] bool? status, [FromQuery] string cep,
+            [FromQuery] string logradouro, [FromQuery]int? numero, [FromQuery] string uf,[FromQuery] string bairro,
+            [FromQuery] string localidade,[FromBody] string complemento,[FromQuery] string ordem,[FromQuery] int itensPorPagina,[FromQuery] int pagina)
+        {
+            return _service.GetCentroDeDistribuicao(nome, status,cep, logradouro, numero, uf, bairro, localidade,complemento, ordem, itensPorPagina, pagina);
+        }
     }
 }

@@ -80,7 +80,7 @@ namespace CategoriaApi.Repository
             _context.SaveChanges();
         }
         public List<Produto> PesquisaComFiltros(string nome, bool? status, double? peso, double? altura, double? largura,
-            double? comprimento, double? valor, int? estoque, string ordem, int itensPorPagina)
+            double? comprimento, double? valor, int? estoque, string ordem, int itensPorPagina, int pagina)
         {
             var sql = "SELECT * FROM Produtos WHERE ";
 

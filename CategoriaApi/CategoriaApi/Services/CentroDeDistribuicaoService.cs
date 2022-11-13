@@ -18,6 +18,7 @@ namespace CategoriaApi.Services
     {
         private CentroRepository _repository;
        private IMapper _mapper;
+        
 
         public CentroDeDistribuicaoService( IMapper mapper, CentroRepository repository)
         {

@@ -26,9 +26,9 @@ namespace CategoriaApi.Data.Dto.CentroDto
         public string Bairro { get; set; }
 
         [Required(ErrorMessage = "O campo cidade é obrigatório")]
-        [RegularExpression(@"[a-zA-Zá-úÁ-Ú0-9' ']{1,10000}", ErrorMessage = "não é permitido utilizar caracteres especiais no campo cidade")]
+        [RegularExpression(@"[a-zA-Zá-úÁ-Ú0-9' ']{1,10000}", ErrorMessage = "não é permitido utilizar caracteres especiais no campo localidade")]
         [StringLength(128, ErrorMessage = "Tamanho máximo de 128 caracteres excedido")]
-        public string Cidade { get; set; }
+        public string Localidade { get; set; }
 
 
         [Required(ErrorMessage = "O campo UF é obrigatório")]

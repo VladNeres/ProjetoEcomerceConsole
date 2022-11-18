@@ -26,40 +26,45 @@ namespace CategoriaApi.Services
             _mapper = mapper;
         }
 
-        public async Task <CentroDeDistribuicao> ViaCep(CreateCentroDto centro)
+        public async Task <CentroDeDistribuicao> ViaCep(string cep)
         {
                 HttpClient client = new HttpClient();
-                var requisicao = await client.GetAsync($"https://viacep.com.br/ws/{centro.CEP}/json/");
+
+                var requisicao = await client.GetAsync($"https://viacep.com.br/ws/{cep}/json/");
                 var resposta = await requisicao.Content.ReadAsStringAsync();
-                if((int) requisicao.StatusCode == 200)
+                if(!requisicao.IsSuccessStatusCode)
                 {
+                    throw new NullException();
+                }
                     var endereco = JsonConvert.DeserializeObject<CentroDeDistribuicao>(resposta);
                     return endereco;
-                }
-            throw new NullException();
         }
             
            
      
         public async Task<ReadCentroDto> AddCentroDeDistribuicao(CreateCentroDto centroDto)
         {
+           
             CentroDeDistribuicao categoriaNome = _repository.RetornarNomeDocentro(centroDto);
             CentroDeDistribuicao centroEndereco = _repository.RetornarEndereco(centroDto);
             
-            if (centroDto.Nome.Length >= 3)
+            if (centroDto.Nome.Length >= 3 )
             {
-                if (categoriaNome == null && centroEndereco== null)
+                if (categoriaNome == null)
                 {
-                    var endereco= await ViaCep(centroDto);
-                    CentroDeDistribuicao centro = _mapper.Map<CentroDeDistribuicao>(centroDto);
-                   
-                    centro.DataCriacao = DateTime.Now;
-                    centro.Status = true;
-                    _repository.AddCentro(centro,endereco);
-                    return _mapper.Map<ReadCentroDto>(centro);
-
+                    if(centroEndereco!= null && centroEndereco.Numero== centroDto.Numero)
+                    {
+                         throw new AlreadyExistException("Esse endereço já foi cadastrado");
+                    }
+                    
+                        var endereco= await ViaCep(centroDto.CEP);
+                        CentroDeDistribuicao centro = _mapper.Map<CentroDeDistribuicao>(centroDto);
+                        centro.DataCriacao = DateTime.Now;
+                        centro.Status = true;
+                        _repository.AddCentro(centro,endereco);
+                        return _mapper.Map<ReadCentroDto>(centro);
                 }
-                throw new AlreadyExistException();
+                throw new AlreadyExistException("Esse nome de centro de distribuição já existe");
             }
             throw new MinCharacterException();
         }

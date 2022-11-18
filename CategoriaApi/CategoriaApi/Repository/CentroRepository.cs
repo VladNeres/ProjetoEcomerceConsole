@@ -51,7 +51,12 @@ namespace CategoriaApi.Repository
 
         public CentroDeDistribuicao RetornarEndereco(CreateCentroDto centroDto)
         {
-            var endereco = _context.Centros.FirstOrDefault(centro => centro.CEP == centroDto.CEP);
+            if (centroDto.CEP.Length == 8)
+            {
+               centroDto.CEP = centroDto.CEP.Insert(5, "-");
+                System.Console.WriteLine(centroDto.CEP);
+            }
+           var endereco = _context.Centros.FirstOrDefault(centro=> centro.CEP.Equals(centroDto.CEP));
             return endereco;
         }
         public void Salvar()

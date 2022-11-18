@@ -62,7 +62,7 @@ namespace CategoriaApi.Services
             }
             _mapper.Map(categoriaDto, categorias);
             categorias.DataAtualizacao = DateTime.Now;
-            _repository.SalvarAlteraçoes() ;
+            _repository.SalvarAlteraçoes();
             return Result.Ok();
         }
 

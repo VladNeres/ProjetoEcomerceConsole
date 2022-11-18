@@ -32,11 +32,11 @@ namespace CategoriaApi.Repository
             _context.SaveChanges();
         }
 
-        public async Task<bool> UpdateAsync(Produto produto)
-        {
-            var result = await _dbConnection.UpdateAsync(produto);
-            return result;
-        }
+        //public async Task<bool> UpdateAsync(Produto produto)
+        //{
+        //    var result = await _dbConnection.UpdateAsync(produto);
+        //    return result;
+        //}
         public async Task<bool> DeleteAsync(int id)
         {
             var result = await _dbConnection.DeleteAsync(new Produto { Id = id });
@@ -44,18 +44,18 @@ namespace CategoriaApi.Repository
             return result;
 
         }
-        public async Task<Produto> GetByIdAsync(int id)
-        {
-            var result = await _dbConnection.GetAsync<Produto>(id);
-            return result;
-        }
+        //public async Task<Produto> GetByIdAsync(int id)
+        //{
+        //    var result = await _dbConnection.GetAsync<Produto>(id);
+        //    return result;
+        //}
 
-        public async Task<IReadOnlyList<Produto>> GetAllAsync()
-        {
+        //public async Task<IReadOnlyList<Produto>> GetAllAsync()
+        //{
 
-            var result = await _dbConnection.GetAllAsync<Produto>();
-            return result.ToList();
-        }
+        //    var result = await _dbConnection.GetAllAsync<Produto>();
+        //    return result.ToList();
+        //}
 
         public SubCategoria SubCategoriaID(CreateProdutoDto produtoDto)
         {

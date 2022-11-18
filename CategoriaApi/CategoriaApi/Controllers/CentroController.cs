@@ -35,13 +35,17 @@ namespace CategoriaApi.Controllers
                 ReadCentroDto readCentro = await _service.AddCentroDeDistribuicao(centroDto);
                 return CreatedAtAction(nameof(GetCentroPorId), new { id = readCentro.Id }, readCentro);
             }
-            catch (AlreadyExistException)
+            catch (AlreadyExistException e)
             {
-                return BadRequest("Nome ou endereço do centro já existe");
+                return BadRequest(e.Message);
             }
             catch (NullException)
             {
                 return BadRequest("Falha na requisição do endereço");
+            }
+            catch (MinCharacterException)
+            {
+                return BadRequest("Minimo de 3 carcteres  necessario não atingido ");
             }
         }
 

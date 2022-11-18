@@ -55,11 +55,10 @@ namespace CategoriaApi.Migrations
 
                     b.Property<string>("CEP")
                         .IsRequired()
-                        .HasMaxLength(8)
-                        .HasColumnType("varchar(8)");
+                        .HasMaxLength(9)
+                        .HasColumnType("varchar(9)");
 
-                    b.Property<string>("Cidade")
-                        .IsRequired()
+                    b.Property<string>("Complemento")
                         .HasMaxLength(128)
                         .HasColumnType("varchar(128)");
 
@@ -68,6 +67,11 @@ namespace CategoriaApi.Migrations
 
                     b.Property<DateTime>("DataCriacao")
                         .HasColumnType("datetime");
+
+                    b.Property<string>("Localidade")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("varchar(128)");
 
                     b.Property<string>("Logradouro")
                         .IsRequired()

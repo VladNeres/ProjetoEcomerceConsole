@@ -15,7 +15,7 @@ namespace CategoriaApi.Data.Dto.CentroDto
         public string CEP { get; set; }
 
         [Required(ErrorMessage = "O campo número é obrigatório")]
-        public int? Numero { get; set; }
+        public int Numero { get; set; }
 
         [RegularExpression(@"[a-zA-Zá-úÁ-Ú0-9' '/s]{1,10000}", ErrorMessage = "O campo complemento não permite caracteres especiais")]
         [StringLength(128, ErrorMessage = "Tamanho máximo de 128 caracteres excedido ")]

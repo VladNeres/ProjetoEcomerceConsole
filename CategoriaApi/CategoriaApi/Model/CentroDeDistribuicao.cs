@@ -21,8 +21,9 @@ namespace CategoriaApi.Model
         [StringLength(256, ErrorMessage = "Tamanho máximo de 256 caracteres excedido")]
         public string Logradouro { get; set; }
 
-        [Required(ErrorMessage = "O campo número é obrigatório")]
-        public int Numero { get; set; } = 0;
+        [RegularExpression("@[0-9/s]{1,500}", ErrorMessage= "o campo número so aceita valores inteiro")]
+        [Required(ErrorMessage ="O campo número é obrigatório")]
+        public int Numero { get; set; }
 
         [Required(ErrorMessage = "O campo bairro é obrigatório")]
         [RegularExpression(@"[a-zA-Zá-úÁ-Ú0-9' ']{1,10000}", ErrorMessage = "não é permitido utilizar caracteres especiais no campo bairro")]

@@ -48,11 +48,11 @@ namespace CategoriaApi.Services
             CentroDeDistribuicao categoriaNome = _repository.RetornarNomeDocentro(centroDto);
             CentroDeDistribuicao centroEndereco = _repository.RetornarEndereco(centroDto);
             
-            if (centroDto.Nome.Length >= 3 )
+            if (centroDto.Nome.Length >= 3)
             {
                 if (categoriaNome == null)
                 {
-                    if(centroEndereco!= null && centroEndereco.Numero== centroDto.Numero)
+                    if(centroEndereco!= null && centroEndereco.Numero== centroDto.Numero )
                     {
                          throw new AlreadyExistException("Esse endereço já foi cadastrado");
                     }
@@ -107,12 +107,10 @@ namespace CategoriaApi.Services
 
         }
 
-        public List<CentroDeDistribuicao> GetCentroDeDistribuicao(string nome, string logradouro, string cep,
-            string bairro, string localidade, string complemento, string uf, int? numero, bool? status,
-            string ordem, int itensPagina, int paginaAtual)
+        public List<CentroDeDistribuicao> GetCentroDeDistribuicao(ReadCentroDto readDto, string ordem, int itensPagina, int paginaAtual)
+
         {
-            return _repository.GetCentroDeDistribuicao( nome,logradouro, cep,
-             bairro,localidade,complemento, uf,numero,  status, ordem, itensPagina,paginaAtual);
+            return _repository.GetCentroDeDistribuicao(readDto, ordem, itensPagina,paginaAtual);
         }
     }
 }

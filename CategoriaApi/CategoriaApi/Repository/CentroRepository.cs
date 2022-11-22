@@ -54,9 +54,9 @@ namespace CategoriaApi.Repository
             if (centroDto.CEP.Length == 8)
             {
                centroDto.CEP = centroDto.CEP.Insert(5, "-");
-                System.Console.WriteLine(centroDto.CEP);
+               System.Console.WriteLine(centroDto.CEP);
             }
-           var endereco = _context.Centros.FirstOrDefault(centro=> centro.CEP.Equals(centroDto.CEP));
+           var endereco = _context.Centros.FirstOrDefault(centro=> centro.CEP == centroDto.CEP && centroDto.Numero == centro.Numero);
             return endereco;
         }
         public void Salvar()
@@ -64,51 +64,50 @@ namespace CategoriaApi.Repository
             _context.SaveChanges();
         }
 
-        public List<CentroDeDistribuicao> GetCentroDeDistribuicao(string nome, string logradouro, string cep,
-            string bairro, string localidade, string complemento, string uf, int? numero, bool? status,
-            string ordem, int itensPagina, int paginaAtual)
+        public List<CentroDeDistribuicao> GetCentroDeDistribuicao(ReadCentroDto readDto,string ordem, int itensPagina, int paginaAtual)
         {
             var sql = "SELECT * FROM Centros WHERE ";
 
-            if (nome != null)
+            if (readDto.Nome != null)
             {
-                sql += "Nome LIKE \"%" + nome + "%\" and ";
+                sql += "Nome LIKE \"%" + readDto.Nome + "%\" and ";
             }
-            if (logradouro != null)
+            if (readDto.Logradouro != null)
             {
-                sql += "Logradouro LIKE \"%" + logradouro + "%\" and ";
+                sql += "Logradouro LIKE \"%" + readDto.Logradouro + "%\" and ";
             }
-            if (status != null)
+            if (readDto.Status != null)
             {
                 sql += "Status = @status and ";
             }
-            if (cep != null)
+            if (readDto.CEP != null)
             {
                 sql += "Cep = @cep and ";
             }
-            if (bairro != null)
+            if (readDto.Bairro != null)
             {
-                sql += "Bairro LIKE \"%" + bairro + "%\" and ";
+                sql += "Bairro LIKE \"%" + readDto.Bairro + "%\" and ";
             }
-            if (localidade != null)
+            if (readDto.Localidade != null)
             {
-                sql += "Localidade LIKE \"%" + localidade + "%\" and ";
+                sql += "Localidade LIKE \"%" + readDto.Localidade + "%\" and ";
             }
-            if (complemento != null)
+            if (readDto.Complemento != null)
             {
-                sql += "Complemento LIKE \"%" + complemento + "%\" and ";
+                sql += "Complemento LIKE \"%" + readDto.Complemento + "%\" and ";
             }
-            if (uf != null)
+            if (readDto.UF != null)
             {
                 sql += "Uf = @uf and ";
             }
-            if (numero != null)
+            if (readDto.Numero != null)
             {
                 sql += "Numero = @numero and ";
             }
 
-            if (nome == null && logradouro == null && cep == null && bairro == null && localidade == null && complemento == null &&
-                uf == null && numero == null && status == null)
+            if (readDto.Nome == null && readDto.Logradouro == null && readDto.CEP == null && readDto.Bairro == null 
+                && readDto.Localidade == null && readDto.Complemento == null &&
+                readDto.UF == null && readDto.Numero == null && readDto.Status == null)
             {
                 var PosicaoDoWhere = sql.LastIndexOf("WHERE");
                 sql = sql.Remove(PosicaoDoWhere);
@@ -132,15 +131,15 @@ namespace CategoriaApi.Repository
 
             var result = _dbConnection.Query<CentroDeDistribuicao>(sql, new
             {
-                Nome = nome,
-                Status = status,
-                Logradouro = logradouro,
-                Cep = cep,
-                Bairro = bairro,
-                Localidade = localidade,
-                Complemento = complemento,
-                Uf = uf,
-                Numero = numero
+                Nome = readDto.Nome,
+                Status = readDto.Status,
+                Logradouro = readDto.Logradouro,
+                Cep = readDto.CEP,
+                Bairro = readDto.Bairro,
+                Localidade = readDto.Localidade,
+                Complemento = readDto.Complemento,
+                Uf = readDto.UF,
+                Numero = readDto.Numero
             });
 
             if (paginaAtual > 0 && itensPagina > 0 && itensPagina <= 10)
@@ -154,8 +153,6 @@ namespace CategoriaApi.Repository
             return resultadoSemPaginacao;
 
         }
-
-
     }
 }
 

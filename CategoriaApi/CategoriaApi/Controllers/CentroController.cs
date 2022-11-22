@@ -83,12 +83,9 @@ namespace CategoriaApi.Controllers
        }
 
         [HttpGet]
-        public List<CentroDeDistribuicao> GetCentroDeDistribuicaos([FromQuery] string nome, [FromQuery] bool? status, [FromQuery] string cep,
-            [FromQuery] string logradouro, [FromQuery]int? numero, [FromQuery] string uf,[FromQuery] string bairro,
-            [FromQuery] string localidade,[FromQuery] string complemento,[FromQuery] string ordem,[FromQuery] int itensPorPagina,[FromQuery] int pagina)
+        public List<CentroDeDistribuicao> GetCentroDeDistribuicao([FromBody] ReadCentroDto readDto, string ordem, int itensPorPagina, int pagina)
         {
-            return _service.GetCentroDeDistribuicao(nome, logradouro, cep,
-             bairro, localidade, complemento, uf, numero, status, ordem, itensPorPagina, pagina);
+            return _service.GetCentroDeDistribuicao(readDto, ordem, itensPorPagina, pagina);
         }
     }
 }

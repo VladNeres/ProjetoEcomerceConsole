@@ -76,7 +76,16 @@ namespace CategoriaApi.Services
             {
                 return Result.Fail("Centro não encontrado");
             }
-           
+            if(centro.Produtos.Count()>0 && centro.Status == true)
+            {
+                throw new InativeObjectException("Não é possivel inativar um centro que contenha um produto cadastrado");
+            }
+            var endereço = ViaCep(centroDto.CEP);
+            centroDto.CEP = endereço.Result.CEP;
+            centroDto.Logradouro = endereço.Result.Logradouro;
+            centroDto.Bairro = endereço.Result.Bairro;
+            centroDto.Localidade = endereço.Result.Localidade;
+            centroDto.UF = endereço.Result.UF;
             CentroDeDistribuicao centroupdate = _mapper.Map(centroDto, centro);
             centroupdate.DataAtualizacao = DateTime.Now;
             _repository.Salvar();
@@ -107,10 +116,10 @@ namespace CategoriaApi.Services
 
         }
 
-        public List<CentroDeDistribuicao> GetCentroDeDistribuicao(ReadCentroDto readDto, string ordem, int itensPagina, int paginaAtual)
+        public List<CentroDeDistribuicao> GetCentroDeDistribuicao(CentroPesquisa pesquisa)
 
         {
-            return _repository.GetCentroDeDistribuicao(readDto, ordem, itensPagina,paginaAtual);
+            return _repository.GetCentroDeDistribuicao(pesquisa);
         }
     }
 }

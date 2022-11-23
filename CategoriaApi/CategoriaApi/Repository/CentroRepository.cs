@@ -64,50 +64,50 @@ namespace CategoriaApi.Repository
             _context.SaveChanges();
         }
 
-        public List<CentroDeDistribuicao> GetCentroDeDistribuicao(ReadCentroDto readDto,string ordem, int itensPagina, int paginaAtual)
+        public List<CentroDeDistribuicao> GetCentroDeDistribuicao(CentroPesquisa pesquisa)
         {
             var sql = "SELECT * FROM Centros WHERE ";
 
-            if (readDto.Nome != null)
+            if (pesquisa.Nome != null)
             {
-                sql += "Nome LIKE \"%" + readDto.Nome + "%\" and ";
+                sql += "Nome LIKE \"%" + pesquisa.Nome + "%\" and ";
             }
-            if (readDto.Logradouro != null)
+            if (pesquisa.Logradouro != null)
             {
-                sql += "Logradouro LIKE \"%" + readDto.Logradouro + "%\" and ";
+                sql += "Logradouro LIKE \"%" + pesquisa.Logradouro + "%\" and ";
             }
-            if (readDto.Status != null)
+            if (pesquisa.Status != null)
             {
-                sql += "Status = @status and ";
+                sql += "Status = @pesquisa.Status and ";
             }
-            if (readDto.CEP != null)
+            if (pesquisa.CEP != null)
             {
-                sql += "Cep = @cep and ";
+                sql += "Cep = @pesquisa.cep and ";
             }
-            if (readDto.Bairro != null)
+            if (pesquisa.Bairro != null)
             {
-                sql += "Bairro LIKE \"%" + readDto.Bairro + "%\" and ";
+                sql += "Bairro LIKE \"%" + pesquisa.Bairro + "%\" and ";
             }
-            if (readDto.Localidade != null)
+            if (pesquisa.Localidade != null)
             {
-                sql += "Localidade LIKE \"%" + readDto.Localidade + "%\" and ";
+                sql += "Localidade LIKE \"%" + pesquisa.Localidade + "%\" and ";
             }
-            if (readDto.Complemento != null)
+            if (pesquisa.Complemento != null)
             {
-                sql += "Complemento LIKE \"%" + readDto.Complemento + "%\" and ";
+                sql += "Complemento LIKE \"%" + pesquisa.Complemento + "%\" and ";
             }
-            if (readDto.UF != null)
+            if (pesquisa.UF != null)
             {
-                sql += "Uf = @uf and ";
+                sql += "Uf = @pesquisa.uf and ";
             }
-            if (readDto.Numero != null)
+            if (pesquisa.Numero != null)
             {
                 sql += "Numero = @numero and ";
             }
 
-            if (readDto.Nome == null && readDto.Logradouro == null && readDto.CEP == null && readDto.Bairro == null 
-                && readDto.Localidade == null && readDto.Complemento == null &&
-                readDto.UF == null && readDto.Numero == null && readDto.Status == null)
+            if (pesquisa.Nome == null && pesquisa.Logradouro == null && pesquisa.CEP == null && pesquisa.Bairro == null 
+                && pesquisa.Localidade == null && pesquisa.Complemento == null &&
+                pesquisa.UF == null && pesquisa.Numero == null && pesquisa.Status == null)
             {
                 var PosicaoDoWhere = sql.LastIndexOf("WHERE");
                 sql = sql.Remove(PosicaoDoWhere);
@@ -117,9 +117,9 @@ namespace CategoriaApi.Repository
                 var posicaoDoAnd = sql.LastIndexOf("and");
                 sql = sql.Remove(posicaoDoAnd);
             }
-            if (ordem != null)
+            if (pesquisa.Ordem != null)
             {
-                if (ordem != "desc")
+                if (pesquisa.Ordem != "Decrescente")
                 {
                     sql += " ORDER BY Nome";
                 }
@@ -129,22 +129,11 @@ namespace CategoriaApi.Repository
                 }
             }
 
-            var result = _dbConnection.Query<CentroDeDistribuicao>(sql, new
-            {
-                Nome = readDto.Nome,
-                Status = readDto.Status,
-                Logradouro = readDto.Logradouro,
-                Cep = readDto.CEP,
-                Bairro = readDto.Bairro,
-                Localidade = readDto.Localidade,
-                Complemento = readDto.Complemento,
-                Uf = readDto.UF,
-                Numero = readDto.Numero
-            });
+            var result = _dbConnection.Query<CentroDeDistribuicao>(sql).ToList();
 
-            if (paginaAtual > 0 && itensPagina > 0 && itensPagina <= 10)
+            if (pesquisa.Pagina > 0 && pesquisa.ItensPorPagina > 0 && pesquisa.ItensPorPagina <= 10)
             {
-                var resultado = result.Skip((paginaAtual - 1) * itensPagina).Take(itensPagina).ToList();
+                var resultado = result.Skip((pesquisa.Pagina - 1) * pesquisa.ItensPorPagina).Take(pesquisa.ItensPorPagina).ToList();
                 return resultado;
 
             }

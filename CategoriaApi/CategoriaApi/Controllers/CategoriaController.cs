@@ -41,7 +41,10 @@ namespace CategoriaApi.Controllers
             {
                 return BadRequest("É necessario informar de 3 a 50 caracteres");
             }
-            
+            catch(InativeObjectException e)
+            {
+                return BadRequest(e.Message);
+            }
 
 
         }

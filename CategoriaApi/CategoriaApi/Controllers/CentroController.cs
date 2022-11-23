@@ -63,6 +63,10 @@ namespace CategoriaApi.Controllers
             {
                 return NotFound("Id não encontrado");
             }
+            catch(InativeObjectException e)
+            {
+                return BadRequest(e.Message);
+            }
 
         }
 
@@ -83,9 +87,9 @@ namespace CategoriaApi.Controllers
        }
 
         [HttpGet]
-        public List<CentroDeDistribuicao> GetCentroDeDistribuicao([FromBody] ReadCentroDto readDto, string ordem, int itensPorPagina, int pagina)
+        public List<CentroDeDistribuicao> GetCentroDeDistribuicao([FromBody] CentroPesquisa pesquisa)
         {
-            return _service.GetCentroDeDistribuicao(readDto, ordem, itensPorPagina, pagina);
+            return _service.GetCentroDeDistribuicao(pesquisa);
         }
     }
 }

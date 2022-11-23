@@ -53,12 +53,9 @@ namespace CategoriaApi.Services
             {
                 return Result.Fail("Categoria não encontrada");
             }
-            if (categoriaDto.Status == false || categoriaDto.Status == true)
+            if (categorias.SubCategoria.Count()>0 && categorias.Status==true)
             {
-                foreach (var subCategoria in subCategorias)
-                {
-                    subCategoria.Status = categoriaDto.Status;
-                }
+                throw new InativeObjectException("Não é possivel inativar uma categoria que contenha uma subCategoria cadastrada");
             }
             _mapper.Map(categoriaDto, categorias);
             categorias.DataAtualizacao = DateTime.Now;

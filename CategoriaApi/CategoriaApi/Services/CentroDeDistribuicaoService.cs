@@ -116,7 +116,7 @@ namespace CategoriaApi.Services
 
         }
 
-        public List<CentroDeDistribuicao> GetCentroDeDistribuicao(CentroPesquisa pesquisa)
+        public List<CentroDeDistribuicao> GetCentroDeDistribuicao(PesquisaCentroDto pesquisa)
 
         {
             return _repository.GetCentroDeDistribuicao(pesquisa);

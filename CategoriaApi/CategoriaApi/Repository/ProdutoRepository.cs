@@ -1,14 +1,10 @@
-﻿using AutoMapper;
-using CategoriaApi.Data;
+﻿using CategoriaApi.Data;
 using CategoriaApi.Data.Dto.DtoProduto;
 using CategoriaApi.Model;
 using Dapper;
 using Dapper.Contrib.Extensions;
-using Microsoft.Extensions.Configuration;
-using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 

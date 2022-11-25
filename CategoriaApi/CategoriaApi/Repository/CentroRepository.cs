@@ -64,7 +64,7 @@ namespace CategoriaApi.Repository
             _context.SaveChanges();
         }
 
-        public List<CentroDeDistribuicao> GetCentroDeDistribuicao(CentroPesquisa pesquisa)
+        public List<CentroDeDistribuicao> GetCentroDeDistribuicao(PesquisaCentroDto pesquisa)
         {
             var sql = "SELECT * FROM Centros WHERE ";
 
@@ -78,11 +78,11 @@ namespace CategoriaApi.Repository
             }
             if (pesquisa.Status != null)
             {
-                sql += "Status = @pesquisa.Status and ";
+                sql += "Status = @Status and ";
             }
             if (pesquisa.CEP != null)
             {
-                sql += "Cep = @pesquisa.cep and ";
+                sql += "Cep = @CEP and ";
             }
             if (pesquisa.Bairro != null)
             {
@@ -98,24 +98,22 @@ namespace CategoriaApi.Repository
             }
             if (pesquisa.UF != null)
             {
-                sql += "Uf = @pesquisa.uf and ";
+                sql += "Uf = @UF and ";
             }
             if (pesquisa.Numero != null)
             {
-                sql += "Numero = @numero and ";
+                sql += "Numero = @Numero and ";
             }
 
             if (pesquisa.Nome == null && pesquisa.Logradouro == null && pesquisa.CEP == null && pesquisa.Bairro == null 
                 && pesquisa.Localidade == null && pesquisa.Complemento == null &&
                 pesquisa.UF == null && pesquisa.Numero == null && pesquisa.Status == null)
             {
-                var PosicaoDoWhere = sql.LastIndexOf("WHERE");
-                sql = sql.Remove(PosicaoDoWhere);
+                sql = sql.Replace("WHERE", " ");
             }
             else
             {
-                var posicaoDoAnd = sql.LastIndexOf("and");
-                sql = sql.Remove(posicaoDoAnd);
+                sql = sql.Replace("and", " ");
             }
             if (pesquisa.Ordem != null)
             {
@@ -129,7 +127,18 @@ namespace CategoriaApi.Repository
                 }
             }
 
-            var result = _dbConnection.Query<CentroDeDistribuicao>(sql).ToList();
+            var result = _dbConnection.Query<CentroDeDistribuicao>(sql, new
+            {
+                      Nome = pesquisa.Nome,
+                    Status = pesquisa.Status,
+                Logradouro = pesquisa.Logradouro,
+                       Cep = pesquisa.CEP,
+                    Bairro = pesquisa.Bairro,
+                Localidade = pesquisa.Localidade,
+               Complemento = pesquisa.Complemento,
+                        Uf = pesquisa.UF,
+                    Numero = pesquisa.Numero
+            });
 
             if (pesquisa.Pagina > 0 && pesquisa.ItensPorPagina > 0 && pesquisa.ItensPorPagina <= 10)
             {

@@ -87,7 +87,7 @@ namespace CategoriaApi.Controllers
        }
 
         [HttpGet]
-        public List<CentroDeDistribuicao> GetCentroDeDistribuicao([FromBody] CentroPesquisa pesquisa)
+        public List<CentroDeDistribuicao> GetCentroDeDistribuicao([FromBody] PesquisaCentroDto pesquisa)
         {
             return _service.GetCentroDeDistribuicao(pesquisa);
         }

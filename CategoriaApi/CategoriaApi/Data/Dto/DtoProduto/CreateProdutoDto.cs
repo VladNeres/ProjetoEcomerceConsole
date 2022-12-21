@@ -34,9 +34,9 @@ namespace CategoriaApi.Data.Dto.DtoProduto
         public int QuantidadeEmEstoque { get; set; }
         
         [Required(ErrorMessage = "O campo de centro de distribuiçao em estoque é obrigatório")]
-        public int CentroDeDistribuicaoId { get; set; }
+        public int? CentroDeDistribuicaoId { get; set; }
         [Required(ErrorMessage = "O campo subCategoriaId é obrigatório")]
-        public int SubCategoriaId { get; set; }
+        public int? SubCategoriaId { get; set; }
 
     }
 }

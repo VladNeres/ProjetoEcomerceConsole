@@ -64,7 +64,7 @@ namespace CategoriaApi.Repository
             _context.SaveChanges();
         }
 
-        public List<CentroDeDistribuicao> GetCentroDeDistribuicao(PesquisaCentroDto pesquisa)
+        public List<CentroDeDistribuicao> GetCentroDeDistribuicao(CentroPesquisa pesquisa)
         {
             var sql = "SELECT * FROM Centros WHERE ";
 

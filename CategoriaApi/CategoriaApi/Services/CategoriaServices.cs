@@ -39,9 +39,9 @@ namespace CategoriaApi.Services
                     return _mapper.Map<ReadCategoriaDto>(categoria);
 
                 }
-                throw new AlreadyExistException();
+                throw new AlreadyExistException("A categoria já existe");
             }
-            throw new MinCharacterException();
+            throw new MinCharacterException("É necessario informar de 3 a 50 caracteres");
         }
 
         public Result EditarCategoria(int id, UpdateCategoriaDto categoriaDto)
@@ -53,7 +53,7 @@ namespace CategoriaApi.Services
             {
                 return Result.Fail("Categoria não encontrada");
             }
-            if (categorias.SubCategoria.Count()>0 && categorias.Status==true)
+            if (categorias.SubCategoria.Count()>0 && categoriaDto.Status!=true)
             {
                 throw new InativeObjectException("Não é possivel inativar uma categoria que contenha uma subCategoria cadastrada");
             }

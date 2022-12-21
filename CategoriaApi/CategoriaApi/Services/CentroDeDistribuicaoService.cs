@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+﻿    using AutoMapper;
 using CategoriaApi.Data;
 using CategoriaApi.Data.Dto.CentroDto;
 using CategoriaApi.Exceptions;
@@ -34,7 +34,7 @@ namespace CategoriaApi.Services
                 var resposta = await requisicao.Content.ReadAsStringAsync();
                 if(!requisicao.IsSuccessStatusCode)
                 {
-                    throw new NullException();
+                    throw new NullException("Falha na requisição do endereço");
                 }
                     var endereco = JsonConvert.DeserializeObject<CentroDeDistribuicao>(resposta);
                     return endereco;
@@ -48,6 +48,7 @@ namespace CategoriaApi.Services
             CentroDeDistribuicao categoriaNome = _repository.RetornarNomeDocentro(centroDto);
             CentroDeDistribuicao centroEndereco = _repository.RetornarEndereco(centroDto);
             
+
             if (centroDto.Nome.Length >= 3)
             {
                 if (categoriaNome == null)
@@ -56,7 +57,7 @@ namespace CategoriaApi.Services
                     {
                          throw new AlreadyExistException("Esse endereço já foi cadastrado");
                     }
-                    
+                   
                         var endereco= await ViaCep(centroDto.CEP);
                         CentroDeDistribuicao centro = _mapper.Map<CentroDeDistribuicao>(centroDto);
                         centro.DataCriacao = DateTime.Now;
@@ -66,7 +67,7 @@ namespace CategoriaApi.Services
                 }
                 throw new AlreadyExistException("Esse nome de centro de distribuição já existe");
             }
-            throw new MinCharacterException();
+            throw new MinCharacterException("É necessario informar de 3 a 50 caracteres");
         }
 
         public Result AtualizarCentroService(int id, UpdateCentroDto centroDto)
@@ -76,7 +77,7 @@ namespace CategoriaApi.Services
             {
                 return Result.Fail("Centro não encontrado");
             }
-            if(centro.Produtos.Count()>0 && centro.Status == true)
+            if(centro.Produtos.Count()>0 && centroDto.Status != true)
             {
                 throw new InativeObjectException("Não é possivel inativar um centro que contenha um produto cadastrado");
             }
@@ -116,7 +117,7 @@ namespace CategoriaApi.Services
 
         }
 
-        public List<CentroDeDistribuicao> GetCentroDeDistribuicao(PesquisaCentroDto pesquisa)
+        public List<CentroDeDistribuicao> GetCentroDeDistribuicao(CentroPesquisa pesquisa)
 
         {
             return _repository.GetCentroDeDistribuicao(pesquisa);

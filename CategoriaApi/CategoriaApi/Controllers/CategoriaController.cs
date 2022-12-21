@@ -33,29 +33,30 @@ namespace CategoriaApi.Controllers
                 ReadCategoriaDto readCategoria = _categoriaServices.AdicionarCategoria(categoriaDto);
                 return CreatedAtAction(nameof(GetCategoriaPorId), new { id = readCategoria.Id }, readCategoria);
             }
-            catch (AlreadyExistException)
-            {
-                return BadRequest("A categoria ja existe");
-            }
-            catch (MinCharacterException)
-            {
-                return BadRequest("É necessario informar de 3 a 50 caracteres");
-            }
-            catch(InativeObjectException e)
+            catch (AlreadyExistException e)
             {
                 return BadRequest(e.Message);
             }
-
-
+            catch (MinCharacterException e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
         [HttpPut("{id}")]
         public IActionResult EditarCategoria(int id, [FromBody] UpdateCategoriaDto categoriaUpdateDto)
         {
-           Result resultado=_categoriaServices.EditarCategoria(id, categoriaUpdateDto);
-            if (resultado.IsFailed) return NotFound();
+            try
+            {
+               Result resultado=_categoriaServices.EditarCategoria(id, categoriaUpdateDto);
+                if (resultado.IsFailed) return NotFound();
             
-            return NoContent();
+                return NoContent();
+            }
+            catch (InativeObjectException e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
         [HttpDelete("{id}")]

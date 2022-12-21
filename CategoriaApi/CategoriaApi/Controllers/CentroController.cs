@@ -39,14 +39,15 @@ namespace CategoriaApi.Controllers
             {
                 return BadRequest(e.Message);
             }
-            catch (NullException)
+            catch (NullException e)
             {
-                return BadRequest("Falha na requisição do endereço");
+                return BadRequest(e.Message);
             }
-            catch (MinCharacterException)
+            catch (MinCharacterException e)
             {
-                return BadRequest("Minimo de 3 carcteres  necessario não atingido ");
+                return BadRequest(e.Message);
             }
+          
         }
 
         [HttpPut("{id}")]
@@ -61,7 +62,7 @@ namespace CategoriaApi.Controllers
             }
             catch (NullException)
             {
-                return NotFound("Id não encontrado");
+                return NotFound("Centro não encontrado");
             }
             catch(InativeObjectException e)
             {
@@ -87,7 +88,7 @@ namespace CategoriaApi.Controllers
        }
 
         [HttpGet]
-        public List<CentroDeDistribuicao> GetCentroDeDistribuicao([FromBody] PesquisaCentroDto pesquisa)
+        public List<CentroDeDistribuicao> GetCentroDeDistribuicao([FromBody] CentroPesquisa pesquisa)
         {
             return _service.GetCentroDeDistribuicao(pesquisa);
         }

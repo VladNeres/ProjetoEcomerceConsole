@@ -55,12 +55,17 @@ namespace CategoriaApi.Repository
 
         public SubCategoria SubCategoriaID(CreateProdutoDto produtoDto)
         {
-                SubCategoria sub= _context.SubCategorias.FirstOrDefault(sub=> sub.Id == produtoDto.SubCategoriaId);
-                return sub;
+            SubCategoria sub = _context.SubCategorias.FirstOrDefault(sub => sub.Id == produtoDto.SubCategoriaId);
+            return sub;
         }
 
+        public CentroDeDistribuicao CentroDeDistribuicaoID(CreateProdutoDto prodDto)
+        {
+            CentroDeDistribuicao centro = _context.Centros.FirstOrDefault(centro => centro.Id == prodDto.CentroDeDistribuicaoId);
+            return centro;
+        }
 
-        public Produto VerificaSeContemNome(CreateProdutoDto produtoDto)
+        public Produto VerificaSeJaExiste(CreateProdutoDto produtoDto)
         {
            Produto produto= _context.Produtos.FirstOrDefault(produtoNome => produtoNome.Nome.ToUpper() == produtoDto.Nome.ToUpper());
             return produto;

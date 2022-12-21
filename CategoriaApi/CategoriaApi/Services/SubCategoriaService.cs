@@ -5,9 +5,6 @@ using CategoriaApi.Model;
 using FluentResults;
 using System;
 using System.Collections.Generic;
-using Dapper;
-using Dapper.Contrib.Extensions;
-
 using System.Linq;
 using System.Data;
 using CategoriaApi.Exceptions;
@@ -36,7 +33,8 @@ namespace CategoriaApi.Services
 
             if(subId == null || subId.Status== false )
             {
-                throw new InativeObjectException();
+                throw new InativeObjectException("Não é possivel cadastrar uma subcategoria em uma categoria inativa\n" +
+                    "Por favor insira uma categoria valida");
             }
             if (subCategoriaDto.Nome.Length >= 3 && subCategoriaDto.Nome.Length <= 50)
             {
@@ -46,13 +44,12 @@ namespace CategoriaApi.Services
                     SubCategoria subCategoria = _mapper.Map<SubCategoria>(subCategoriaDto);
                     subCategoria.Status = true;
                     subCategoria.DataCriacao = DateTime.Now;
-                    _context.SubCategorias.Add(subCategoria);
-                    _context.SaveChanges();
+                   _subRepository.AddSubCategoria(subCategoria);
                     return _mapper.Map<ReadSubCategoriaDto>(subCategoria);
                 }
-                throw  new AlreadyExistException("A já existe uma subCategoria com esse nome");
+                throw  new AlreadyExistException("A subcategoria já existe");
             }
-            throw new MinCharacterException("A categoria deve conter entre 3 e 50 caracteres");
+            throw new MinCharacterException("É necessario informar de 3 a 50 caracteres");
         }
 
         public Result EditarSubCategoria(int id, UpdateSubCategoriaDto subDto)
@@ -64,7 +61,7 @@ namespace CategoriaApi.Services
             }
             if(subCategoria.Produtos.Count()> 0 && subDto.Status!= true)
             {
-                return Result.Fail("Não é possivel desativar essa subcategoria pois existem produtos cadastrados");
+                return Result.Fail("Não é possivel inativar uma subcategoria que contenha um produto cadastrado");
             }
                 _mapper.Map(subDto, subCategoria);
                 subCategoria.DataAtualizacao = DateTime.Now;

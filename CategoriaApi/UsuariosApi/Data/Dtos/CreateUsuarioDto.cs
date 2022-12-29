@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using UsuariosApi.Models;
 
 namespace UsuariosApi.Data.Dtos
@@ -22,5 +23,9 @@ namespace UsuariosApi.Data.Dtos
 
         [Required(ErrorMessage = "O campo endereco é obrigatório")]
         public Endereco Endereco { get; set; }
+
+        [Required(ErrorMessage ="O campo data de nascimento é obrigatório")]
+        [DisplayFormat(DataFormatString = "dd/mm/yyyy")]
+        public DateTime DataNascimento { get; set; }
     }
 }

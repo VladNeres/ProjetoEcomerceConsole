@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace UsuariosApi.Models
@@ -8,6 +9,8 @@ namespace UsuariosApi.Models
         [StringLength(250, ErrorMessage ="Voce excedeu o limite de 250 caracteres")]
         [Required(ErrorMessage ="O campo nome é obrigatório")]
         [RegularExpression(@"[a-zA-Z-á-úÁ-Ú0-9 ' '\s]{1,1000", ErrorMessage = "O campo nome não permite caracteres especiais")]
+
+        [JsonProperty ("Username")]
         public string UserName { get; set; }
 
         [Required(ErrorMessage ="O campo CPF é obrigatório")]

@@ -1,6 +1,9 @@
+using CategoriaApi.Authorization;
 using CategoriaApi.Data;
 using CategoriaApi.Repository;
 using CategoriaApi.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -10,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using MySql.Data.MySqlClient;
 using System;
@@ -17,6 +21,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace CategoriaApi
@@ -50,6 +55,36 @@ namespace CategoriaApi
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddTransient<IDbConnection>((sp)=> new MySqlConnection(Configuration.GetConnectionString("CategoriaConnection")));
             services.AddScoped<ProdutoRepository>();
+
+            services.AddAuthentication(authentication =>
+            {
+                authentication.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                authentication.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+
+            })
+             .AddJwtBearer(token =>
+             {
+                 token.RequireHttpsMetadata = false;
+                 token.SaveToken = true;
+                 token.TokenValidationParameters = new TokenValidationParameters
+                 {
+                     ValidateIssuerSigningKey = true,
+                     IssuerSigningKey = new SymmetricSecurityKey(
+                  Encoding.UTF8.GetBytes("0asdjas09djsa09djasdjsadajsd09asjd09sajcnzxn")),
+                     ValidateIssuer = false,
+                     ValidateAudience = false,
+                     ClockSkew = TimeSpan.Zero
+                 };
+             });
+
+            services.AddAuthorization(option =>
+            {
+                option.AddPolicy("idadeMinima", policy =>
+                {
+                     policy.Requirements.Add(new IdadeMinimaRequirement(18));
+                });
+            });
+            services.AddSingleton<IAuthorizationHandler, IdadeMinimaHandler>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -65,7 +100,8 @@ namespace CategoriaApi
             app.UseHttpsRedirection();
 
             app.UseRouting();
-
+    
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

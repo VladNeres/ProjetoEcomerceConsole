@@ -1,3 +1,5 @@
+using CategoriaApi.Model;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -8,10 +10,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using UsuariosApi.Data;
 using UsuariosApi.Services;
@@ -39,14 +43,21 @@ namespace UsuariosApi
             opt.Password.RequiredLength = 8);
 
             //this is the identity configuration
-            services.AddIdentity<IdentityUser<int>, IdentityRole<int>>()
-                .AddEntityFrameworkStores<UserDbContext>();
+            services.AddIdentity<CustomIdentityUser, IdentityRole<int>>(
+                opt => opt.SignIn.RequireConfirmedEmail = true)
+                .AddEntityFrameworkStores<UserDbContext>()
+                 .AddDefaultTokenProviders();
             //this is the autormaper configure
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+            //this atribuition is informing to my app that i need some authorization
+         
 
 
             services.AddScoped<CadastroService, CadastroService>();
             services.AddScoped<LoginService, LoginService>();
+            services.AddScoped<TokenService, TokenService>();
+            services.AddScoped<LogoutService, LogoutService>();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

@@ -1,12 +1,11 @@
 ﻿
 
-using AutoMapper;
-using CategoriaApi.Data;
+
 using CategoriaApi.Data.Dto.DtoCategoria;
 using CategoriaApi.Exceptions;
-using CategoriaApi.Model;
 using CategoriaApi.Services;
 using FluentResults;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -25,6 +24,7 @@ namespace CategoriaApi.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public IActionResult AdicionarCategoria([FromBody] CreateCategoriaDto categoriaDto)
         {
 
@@ -69,6 +69,7 @@ namespace CategoriaApi.Controllers
 
 
         [HttpGet]
+        [Authorize(Roles="admin, regular", Policy ="idadeMinima")]
         public List<ReadCategoriaDto> GetCategoria([FromQuery] string nome, [FromQuery] bool? status, [FromQuery] int quantidadePorPagina,
             [FromQuery] string ordem)
         {

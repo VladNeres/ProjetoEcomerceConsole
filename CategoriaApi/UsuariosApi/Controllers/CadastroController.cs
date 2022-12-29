@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System;
 using UsuariosApi.Data.Dtos;
+using UsuariosApi.Data.Requests;
 using UsuariosApi.Exceptions;
 using UsuariosApi.Services;
 
@@ -18,13 +19,14 @@ namespace UsuariosApi.Controllers
         }
 
         [HttpPost]
+
         public IActionResult CadastraUsuario(CreateUsuarioDto usuarioDto)
         {
             try
             {
                 Result resultado = _cadastroService.CadastroUsuario(usuarioDto);
                     if (resultado.IsFailed) return StatusCode(500);
-                return Ok();
+                return Ok(resultado.Successes);
             }
             catch (FormatException e )
             {
@@ -34,8 +36,14 @@ namespace UsuariosApi.Controllers
             {
                 return BadRequest(e.Message);
             }
-            
+        }
 
+        [HttpPost("/ativa")]
+        public IActionResult AtivaCadastroUsuario(AtivaContaRequest request)
+        {
+            Result resultado = _cadastroService.AtivaContaUsuario(request);
+            if(resultado.IsFailed) return StatusCode(500);
+            return Ok(resultado.Successes);
         }
     }
 }

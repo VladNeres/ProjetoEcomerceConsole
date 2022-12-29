@@ -1,12 +1,15 @@
 ﻿using AutoMapper;
+using CategoriaApi.Model;
 using FluentResults;
 using Microsoft.AspNetCore.Identity;
 using Newtonsoft.Json;
 using System;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Mail;
 using System.Threading.Tasks;
 using UsuariosApi.Data.Dtos;
+using UsuariosApi.Data.Requests;
 using UsuariosApi.Exceptions;
 using UsuariosApi.Models;
 
@@ -15,11 +18,12 @@ namespace UsuariosApi.Services
     public class CadastroService
     {
         private IMapper _mapper;
-        private UserManager<IdentityUser<int>> _userManager;
-        public CadastroService(IMapper mapper, UserManager<IdentityUser<int>> userManager)
+        private UserManager<CustomIdentityUser> _userManager;
+        public CadastroService(IMapper mapper, UserManager<CustomIdentityUser> userManager)
         {
             _mapper = mapper;
             _userManager = userManager;
+
         }
 
         public bool VerificaCPF(string cpf)
@@ -39,9 +43,21 @@ namespace UsuariosApi.Services
             }
             catch (FormatException)
             {
-                throw new FormatException("formato de e-mail invalido");
+                throw new FormatException("Formato de e-mail invalido");
             }
         }
+
+        public Result AtivaContaUsuario(AtivaContaRequest request)
+        {
+            var identityUser = _userManager.Users.FirstOrDefault(usuario=> usuario.UserName == request.UserName);
+            var IdentityResult = _userManager.ConfirmEmailAsync(identityUser, request.CodigoDeAtivacao).Result;
+            if (IdentityResult.Succeeded)
+            {
+                return Result.Ok();
+            }
+            return Result.Fail("Falha ao ativar conta de usuario"); 
+        }
+
         public async Task<Endereco> ViaCep(string cep)
         {
             HttpClient client = new HttpClient();
@@ -67,9 +83,14 @@ namespace UsuariosApi.Services
             usuario.Endereco.Numero = createDto.Endereco.Numero;
             usuario.Endereco.Complemento = createDto.Endereco.Complemento;
             //mapeando de um Usuario para um Identityuser
-            IdentityUser<int> usuarioIdentity = _mapper.Map<IdentityUser<int>>(usuario);
+            CustomIdentityUser usuarioIdentity = _mapper.Map<CustomIdentityUser>(usuario);
             var resultadoIdentity = _userManager.CreateAsync(usuarioIdentity, createDto.Repassword);
-            if (resultadoIdentity.Result.Succeeded) return Result.Ok();
+            _userManager.AddToRoleAsync(usuarioIdentity, "regular");
+            if (resultadoIdentity.Result.Succeeded)
+            {
+                var code = _userManager.GenerateEmailConfirmationTokenAsync(usuarioIdentity).Result;
+                return Result.Ok().WithSuccess(code);
+            }
             return Result.Fail("Falha ao cadastrar usuario");
         }
     }

@@ -21,11 +21,15 @@ namespace UsuariosApi.Data.Dtos
         [Compare("Password")]
         public string Repassword { get; set; }
 
-        [Required(ErrorMessage = "O campo endereco é obrigatório")]
-        public Endereco Endereco { get; set; }
-
         [Required(ErrorMessage ="O campo data de nascimento é obrigatório")]
         [DisplayFormat(DataFormatString = "dd/mm/yyyy")]
         public DateTime DataNascimento { get; set; }
+
+        [Required(ErrorMessage = "O campo Cep é obrigatório")]
+        public string CEP { get; set; }
+        public int Numero { get; set; }
+        public string Complemento { get; set; }
+
+
     }
 }

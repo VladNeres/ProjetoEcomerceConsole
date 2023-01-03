@@ -48,6 +48,10 @@
               "target": "Package",
               "version": "[2.0.5, )"
             },
+            "Dapper.Contrib": {
+              "target": "Package",
+              "version": "[2.0.78, )"
+            },
             "FluentResults": {
               "target": "Package",
               "version": "[2.5.0, )"

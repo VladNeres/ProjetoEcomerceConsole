@@ -58,7 +58,7 @@ namespace UsuariosApi.Services
             return Result.Fail("Falha ao ativar conta de usuario"); 
         }
 
-        public async Task<Endereco> ViaCep(string cep)
+        public async Task<Usuario> ViaCep(string cep)
         {
             HttpClient client = new HttpClient();
             var requisicao = await client.GetAsync($"https://viacep.com.br/ws/{cep}/json/");
@@ -67,25 +67,24 @@ namespace UsuariosApi.Services
             {
                 throw new NullException();
             }
-            var endereco = JsonConvert.DeserializeObject<Endereco>(resposta);
+            var endereco = JsonConvert.DeserializeObject<Usuario>(resposta);
             return endereco;
         }
         public Result CadastroUsuario(CreateUsuarioDto createDto)
         {
-            
-            var endereco = ViaCep(createDto.Endereco.CEP);
+            var usuarioExiste = _userManager.Users.FirstOrDefault(u => u.UserName == createDto.UserName);
+            if (usuarioExiste != null || usuarioExiste.Email != null) throw new AlreadyExistsException("UserName ou email já existe!");
+
             var emailValido = IsValidEmail(createDto.Email);
             var verificaCPF = VerificaCPF(createDto.CPF);
-            Usuario  usuario= _mapper.Map<Usuario>(createDto);
-            usuario.Status = true;
-            usuario.DataCriacao= DateTime.Now;
-            usuario.Endereco = endereco.Result;
-            usuario.Endereco.Numero = createDto.Endereco.Numero;
-            usuario.Endereco.Complemento = createDto.Endereco.Complemento;
-            //mapeando de um Usuario para um Identityuser
+            Usuario usuario = _mapper.Map<Usuario>(createDto);
+            inserindoResultadoDoCEP(createDto, usuario);
+            
+            //mapeando de um Usuario para um Identityuser e criando Role Regular
             CustomIdentityUser usuarioIdentity = _mapper.Map<CustomIdentityUser>(usuario);
             var resultadoIdentity = _userManager.CreateAsync(usuarioIdentity, createDto.Repassword);
             _userManager.AddToRoleAsync(usuarioIdentity, "regular");
+
             if (resultadoIdentity.Result.Succeeded)
             {
                 var code = _userManager.GenerateEmailConfirmationTokenAsync(usuarioIdentity).Result;
@@ -93,6 +92,21 @@ namespace UsuariosApi.Services
             }
             return Result.Fail("Falha ao cadastrar usuario");
         }
+
+        void inserindoResultadoDoCEP(CreateUsuarioDto createDto, Usuario usuario)
+        {
+                var endereco = ViaCep(createDto.CEP);
+                usuario.Status = true;
+                usuario.DataCriacao = DateTime.Now;
+                usuario.CEP = createDto.CEP;
+                usuario.Logradouro = endereco.Result.Logradouro;
+                usuario.Localidade = endereco.Result.Localidade;
+                usuario.UF = endereco.Result.UF;
+                usuario.Numero = createDto.Numero;
+                usuario.Complemento = createDto.Complemento;
+        }
+
+           
     }
 }
     

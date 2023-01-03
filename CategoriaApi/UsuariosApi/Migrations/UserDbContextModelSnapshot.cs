@@ -26,9 +26,27 @@ namespace UsuariosApi.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
+                    b.Property<string>("Bairro")
+                        .HasColumnType("text");
+
+                    b.Property<string>("CPF")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Cep")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Complemento")
+                        .HasColumnType("text");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("text");
+
+                    b.Property<DateTime>("DataAtualizacao")
+                        .HasColumnType("datetime");
+
+                    b.Property<DateTime>("DataCriacao")
+                        .HasColumnType("datetime");
 
                     b.Property<DateTime>("DataNascimento")
                         .HasColumnType("datetime");
@@ -40,11 +58,17 @@ namespace UsuariosApi.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("tinyint(1)");
 
+                    b.Property<string>("Localidade")
+                        .HasColumnType("text");
+
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("tinyint(1)");
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("timestamp");
+
+                    b.Property<string>("Logradouro")
+                        .HasColumnType("text");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
@@ -53,6 +77,9 @@ namespace UsuariosApi.Migrations
                     b.Property<string>("NormalizedUserName")
                         .HasMaxLength(256)
                         .HasColumnType("varchar(256)");
+
+                    b.Property<int>("Numero")
+                        .HasColumnType("int");
 
                     b.Property<string>("PasswordHash")
                         .HasColumnType("text");
@@ -66,8 +93,14 @@ namespace UsuariosApi.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("text");
 
+                    b.Property<bool>("Status")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("UF")
+                        .HasColumnType("text");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
@@ -89,16 +122,20 @@ namespace UsuariosApi.Migrations
                         {
                             Id = 99999,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "4d836469-859b-4ae2-be57-8e32705fd405",
+                            ConcurrencyStamp = "d85a1f44-db48-4a42-94ad-50788f74eef5",
+                            DataAtualizacao = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DataCriacao = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DataNascimento = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAEKHTKXppTLO7oDZFZ+ZRGlAlJAF5vnMHOBmkU9UQ6EOXfV3SRgvHN92KD45cRm+hRw==",
+                            Numero = 0,
+                            PasswordHash = "AQAAAAEAACcQAAAAEM5TTd6y7/8ZmaZIH54FAO7TRan9NWt2yTvPri0fbRQIvu9s9vTn7YlaSatHVJpFow==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "1b58f1b2-ff79-4c59-9309-868d1690b807",
+                            SecurityStamp = "f59b2428-0a92-48a2-af3c-27b4afe3ca06",
+                            Status = false,
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         });
@@ -134,14 +171,14 @@ namespace UsuariosApi.Migrations
                         new
                         {
                             Id = 99999,
-                            ConcurrencyStamp = "63a98fcf-5e90-4329-9cf9-dc2b254e8a91",
+                            ConcurrencyStamp = "6420a187-249a-4598-b529-ee6c57b99ecf",
                             Name = "admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = 99997,
-                            ConcurrencyStamp = "2d69742b-1824-40e0-90a9-239f4a04f878",
+                            ConcurrencyStamp = "dba70352-1807-440b-8b5b-607432bca148",
                             Name = "regular",
                             NormalizedName = "REGULAR"
                         });

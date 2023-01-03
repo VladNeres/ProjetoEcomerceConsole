@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System;
 using UsuariosApi.Data.Requests;
+using UsuariosApi.Exceptions;
 using UsuariosApi.Requests;
 using UsuariosApi.Services;
 
@@ -11,9 +12,9 @@ namespace UsuariosApi.Controllers
     [Route("[controller]")]
     public class LoginController : ControllerBase
     {
-        private LoginService _loginService;
+        private UsuarioService _loginService;
 
-        public LoginController(LoginService loginService)
+        public LoginController(UsuarioService loginService)
         {
             _loginService = loginService;
         }
@@ -32,6 +33,18 @@ namespace UsuariosApi.Controllers
             {
                 return Unauthorized(e.Message);
             }
+            catch(AlreadyExistsException e)
+            {
+                return Unauthorized(e.Message);
+            }
+        }
+
+        [HttpPost("/deslogar")]
+        public IActionResult DeslogaUsuario()
+        {
+            Result resultado = _loginService.DeslogaUsuario();
+            if (resultado.IsFailed) return Unauthorized(resultado.IsFailed);
+            return Ok(resultado.Successes);
         }
 
         [HttpPost("/solicita-reset")]

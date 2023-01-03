@@ -57,6 +57,27 @@
           "lib/netcoreapp3.1/CPFCNPJ.dll": {}
         }
       },
+      "Dapper/2.0.78": {
+        "type": "package",
+        "compile": {
+          "lib/net5.0/Dapper.dll": {}
+        },
+        "runtime": {
+          "lib/net5.0/Dapper.dll": {}
+        }
+      },
+      "Dapper.Contrib/2.0.78": {
+        "type": "package",
+        "dependencies": {
+          "Dapper": "2.0.78"
+        },
+        "compile": {
+          "lib/net5.0/Dapper.Contrib.dll": {}
+        },
+        "runtime": {
+          "lib/net5.0/Dapper.Contrib.dll": {}
+        }
+      },
       "FluentResults/2.5.0": {
         "type": "package",
         "compile": {
@@ -2525,6 +2546,40 @@
         "cpfcnpj.nuspec",
         "cpfcnpj.png",
         "lib/netcoreapp3.1/CPFCNPJ.dll"
+      ]
+    },
+    "Dapper/2.0.78": {
+      "sha512": "vLPwL2HZXp/DN17Eu7sg6GMEj02alq7jcy6atn5Gv8i96b9Hu1UoxlCrhInUPfSFLQQiD8O7pdWAE1fdUEO/1Q==",
+      "type": "package",
+      "path": "dapper/2.0.78",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "dapper.2.0.78.nupkg.sha512",
+        "dapper.nuspec",
+        "lib/net461/Dapper.dll",
+        "lib/net461/Dapper.xml",
+        "lib/net5.0/Dapper.dll",
+        "lib/net5.0/Dapper.xml",
+        "lib/netstandard2.0/Dapper.dll",
+        "lib/netstandard2.0/Dapper.xml"
+      ]
+    },
+    "Dapper.Contrib/2.0.78": {
+      "sha512": "sUfDVIf8LlHNiz3MfUFodeyRiemfN1JFkPxYjCxFWlwNPg1iQ49mB+0E89TkywWs4X8fiRWOVDQgtH5FtzK5Kw==",
+      "type": "package",
+      "path": "dapper.contrib/2.0.78",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "dapper.contrib.2.0.78.nupkg.sha512",
+        "dapper.contrib.nuspec",
+        "lib/net461/Dapper.Contrib.dll",
+        "lib/net461/Dapper.Contrib.xml",
+        "lib/net5.0/Dapper.Contrib.dll",
+        "lib/net5.0/Dapper.Contrib.xml",
+        "lib/netstandard2.0/Dapper.Contrib.dll",
+        "lib/netstandard2.0/Dapper.Contrib.xml"
       ]
     },
     "FluentResults/2.5.0": {
@@ -7996,6 +8051,7 @@
     "net5.0": [
       "AutoMapper.Extensions.Microsoft.DependencyInjection >= 11.0.0",
       "CPFCNPJ >= 2.0.5",
+      "Dapper.Contrib >= 2.0.78",
       "FluentResults >= 2.5.0",
       "Microsoft.AspNetCore.Authentication.JwtBearer >= 5.0.17",
       "Microsoft.AspNetCore.Identity >= 2.2.0",
@@ -8056,6 +8112,10 @@
           "CPFCNPJ": {
             "target": "Package",
             "version": "[2.0.5, )"
+          },
+          "Dapper.Contrib": {
+            "target": "Package",
+            "version": "[2.0.78, )"
           },
           "FluentResults": {
             "target": "Package",

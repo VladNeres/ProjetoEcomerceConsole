@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "81K/VZFUR5rM6iUqyiSzGgxVFAvTcVl/UHbonDBaj/ruaHbCTstMn93aJS2JTxTtiPiQmC2oLqF5RB1WbDTIFg==",
+  "dgSpecHash": "CUouFaCaP8+0OFhB67bc3LYQgDbcx1zZJY8GG0HWZgDbra+kDw8/X3JxutpQi7o1WEsYnopv2VgDx0PLHneS3A==",
   "success": true,
   "projectFilePath": "C:\\Users\\ClearTech\\Documents\\Sprints\\CategoriaApi\\UsuariosApi\\UsuariosApi.csproj",
   "expectedPackageFiles": [
@@ -8,6 +8,8 @@
     "C:\\Users\\ClearTech\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\11.0.0\\automapper.extensions.microsoft.dependencyinjection.11.0.0.nupkg.sha512",
     "C:\\Users\\ClearTech\\.nuget\\packages\\castle.core\\4.4.1\\castle.core.4.4.1.nupkg.sha512",
     "C:\\Users\\ClearTech\\.nuget\\packages\\cpfcnpj\\2.0.5\\cpfcnpj.2.0.5.nupkg.sha512",
+    "C:\\Users\\ClearTech\\.nuget\\packages\\dapper\\2.0.78\\dapper.2.0.78.nupkg.sha512",
+    "C:\\Users\\ClearTech\\.nuget\\packages\\dapper.contrib\\2.0.78\\dapper.contrib.2.0.78.nupkg.sha512",
     "C:\\Users\\ClearTech\\.nuget\\packages\\fluentresults\\2.5.0\\fluentresults.2.5.0.nupkg.sha512",
     "C:\\Users\\ClearTech\\.nuget\\packages\\google.protobuf\\3.19.4\\google.protobuf.3.19.4.nupkg.sha512",
     "C:\\Users\\ClearTech\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",

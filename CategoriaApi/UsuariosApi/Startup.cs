@@ -45,7 +45,7 @@ namespace UsuariosApi
 
             //this atribuition is informing to my app that i need some authorization
 
-            services.AddScoped<AtualizaCadastroService,AtualizaCadastroService>();
+            //services.AddScoped<AtualizaCadastroService,AtualizaCadastroService>();
             services.AddScoped<PesquisaUsuarioService, PesquisaUsuarioService>();
             services.AddScoped<CadastroService, CadastroService>();
             services.AddScoped<UsuarioService, UsuarioService>();

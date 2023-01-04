@@ -20,11 +20,11 @@ namespace UsuariosApi.Controllers
 
         [HttpPost]
 
-        public IActionResult CadastraUsuario(CreateUsuarioDto usuarioDto)
+        public IActionResult CadastraUsuarioPadrao(CreateUsuarioDto usuarioDto)
         {
             try
             {
-                Result resultado = _cadastroService.CadastroUsuario(usuarioDto);
+                Result resultado = _cadastroService.CadastroUsuarioPadrao(usuarioDto);
                     if (resultado.IsFailed) return StatusCode(500);
                 return Ok(resultado.Successes);
             }
@@ -35,6 +35,21 @@ namespace UsuariosApi.Controllers
             catch (NullException e)
             {
                 return BadRequest(e.Message);
+            }
+        }
+
+        [HttpPost("/cadastro-admin")]
+        public IActionResult CadastrarUsuarioAdmin(CreateUsuarioDto usuariodto)
+        {
+            try
+            {
+                Result resultado = _cadastroService.CadastroUsuarioAdmin(usuariodto);
+                if (resultado.IsFailed) return StatusCode(500);
+                return Ok(resultado.Successes);
+            }
+            catch (AlreadyExistsException e)
+            {
+                return Conflict(e.Message);
             }
         }
 

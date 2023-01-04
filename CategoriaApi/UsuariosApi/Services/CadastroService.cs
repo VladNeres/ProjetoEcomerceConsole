@@ -19,11 +19,11 @@ namespace UsuariosApi.Services
     {
         private IMapper _mapper;
         private UserManager<CustomIdentityUser> _userManager;
+        //private RoleManager<CustomIdentityUser> _roleManager;
         public CadastroService(IMapper mapper, UserManager<CustomIdentityUser> userManager)
         {
             _mapper = mapper;
             _userManager = userManager;
-
         }
 
         public bool VerificaCPF(string cpf)
@@ -70,7 +70,7 @@ namespace UsuariosApi.Services
             var endereco = JsonConvert.DeserializeObject<Usuario>(resposta);
             return endereco;
         }
-        public Result CadastroUsuario(CreateUsuarioDto createDto)
+        public Result CadastroUsuarioPadrao(CreateUsuarioDto createDto)
         {
             var usuarioExiste = _userManager.Users.FirstOrDefault(u => u.UserName == createDto.UserName);
             if (usuarioExiste != null || usuarioExiste.Email != null) throw new AlreadyExistsException("UserName ou email já existe!");
@@ -93,6 +93,29 @@ namespace UsuariosApi.Services
             return Result.Fail("Falha ao cadastrar usuario");
         }
 
+
+        public Result CadastroUsuarioAdmin(CreateUsuarioDto createDto)
+        {
+            var usernameExists = _userManager.Users.FirstOrDefault(user => user.UserName.ToUpper() == createDto.UserName.ToUpper());
+            if (usernameExists != null) throw new AlreadyExistsException("Username ja existe");
+
+            bool emailValido = IsValidEmail(createDto.Email);
+            bool verificarCpf = VerificaCPF(createDto.CPF);
+            Usuario usuario = _mapper.Map<Usuario>(createDto);
+            inserindoResultadoDoCEP(createDto, usuario);
+
+            CustomIdentityUser usuarioIdentity = _mapper.Map<CustomIdentityUser>(usuario);
+
+            var resultIdentity = _userManager.CreateAsync(usuarioIdentity, createDto.Password);
+            var createRoleResult = _userManager.AddToRoleAsync(usuarioIdentity, "admin");
+
+            if (resultIdentity.Result.Succeeded)
+            {
+                var code = _userManager.GenerateEmailConfirmationTokenAsync(usuarioIdentity).Result;
+                return Result.Ok().WithSuccess(code);
+            }
+            return Result.Fail("Falha ao Cadastrar usuario");
+        }
         void inserindoResultadoDoCEP(CreateUsuarioDto createDto, Usuario usuario)
         {
                 var endereco = ViaCep(createDto.CEP);
@@ -105,8 +128,6 @@ namespace UsuariosApi.Services
                 usuario.Numero = createDto.Numero;
                 usuario.Complemento = createDto.Complemento;
         }
-
-           
     }
 }
     

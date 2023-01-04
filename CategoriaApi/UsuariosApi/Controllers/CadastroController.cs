@@ -1,6 +1,7 @@
 ﻿using FluentResults;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Threading.Tasks;
 using UsuariosApi.Data.Dtos;
 using UsuariosApi.Data.Requests;
 using UsuariosApi.Exceptions;
@@ -20,13 +21,17 @@ namespace UsuariosApi.Controllers
 
         [HttpPost]
 
-        public IActionResult CadastraUsuarioPadrao(CreateUsuarioDto usuarioDto)
+        public async Task< IActionResult> CadastraUsuarioPadrao(CreateUsuarioDto usuarioDto)
         {
             try
             {
-                Result resultado = _cadastroService.CadastroUsuarioPadrao(usuarioDto);
+                Result resultado = await _cadastroService.CadastroUsuarioPadrao(usuarioDto);
                     if (resultado.IsFailed) return StatusCode(500);
                 return Ok(resultado.Successes);
+            }
+            catch (AlreadyExistsException e)
+            {
+                return Conflict(e.Message);
             }
             catch (FormatException e )
             {
@@ -39,11 +44,11 @@ namespace UsuariosApi.Controllers
         }
 
         [HttpPost("/cadastro-admin")]
-        public IActionResult CadastrarUsuarioAdmin(CreateUsuarioDto usuariodto)
+        public async Task<IActionResult> CadastrarUsuarioAdmin(CreateUsuarioDto usuariodto)
         {
             try
             {
-                Result resultado = _cadastroService.CadastroUsuarioAdmin(usuariodto);
+                Result resultado = await _cadastroService.CadastroUsuarioAdmin(usuariodto);
                 if (resultado.IsFailed) return StatusCode(500);
                 return Ok(resultado.Successes);
             }
@@ -51,14 +56,27 @@ namespace UsuariosApi.Controllers
             {
                 return Conflict(e.Message);
             }
+            catch(NullException e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
         [HttpPost("/ativa")]
         public IActionResult AtivaCadastroUsuario(AtivaContaRequest request)
         {
-            Result resultado = _cadastroService.AtivaContaUsuario(request);
-            if(resultado.IsFailed) return StatusCode(500);
-            return Ok(resultado.Successes);
+            try
+            {
+                Result resultado = _cadastroService.AtivaContaUsuario(request);
+                if(resultado.IsFailed) return StatusCode(500);
+                return Ok(resultado.Successes);
+
+            }
+            catch(NullException e)
+            {
+                return NotFound(e.Message);
+            }
         }
+
     }
 }

@@ -48,7 +48,7 @@ namespace UsuariosApi
             //services.AddScoped<AtualizaCadastroService,AtualizaCadastroService>();
             services.AddScoped<PesquisaUsuarioService, PesquisaUsuarioService>();
             services.AddScoped<CadastroService, CadastroService>();
-            services.AddScoped<UsuarioService, UsuarioService>();
+            services.AddScoped<LoginService, LoginService>();
             services.AddScoped<TokenService, TokenService>();
             services.AddControllers();
             services.AddSwaggerGen(c =>

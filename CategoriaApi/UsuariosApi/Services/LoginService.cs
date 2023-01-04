@@ -11,38 +11,54 @@ namespace UsuariosApi.Services
 {
     public class LoginService
     {
+
         private SignInManager<CustomIdentityUser> _signInManager;
         private TokenService _tokenService;
-        public LoginService(SignInManager<CustomIdentityUser> signInManager, TokenService tokenService)
+        private UserManager<CustomIdentityUser> _userManager;
+        public LoginService(SignInManager<CustomIdentityUser> signInManager, TokenService tokenService, UserManager<CustomIdentityUser> userManager)
         {
             _signInManager = signInManager;
             _tokenService = tokenService;
+            _userManager = userManager;
         }
 
         public Result LogarUsuario(LoginRequest request)
         {
-            var resultadoIdentity = _signInManager.PasswordSignInAsync(request.UserName, request.Password, false, false);
-            var identityResult = _signInManager.UserManager.Users.FirstOrDefault(identity => identity.UserName == request.UserName);
-            if(identityResult.EmailConfirmed == false)
+            try
             {
-               return Result.Fail("A conta não foi validada");
+                var usuarioEmail = _signInManager.UserManager.FindByEmailAsync(request.Email);
+                var resultadoIdentity = _signInManager
+                    .PasswordSignInAsync(usuarioEmail.Result.UserName, request.Password, false, false);
+                if (resultadoIdentity.Result.IsNotAllowed)
+                {
+                    var code = _userManager.GenerateEmailConfirmationTokenAsync(usuarioEmail.Result).Result;
+                   return Result.Fail("Email não foi confirmado por favor confirme o token -> " + code);
+                   
+                }
+                if (resultadoIdentity.Result.Succeeded)
+                {
+                    var identityUser = _signInManager.UserManager.Users.FirstOrDefault(usuario => usuario.NormalizedUserName == usuarioEmail.Result.UserName.ToUpper()); ;
+                        Token token =_tokenService.CreateToken(identityUser, _signInManager.UserManager
+                            .GetRolesAsync(identityUser).Result.FirstOrDefault());
+                        return Result.Ok().WithSuccess(token.Value);
+                }
+                return Result.Fail("Login ou senha incorreto");
+
             }
-            if (resultadoIdentity.Result.Succeeded)
+            catch (NullReferenceException)
             {
-                    var identityUser = _signInManager.UserManager.Users .FirstOrDefault(usuario => usuario.NormalizedUserName == request.UserName.ToUpper());
-                    Token token =_tokenService.CreateToken(identityUser, _signInManager.UserManager
-                        .GetRolesAsync(identityUser).Result.FirstOrDefault());
-                    return Result.Ok().WithSuccess(token.Value);
+                return Result.Fail("Email não cadastrado");
             }
-            return Result.Fail("Login ou senha incorreto");
         }
 
-        public CustomIdentityUser RecuperaUsuarioPeloEmail(string email)
+
+        public Result DeslogaUsuario()
         {
-            return _signInManager.UserManager.Users
-                            .FirstOrDefault(usuario => usuario.NormalizedEmail == email.ToUpper());
+            var usuarioIdentity = _signInManager.SignOutAsync();
+            if (usuarioIdentity.IsCompletedSuccessfully) return Result.Ok();
+            return Result.Fail("Logout falhou");
         }
-        
+
 
         public Result ReseteSenhaUsuario(EfetuaResetRequest request)
         {
@@ -67,6 +83,11 @@ namespace UsuariosApi.Services
                 return Result.Ok().WithSuccess(codigoDeRecuperacao);
             }
             return Result.Fail("Falha ao solicitar redefinição da senha");
+        }
+        public CustomIdentityUser RecuperaUsuarioPeloEmail(string email)
+        {
+            return _signInManager.UserManager.Users
+                            .FirstOrDefault(usuario => usuario.NormalizedEmail == email.ToUpper());
         }
     }
 }

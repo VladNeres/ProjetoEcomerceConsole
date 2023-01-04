@@ -14,10 +14,11 @@ namespace UsuariosApi.Models
         public string UserName { get; set; }
 
         [Required(ErrorMessage ="O campo CPF é obrigatório")]
-
         public string CPF { get; set; }
-        [Required(ErrorMessage ="o campo de data de nascimento é obrigatório")]
+
+        [Required(ErrorMessage = "O campo Data de nascimento é obrigatório")]
         [DisplayFormat(DataFormatString = "dd/mm/yyyy")]
+        [DataType(DataType.DateTime,ErrorMessage ="Formato invalido")]
         public DateTime DataNascimento { get; set; }
 
         [Required(ErrorMessage ="O campo e-mail é obrigatório")]

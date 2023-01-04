@@ -19,7 +19,6 @@ namespace UsuariosApi.Services
     {
         private IMapper _mapper;
         private UserManager<CustomIdentityUser> _userManager;
-        //private RoleManager<CustomIdentityUser> _roleManager;
         public CadastroService(IMapper mapper, UserManager<CustomIdentityUser> userManager)
         {
             _mapper = mapper;
@@ -30,7 +29,7 @@ namespace UsuariosApi.Services
         {
             CPFCNPJ.IMain checkCPF = new CPFCNPJ.Main();
             var resultCPF = checkCPF.IsValidCPFCNPJ(cpf);
-            if (resultCPF == false) throw new NullException("Cpf Invalido! por favor digite um CPF valido");
+            if (resultCPF == false) throw new NullException("CPF Invalido! por favor digite um CPF valido");
             return resultCPF;
         }
 
@@ -49,7 +48,9 @@ namespace UsuariosApi.Services
 
         public Result AtivaContaUsuario(AtivaContaRequest request)
         {
-            var identityUser = _userManager.Users.FirstOrDefault(usuario=> usuario.UserName == request.UserName);
+            
+            var identityUser = RecuperarUsuarioPorEmail(request.Email);
+            if (identityUser == null) throw new NullException("Email de confirmação invalido");
             var IdentityResult = _userManager.ConfirmEmailAsync(identityUser, request.CodigoDeAtivacao).Result;
             if (IdentityResult.Succeeded)
             {
@@ -65,25 +66,28 @@ namespace UsuariosApi.Services
             var resposta = await requisicao.Content.ReadAsStringAsync();
             if (!requisicao.IsSuccessStatusCode)
             {
-                throw new NullException();
+                throw new NullException("CEP Invalido por favor digite um CEP valido");
+                
             }
             var endereco = JsonConvert.DeserializeObject<Usuario>(resposta);
             return endereco;
         }
-        public Result CadastroUsuarioPadrao(CreateUsuarioDto createDto)
+        public async Task<Result> CadastroUsuarioPadrao(CreateUsuarioDto createDto)
         {
-            var usuarioExiste = _userManager.Users.FirstOrDefault(u => u.UserName == createDto.UserName);
-            if (usuarioExiste != null || usuarioExiste.Email != null) throw new AlreadyExistsException("UserName ou email já existe!");
+            CustomIdentityUser usuarioExiste = RecuperarUsername(createDto.Email);
+           CustomIdentityUser emailExtiste= RecuperarUsuarioPorEmail(createDto.Email);
+            if (usuarioExiste != null || emailExtiste!=null) throw new AlreadyExistsException("UserName ou email já existe!");
 
             var emailValido = IsValidEmail(createDto.Email);
-            var verificaCPF = VerificaCPF(createDto.CPF);
             Usuario usuario = _mapper.Map<Usuario>(createDto);
-            inserindoResultadoDoCEP(createDto, usuario);
+            var verificaCPF = VerificaCPF(createDto.CPF);
             
+            await inserindoResultadoDoCEP(createDto, usuario);
+
             //mapeando de um Usuario para um Identityuser e criando Role Regular
             CustomIdentityUser usuarioIdentity = _mapper.Map<CustomIdentityUser>(usuario);
-            var resultadoIdentity = _userManager.CreateAsync(usuarioIdentity, createDto.Repassword);
-            _userManager.AddToRoleAsync(usuarioIdentity, "regular");
+            var resultadoIdentity =  _userManager.CreateAsync(usuarioIdentity, createDto.Repassword);
+            await _userManager.AddToRoleAsync(usuarioIdentity, "regular");
 
             if (resultadoIdentity.Result.Succeeded)
             {
@@ -94,15 +98,16 @@ namespace UsuariosApi.Services
         }
 
 
-        public Result CadastroUsuarioAdmin(CreateUsuarioDto createDto)
+        public async Task<Result> CadastroUsuarioAdmin(CreateUsuarioDto createDto)
         {
-            var usernameExists = _userManager.Users.FirstOrDefault(user => user.UserName.ToUpper() == createDto.UserName.ToUpper());
-            if (usernameExists != null) throw new AlreadyExistsException("Username ja existe");
+            var usernameExists = RecuperarUsername(createDto.Email);
+            var EmailExists = RecuperarUsuarioPorEmail(createDto.Email);
+            if (usernameExists != null || EmailExists !=null) throw new AlreadyExistsException("Username ja existe");
 
             bool emailValido = IsValidEmail(createDto.Email);
             bool verificarCpf = VerificaCPF(createDto.CPF);
             Usuario usuario = _mapper.Map<Usuario>(createDto);
-            inserindoResultadoDoCEP(createDto, usuario);
+             await inserindoResultadoDoCEP(createDto, usuario);
 
             CustomIdentityUser usuarioIdentity = _mapper.Map<CustomIdentityUser>(usuario);
 
@@ -116,17 +121,27 @@ namespace UsuariosApi.Services
             }
             return Result.Fail("Falha ao Cadastrar usuario");
         }
-        void inserindoResultadoDoCEP(CreateUsuarioDto createDto, Usuario usuario)
+        private  async Task inserindoResultadoDoCEP(CreateUsuarioDto createDto, Usuario usuario)
         {
-                var endereco = ViaCep(createDto.CEP);
+                var endereco = await ViaCep(createDto.CEP);
                 usuario.Status = true;
                 usuario.DataCriacao = DateTime.Now;
                 usuario.CEP = createDto.CEP;
-                usuario.Logradouro = endereco.Result.Logradouro;
-                usuario.Localidade = endereco.Result.Localidade;
-                usuario.UF = endereco.Result.UF;
+                usuario.UF = endereco.UF;
+                usuario.Localidade = endereco.Localidade;
+                usuario.Bairro= endereco.Bairro;
+                usuario.Logradouro = endereco.Logradouro;
                 usuario.Numero = createDto.Numero;
                 usuario.Complemento = createDto.Complemento;
+        }
+        private CustomIdentityUser RecuperarUsername(string userName)
+        {
+            return _userManager.Users.FirstOrDefault(u => u.NormalizedUserName == userName.ToUpper());
+        }
+        private CustomIdentityUser RecuperarUsuarioPorEmail(string email)
+        {
+            return _userManager.Users
+                .FirstOrDefault(user => user.NormalizedEmail == email.ToUpper());
         }
     }
 }

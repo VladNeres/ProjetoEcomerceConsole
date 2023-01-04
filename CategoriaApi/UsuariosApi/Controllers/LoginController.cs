@@ -12,9 +12,9 @@ namespace UsuariosApi.Controllers
     [Route("[controller]")]
     public class LoginController : ControllerBase
     {
-        private UsuarioService _loginService;
+        private LoginService _loginService;
 
-        public LoginController(UsuarioService loginService)
+        public LoginController(LoginService loginService)
         {
             _loginService = loginService;
         }
@@ -24,7 +24,6 @@ namespace UsuariosApi.Controllers
         {
             try
             {
-
                 Result resultado = _loginService.LogarUsuario(request);
                 if (resultado.IsFailed) return Unauthorized(resultado.Errors);
                 return Ok(resultado.Successes);

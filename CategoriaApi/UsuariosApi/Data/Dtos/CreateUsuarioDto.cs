@@ -18,7 +18,7 @@ namespace UsuariosApi.Data.Dtos
         [DataType(DataType.Password)]
         public string Password { get; set; }
         [Required(ErrorMessage= "O campo repassword é obrigatório para confirmar a senha")]
-        [Compare("Password")]
+        [Compare("Password", ErrorMessage ="Os campos password e repassword estão divergentes")]
         public string Repassword { get; set; }
 
         [Required(ErrorMessage ="O campo data de nascimento é obrigatório")]

@@ -6,6 +6,7 @@ using CategoriaApi.Model;
 using CategoriaApi.Services;
 using FluentResults;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -34,6 +35,10 @@ namespace CategoriaApi.Controllers
             {
                 ReadCentroDto readCentro = await _service.AddCentroDeDistribuicao(centroDto);
                 return CreatedAtAction(nameof(GetCentroPorId), new { id = readCentro.Id }, readCentro);
+            }
+            catch (FormatException e)
+            {
+                return BadRequest(e.Message);
             }
             catch (AlreadyExistException e)
             {

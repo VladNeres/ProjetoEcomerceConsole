@@ -4,8 +4,8 @@ namespace UsuariosApi.Data.Requests
 {
     public class AtivaContaRequest
     {
-        [Required]
-        public string UserName { get; set; }
+        [Required(ErrorMessage = "O campo email é obrigatório")]
+        public string Email { get; set; }
         [Required]
         public string CodigoDeAtivacao { get; set; }
     }

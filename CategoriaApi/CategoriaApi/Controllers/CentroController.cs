@@ -56,11 +56,11 @@ namespace CategoriaApi.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult AtualizarCentro(int id, [FromBody] UpdateCentroDto updateCentro)
+        public async Task<IActionResult> AtualizarCentro(int id, [FromBody] UpdateCentroDto updateCentro)
         {
             try
             {
-                var centro = _service.AtualizarCentroService(id, updateCentro);
+                var centro = await _service.AtualizarCentroService(id, updateCentro);
                 if (centro.IsFailed) return NotFound();
                 return NoContent();
 

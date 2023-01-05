@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "lY54FN+izjJC2HAhHMX/1t08wQP0lDKBnXcVGcmzKx/O9BP/mIiOw+KsCWsPcFeq6GkpU7AbkyMUwE89QdXIWQ==",
+  "dgSpecHash": "ejYWKIMEYl8e/I0ciS5BfhCjHD50tf93EMUk65Bo3DIbfu3yrZA1jfuG8e2EJFK/G1gSFluz3XV3r/E9/eNSGA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\ClearTech\\Documents\\Sprints\\CategoriaApi\\CategoriaApi\\CategoriaApi.csproj",
+  "projectFilePath": "C:\\Diretorioazure\\T2-VladmirNeres\\CategoriaApi\\CategoriaApi\\CategoriaApi.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\ClearTech\\.nuget\\packages\\automapper\\11.0.0\\automapper.11.0.0.nupkg.sha512",
     "C:\\Users\\ClearTech\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\11.0.0\\automapper.extensions.microsoft.dependencyinjection.11.0.0.nupkg.sha512",

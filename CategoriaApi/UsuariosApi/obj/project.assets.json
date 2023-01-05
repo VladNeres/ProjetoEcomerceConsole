@@ -8072,11 +8072,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\ClearTech\\Documents\\Sprints\\CategoriaApi\\UsuariosApi\\UsuariosApi.csproj",
+      "projectUniqueName": "C:\\Diretorioazure\\T2-VladmirNeres\\CategoriaApi\\UsuariosApi\\UsuariosApi.csproj",
       "projectName": "UsuariosApi",
-      "projectPath": "C:\\Users\\ClearTech\\Documents\\Sprints\\CategoriaApi\\UsuariosApi\\UsuariosApi.csproj",
+      "projectPath": "C:\\Diretorioazure\\T2-VladmirNeres\\CategoriaApi\\UsuariosApi\\UsuariosApi.csproj",
       "packagesPath": "C:\\Users\\ClearTech\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\ClearTech\\Documents\\Sprints\\CategoriaApi\\UsuariosApi\\obj\\",
+      "outputPath": "C:\\Diretorioazure\\T2-VladmirNeres\\CategoriaApi\\UsuariosApi\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\ClearTech\\AppData\\Roaming\\NuGet\\NuGet.Config",

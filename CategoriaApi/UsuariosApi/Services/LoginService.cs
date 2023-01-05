@@ -38,8 +38,10 @@ namespace UsuariosApi.Services
                 }
                 if (resultadoIdentity.Result.Succeeded)
                 {
-                    var identityUser = _signInManager.UserManager.Users.FirstOrDefault(usuario => usuario.NormalizedUserName == usuarioEmail.Result.UserName.ToUpper()); ;
-                        Token token =_tokenService.CreateToken(identityUser, _signInManager.UserManager
+                    var identityUser = _signInManager.UserManager.Users.
+                        FirstOrDefault(usuario => usuario.NormalizedUserName == usuarioEmail.Result.UserName.ToUpper()); ;
+                        
+                    Token token =_tokenService.CreateToken(identityUser, _signInManager.UserManager
                             .GetRolesAsync(identityUser).Result.FirstOrDefault());
                         return Result.Ok().WithSuccess(token.Value);
                 }

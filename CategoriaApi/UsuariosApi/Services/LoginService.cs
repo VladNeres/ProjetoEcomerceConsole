@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using System;
 using System.Linq;
 using UsuariosApi.Data.Requests;
+using UsuariosApi.Exceptions;
 using UsuariosApi.Models;
 using UsuariosApi.Requests;
 
@@ -43,7 +44,6 @@ namespace UsuariosApi.Services
                         return Result.Ok().WithSuccess(token.Value);
                 }
                 return Result.Fail("Login ou senha incorreto");
-
             }
             catch (NullReferenceException)
             {
@@ -63,13 +63,13 @@ namespace UsuariosApi.Services
         public Result ReseteSenhaUsuario(EfetuaResetRequest request)
         {
             CustomIdentityUser identityUser = RecuperaUsuarioPeloEmail(request.Email);
+            if (identityUser == null) throw new NullException("Email inexistente"); 
             IdentityResult resultadoIdentity = _signInManager.UserManager
                 .ResetPasswordAsync(identityUser, request.Token, request.Password).Result;
 
             if (resultadoIdentity.Succeeded) return Result.Ok().WithSuccess("Senha alterada com sucesso");
             return Result.Fail("Falha ao solicitar a troca de senha");
         }
-
 
         public Result SolicitaReseteSenhaUsuario(SolicitaResetRequest request)
         {

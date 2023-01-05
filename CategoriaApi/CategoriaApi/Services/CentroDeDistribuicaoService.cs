@@ -1,5 +1,4 @@
-﻿    using AutoMapper;
-using CategoriaApi.Data;
+﻿using AutoMapper;
 using CategoriaApi.Data.Dto.CentroDto;
 using CategoriaApi.Exceptions;
 using CategoriaApi.Model;
@@ -44,10 +43,8 @@ namespace CategoriaApi.Services
      
         public async Task<ReadCentroDto> AddCentroDeDistribuicao(CreateCentroDto centroDto)
         {
-           
             CentroDeDistribuicao categoriaNome = _repository.RetornarNomeDocentro(centroDto);
             CentroDeDistribuicao centroEndereco = _repository.RetornarEndereco(centroDto);
-            
 
             if (centroDto.Nome.Length >= 3)
             {
@@ -70,7 +67,7 @@ namespace CategoriaApi.Services
             throw new MinCharacterException("É necessario informar de 3 a 50 caracteres");
         }
 
-        public Result AtualizarCentroService(int id, UpdateCentroDto centroDto)
+        public async Task<Result> AtualizarCentroService(int id, UpdateCentroDto centroDto)
         {
             CentroDeDistribuicao centro = _repository.RecuperarCentroPorId(id);
             if(centro == null)
@@ -81,12 +78,12 @@ namespace CategoriaApi.Services
             {
                 throw new InativeObjectException("Não é possivel inativar um centro que contenha um produto cadastrado");
             }
-            var endereço = ViaCep(centroDto.CEP);
-            centroDto.CEP = endereço.Result.CEP;
-            centroDto.Logradouro = endereço.Result.Logradouro;
-            centroDto.Bairro = endereço.Result.Bairro;
-            centroDto.Localidade = endereço.Result.Localidade;
-            centroDto.UF = endereço.Result.UF;
+            var endereço = await ViaCep(centroDto.CEP);
+            centroDto.CEP = endereço.CEP;
+            centroDto.Logradouro = endereço.Logradouro;
+            centroDto.Bairro = endereço.Bairro;
+            centroDto.Localidade = endereço.Localidade;
+            centroDto.UF = endereço.UF;
             CentroDeDistribuicao centroupdate = _mapper.Map(centroDto, centro);
             centroupdate.DataAtualizacao = DateTime.Now;
             _repository.Salvar();
@@ -114,11 +111,9 @@ namespace CategoriaApi.Services
                 return centroDto;
             }
                 return null;
-
         }
 
         public List<CentroDeDistribuicao> GetCentroDeDistribuicao(CentroPesquisa pesquisa)
-
         {
             return _repository.GetCentroDeDistribuicao(pesquisa);
         }

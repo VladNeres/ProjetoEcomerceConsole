@@ -48,8 +48,7 @@ namespace UsuariosApi.Services
 
         public Result AtivaContaUsuario(AtivaContaRequest request)
         {
-            
-            var identityUser = RecuperarUsuarioPorEmail(request.Email);
+            CustomIdentityUser identityUser = RecuperarUsuarioPorEmail(request.Email);
             if (identityUser == null) throw new NullException("Email de confirmação invalido");
             var IdentityResult = _userManager.ConfirmEmailAsync(identityUser, request.CodigoDeAtivacao).Result;
             if (IdentityResult.Succeeded)
@@ -67,21 +66,20 @@ namespace UsuariosApi.Services
             if (!requisicao.IsSuccessStatusCode)
             {
                 throw new NullException("CEP Invalido por favor digite um CEP valido");
-                
             }
             var endereco = JsonConvert.DeserializeObject<Usuario>(resposta);
             return endereco;
         }
+
         public async Task<Result> CadastroUsuarioPadrao(CreateUsuarioDto createDto)
         {
             CustomIdentityUser usuarioExiste = RecuperarUsername(createDto.Email);
-           CustomIdentityUser emailExtiste= RecuperarUsuarioPorEmail(createDto.Email);
+            CustomIdentityUser emailExtiste= RecuperarUsuarioPorEmail(createDto.Email);
             if (usuarioExiste != null || emailExtiste!=null) throw new AlreadyExistsException("UserName ou email já existe!");
 
             var emailValido = IsValidEmail(createDto.Email);
+            var verificaCpf = VerificaCPF(createDto.CPF);
             Usuario usuario = _mapper.Map<Usuario>(createDto);
-            var verificaCPF = VerificaCPF(createDto.CPF);
-            
             await inserindoResultadoDoCEP(createDto, usuario);
 
             //mapeando de um Usuario para um Identityuser e criando Role Regular
@@ -102,12 +100,12 @@ namespace UsuariosApi.Services
         {
             var usernameExists = RecuperarUsername(createDto.Email);
             var EmailExists = RecuperarUsuarioPorEmail(createDto.Email);
-            if (usernameExists != null || EmailExists !=null) throw new AlreadyExistsException("Username ja existe");
+            if (usernameExists != null || EmailExists !=null) throw new AlreadyExistsException("UserName ou email já existe!");
 
             bool emailValido = IsValidEmail(createDto.Email);
             bool verificarCpf = VerificaCPF(createDto.CPF);
             Usuario usuario = _mapper.Map<Usuario>(createDto);
-             await inserindoResultadoDoCEP(createDto, usuario);
+            await inserindoResultadoDoCEP(createDto, usuario);
 
             CustomIdentityUser usuarioIdentity = _mapper.Map<CustomIdentityUser>(usuario);
 

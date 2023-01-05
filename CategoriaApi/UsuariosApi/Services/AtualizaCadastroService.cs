@@ -20,25 +20,23 @@ namespace UsuariosApi.Services
             _cadastroService = cadastroService;
         }
 
-
         public async Task<Result> AtualizarCadastro(int id,UpdateUsuarioDto updateUserDto)
         {
-            var username = _userManager.Users
-                .FirstOrDefault(usuario => usuario.Id == id);
+            CustomIdentityUser username = _userManager.Users.FirstOrDefault(usuario => usuario.Id == id);
 
             if(username == null)
             {
                 return Result.Fail("Usuario não encontrado");
             }
 
-         var cpfValido=   _cadastroService.VerificaCPF(updateUserDto.CPF);
-         var endereco =   _cadastroService.ViaCep(updateUserDto.CEP);
-            updateUserDto.UF = endereco.Result.UF;
-            updateUserDto.Localidade = endereco.Result.Localidade;
-            updateUserDto.Bairro = endereco.Result.Bairro;
-            updateUserDto.Logradouro = endereco.Result.Logradouro;
-            updateUserDto.Numero = endereco.Result.Numero;
-            updateUserDto.Complemento = endereco.Result.Complemento;
+            var cpfValido=   _cadastroService.VerificaCPF(updateUserDto.CPF);
+            var endereco = await  _cadastroService.ViaCep(updateUserDto.CEP);
+            updateUserDto.UF = endereco.UF;
+            updateUserDto.Localidade = endereco.Localidade;
+            updateUserDto.Bairro = endereco.Bairro;
+            updateUserDto.Logradouro = endereco.Logradouro;
+            updateUserDto.Numero = endereco.Numero;
+            updateUserDto.Complemento = endereco.Complemento;
             updateUserDto.DataAtualizacao = System.DateTime.Now;
             _mapper.Map(updateUserDto,username);
             await _userManager.UpdateAsync(username);

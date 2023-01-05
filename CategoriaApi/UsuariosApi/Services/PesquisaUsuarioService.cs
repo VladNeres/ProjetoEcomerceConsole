@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using CategoriaApi.Model;
-using Dapper;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -74,11 +73,8 @@ namespace UsuariosApi.Services
                                                         select usuario;
                 usuarios = query.ToList();
             }
-
             List<ReadUsuarioDto> readDto = _mapper.Map<List<ReadUsuarioDto>>(usuarios);
             return readDto;
-
-
         }
     }
 }

@@ -14,8 +14,6 @@ namespace UsuariosApi.Services
     {
         public Token CreateToken(CustomIdentityUser usuario, string role)
         {
-            
-            
             if(role == null)
             {
 
@@ -42,10 +40,6 @@ namespace UsuariosApi.Services
 
                 var tokenString = new JwtSecurityTokenHandler().WriteToken(Token);
                 return new Token(tokenString);
-            
-            
-            
         }
-
     }
 }

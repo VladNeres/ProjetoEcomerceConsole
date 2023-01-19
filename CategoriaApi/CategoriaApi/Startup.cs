@@ -1,5 +1,6 @@
 using CategoriaApi.Authorization;
 using CategoriaApi.Data;
+using CategoriaApi.Interfaces;
 using CategoriaApi.Repository;
 using CategoriaApi.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -44,9 +45,11 @@ namespace CategoriaApi
             services.AddScoped<SubCategoriaService>();
             services.AddScoped<ProdutoServices>();
             services.AddScoped<CentroDeDistribuicaoService>();
-            services.AddTransient<CategoriaRepository>();
+            services.AddTransient< CategoriaRepository>();
             services.AddTransient<SubCategoriaRepository>();
             services.AddTransient<CentroRepository>();
+            services.AddScoped<ICategoriaRepository,CategoriaRepository>();
+            //services.AddScoped<ICategoriaService>();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

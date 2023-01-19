@@ -2,9 +2,8 @@
 using CategoriaApi.Data;
 using CategoriaApi.Data.Dto.DtoCategoria;
 using CategoriaApi.Exceptions;
+using CategoriaApi.Interfaces;
 using CategoriaApi.Model;
-using CategoriaApi.Repository;
-using Dapper;
 using FluentResults;
 using System;
 using System.Collections.Generic;
@@ -13,12 +12,12 @@ using System.Linq;
 
 namespace CategoriaApi.Services
 {
-    public class CategoriaServices
+    public class CategoriaServices: ICategoriaService
     {
-        private CategoriaRepository _repository;
+        private ICategoriaRepository _repository;
         private IMapper _mapper;
 
-        public CategoriaServices(IMapper mapper, CategoriaRepository repository)
+        public CategoriaServices(IMapper mapper, ICategoriaRepository repository)
         {
             _repository = repository;
             _mapper = mapper;

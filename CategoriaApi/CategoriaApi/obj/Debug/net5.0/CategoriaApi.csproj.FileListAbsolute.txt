@@ -184,3 +184,12 @@ C:\Users\ClearTech\Documents\Sprints\CategoriaApi\CategoriaApi\bin\Debug\net5.0\
 C:\Users\ClearTech\Documents\Sprints\CategoriaApi\CategoriaApi\bin\Debug\net5.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 C:\Users\ClearTech\Documents\Sprints\CategoriaApi\CategoriaApi\bin\Debug\net5.0\Microsoft.IdentityModel.Tokens.dll
 C:\Users\ClearTech\Documents\Sprints\CategoriaApi\CategoriaApi\bin\Debug\net5.0\System.IdentityModel.Tokens.Jwt.dll
+C:\Diretorioazure\T2-VladmirNeres\CategoriaApi\CategoriaApi\bin\Debug\net5.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Diretorioazure\T2-VladmirNeres\CategoriaApi\CategoriaApi\bin\Debug\net5.0\Microsoft.AspNetCore.Authorization.dll
+C:\Diretorioazure\T2-VladmirNeres\CategoriaApi\CategoriaApi\bin\Debug\net5.0\Microsoft.AspNetCore.Metadata.dll
+C:\Diretorioazure\T2-VladmirNeres\CategoriaApi\CategoriaApi\bin\Debug\net5.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Diretorioazure\T2-VladmirNeres\CategoriaApi\CategoriaApi\bin\Debug\net5.0\Microsoft.IdentityModel.Logging.dll
+C:\Diretorioazure\T2-VladmirNeres\CategoriaApi\CategoriaApi\bin\Debug\net5.0\Microsoft.IdentityModel.Protocols.dll
+C:\Diretorioazure\T2-VladmirNeres\CategoriaApi\CategoriaApi\bin\Debug\net5.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Diretorioazure\T2-VladmirNeres\CategoriaApi\CategoriaApi\bin\Debug\net5.0\Microsoft.IdentityModel.Tokens.dll
+C:\Diretorioazure\T2-VladmirNeres\CategoriaApi\CategoriaApi\bin\Debug\net5.0\System.IdentityModel.Tokens.Jwt.dll

@@ -13,15 +13,29 @@ namespace TestesUniarios.TestesCategoria
 {
     public class CategoriaTestes
     {
+        private readonly IMapper _mapperCreateDto;
        private readonly IMapper _mapper;
+       private readonly IMapper _mapperInterno;
         private readonly ICategoriaRepository _repository;
-        private readonly ICategoriaService _sevice;
+        private readonly ICategoriaService _service;
         
         public CategoriaTestes()
         {
-            _repository= Substitute.For<ICategoriaRepository>(null);
+            
+            var config = new MapperConfiguration(cfg => {
+                cfg.CreateMap<Categoria, ReadCategoriaDto>();
+            });
+           
+            var configCreateDto = new MapperConfiguration(config => {
+
+                config.CreateMap<CreateCategoriaDto, Categoria>();
+            });
+
+            _mapperCreateDto = configCreateDto.CreateMapper();
+            _mapperInterno = config.CreateMapper();
+            _repository = Substitute.For<ICategoriaRepository>(null);
             _mapper = Substitute.For<IMapper>();
-            _sevice= new CategoriaServices(_mapper,_repository);
+            _service= new CategoriaServices(_mapperInterno,_repository);
         }
         public void VerificaQuantidadeDeCaracteres_MinimoDeCaracteresNaoAtingido_LancaExcecao()
         {
@@ -31,14 +45,14 @@ namespace TestesUniarios.TestesCategoria
 
             //ACT
             var categoriaTeste = Assert.Throws<MinCharacterException>(
-               ()=> _sevice.AdicionarCategoria(createdto));
+               ()=> _service.AdicionarCategoria(createdto));
 
             //ASSERT
             Assert.Equal("É necessario informar de 3 a 50 caracteres", categoriaTeste.Message);
         }
 
         [Fact]
-        public void BuscarCategoriaPorNome_SeACategoriaJaExisteSeExiste_LancaExcecao()
+        public void VerificarCategoriaPorNome_SeACategoriaJaExisteSeExiste_LancaExcecao()
         {
             //Arrange
             var createdto = new CreateCategoriaDto();
@@ -54,30 +68,28 @@ namespace TestesUniarios.TestesCategoria
             //ACT
 
            var categoriaTeste=  Assert.Throws<AlreadyExistException>(
-               ()=>_sevice.AdicionarCategoria(createdto));
+               ()=>_service.AdicionarCategoria(createdto));
            
             //ASSERT
             Assert.Equal("A categoria já existe", categoriaTeste.Message);
         }
 
-        [Fact(Skip ="Não foi encontrado Solução")]
+        [Fact]
 
         public void TestaSeACategoriaFoiCriadaComStatusAtivo()
         {
             //Arrange
-            CreateCategoriaDto objDto = new CreateCategoriaDto();
-            objDto.Nome = "Janainaao";
-
-            Categoria nomeCategoria= new Categoria() ;
-            nomeCategoria.Nome = objDto.Nome;
-            nomeCategoria.Status = true;
-            nomeCategoria.DataCriacao = DateTime.Now;
-
-            
+    
+            CreateCategoriaDto nomeCategoria= new CreateCategoriaDto() ;
+            nomeCategoria.Nome = "Janainaao";
+            var createDto = _mapperCreateDto.Map<Categoria>(nomeCategoria);
+            createDto.Status = true;
+            createDto.DataCriacao= DateTime.Now;
+           var readDto= _mapper.Map<ReadCategoriaDto>(createDto);
             //Act
-            var testaStatus = _sevice.AdicionarCategoria(objDto);
+            var testaStatus = _service.AdicionarCategoria(_mapper.Map<CreateCategoriaDto>(createDto)).Returns(readDto);
                        //Assert
-            Assert.True(testaStatus.Status);
+            Assert.True(testaStatus!= null);
         }
 
         [Fact]
@@ -90,13 +102,13 @@ namespace TestesUniarios.TestesCategoria
             updateDto.Status = true;
                        
             //Act
-            var respostaIdInvalido=  _sevice.EditarCategoria(2,updateDto);
+            var respostaIdInvalido=  _service.EditarCategoria(2,updateDto);
             //Assert
             Assert.True(respostaIdInvalido.IsFailed);
         }
 
         [Fact]
-        public void ErroDeAtualizacao_ContemSubCategoriaEStatusDaCategoriaAtivo_LancarExcecao()
+        public void ContemSubCategoriaCadastrada_AtualizarComStatusFalsoETiverCategoriaCadastrada_LancarExcecao()
         {
           //Arrange
             int id = 1;
@@ -121,13 +133,13 @@ namespace TestesUniarios.TestesCategoria
 
             //Act
             var excecaoMessage = Assert.Throws<InativeObjectException>( ()=>
-                _sevice.EditarCategoria(id, categoriaDto));
+                _service.EditarCategoria(id, categoriaDto));
 
             Assert.Equal("Não é possivel inativar uma categoria que contenha uma subCategoria cadastrada", excecaoMessage.Message);
         }
 
         [Fact]
-        public void AtualizadarCategoria_IdDeCategoriaEStatusValido_AtualizaCategoria()
+        public void AtualizarCategoria_IdDeCategoriaEStatusValido_AtualizaCategoria()
         {
             //Arrenge
             int id = 1;
@@ -152,10 +164,82 @@ namespace TestesUniarios.TestesCategoria
                    .Returns(categoria);
             //Action
        
-            var testarNovoNome = _sevice.EditarCategoria(id, updateDto);
+            var testarNovoNome = _service.EditarCategoria(id, updateDto);
             //Assert
 
             Assert.True(testarNovoNome.IsSuccess);
+        }
+
+
+        [Fact]
+        public void ExclusaoInvalidaCategoria_returnFailed()
+        {
+            //Arrange
+            
+            Categoria categoria = new Categoria();
+            categoria.Nome = "cat1";
+            //Act
+            var retornoResultFailed = _service.DeletarCategoria(categoria.Id);
+            //Assert
+            Assert.True(retornoResultFailed.IsFailed);
+        }
+        [Fact]
+        public void ExclusaovalidaCategoria_RetornaOk()
+        {
+            //Arrange
+           
+            Categoria categoria = new Categoria();
+            categoria.Id = 1;
+            categoria.Nome = "cat1";
+            _repository.BuscarCategoriaPorId(Arg.Any<int>()).Returns(categoria);
+            //Act
+            var resultado = _service.DeletarCategoria(categoria.Id);
+            //Assert
+            Assert.True(resultado.IsSuccess);
+        }
+
+        [Fact]
+        public void PesquisaDaListaDeCategoria_CampoForDiferenteDeNulo_RetornarListaComCampoSolicitado()
+        {
+            //Arrenge
+            string nome = null;
+            bool? status= true;  
+            int quantidadePorPagina= 0;
+            string ordem = null;
+
+            List<Categoria> listaCategoria = new List<Categoria>()
+            {
+                new Categoria()
+                {
+                    Id= 1,
+                    Nome= "padaria",
+                    DataCriacao= DateTime.Now,
+                    Status= true
+                },
+                new Categoria()
+                {
+                    Id= 2,
+                    Nome= "Uvas",
+                    DataCriacao= DateTime.Now,
+                    Status= true
+                },
+                new Categoria()
+                {
+                    Id= 3,
+                    Nome= "Mangas",
+                    DataCriacao= DateTime.Now,
+                    Status= false
+                }
+
+            };
+
+             _repository.BuscarListaCategorias().Returns(listaCategoria);
+            var camposMapeados = _mapperInterno.Map<List<ReadCategoriaDto>>(listaCategoria);
+            _mapper.Map<List<ReadCategoriaDto>>(listaCategoria).Returns(camposMapeados);
+            //Act
+            var listaDeNome = _service.GetCategoria(nome, status, quantidadePorPagina, ordem);
+
+            Assert.NotNull(listaDeNome);
         }
     }
 }

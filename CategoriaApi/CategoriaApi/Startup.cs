@@ -49,7 +49,9 @@ namespace CategoriaApi
             services.AddTransient<SubCategoriaRepository>();
             services.AddTransient<CentroRepository>();
             services.AddScoped<ICategoriaRepository,CategoriaRepository>();
-            //services.AddScoped<ICategoriaService>();
+            services.AddScoped<ICategoriaService, CategoriaServices>();
+            services.AddScoped<ISubCategoriaRepository, SubCategoriaRepository>();
+            services.AddScoped<ISubCategoriaService, SubCategoriaService>();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

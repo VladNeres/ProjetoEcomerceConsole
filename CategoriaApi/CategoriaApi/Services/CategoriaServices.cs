@@ -27,7 +27,7 @@ namespace CategoriaApi.Services
         {
             Categoria categoriaNome = _repository.BuscarNomeCategoria(categoriaDto);
 
-            if (categoriaDto.Nome.Length >= 3)
+            if (categoriaDto.Nome.Length >= 3 && categoriaDto.Nome.Length<=50)
             {
                 if (categoriaNome == null)
                 {
@@ -56,7 +56,7 @@ namespace CategoriaApi.Services
             {
                 throw new InativeObjectException("Não é possivel inativar uma categoria que contenha uma subCategoria cadastrada");
             }
-            _mapper.Map(categoriaDto, categorias);
+             _mapper.Map(categoriaDto, categorias);
             categorias.DataAtualizacao = DateTime.Now;
             _repository.SalvarAlteraçoes();
             return Result.Ok();

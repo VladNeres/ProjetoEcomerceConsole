@@ -9,21 +9,18 @@ using System.Linq;
 using System.Data;
 using CategoriaApi.Exceptions;
 using CategoriaApi.Repository;
+using CategoriaApi.Interfaces;
 
 namespace CategoriaApi.Services
 {
-    public class SubCategoriaService
+    public class SubCategoriaService:ISubCategoriaService
     {
-        private DatabaseContext _context;
         private IMapper _mapper;
-        private SubCategoriaRepository _subRepository;
-        private readonly IDbConnection _dbConnection;
-        public SubCategoriaService(DatabaseContext context, IMapper mapper, IDbConnection dbConnection, SubCategoriaRepository repository)
+        private ISubCategoriaRepository _subRepository;
+        public SubCategoriaService( IMapper mapper,ISubCategoriaRepository repository)
         {
             _subRepository= repository;
-            _context= context;
             _mapper = mapper;
-            _dbConnection= dbConnection;
         }
 
         public ReadSubCategoriaDto CriarSubCategoria(CreateSubCategoriaDto subCategoriaDto)
@@ -36,6 +33,7 @@ namespace CategoriaApi.Services
                 throw new InativeObjectException("Não é possivel cadastrar uma subcategoria em uma categoria inativa\n" +
                     "Por favor insira uma categoria valida");
             }
+           
             if (subCategoriaDto.Nome.Length >= 3 && subCategoriaDto.Nome.Length <= 50)
             {
                 if (subCategoriaNome == null)
@@ -133,7 +131,7 @@ namespace CategoriaApi.Services
 
         public ReadSubCategoriaDto GetSubPorId(int id)
         {
-            SubCategoria subCategoria = _context.SubCategorias.FirstOrDefault(subCategoria => subCategoria.Id == id);
+            SubCategoria subCategoria = _subRepository.RecuperarSubPorId(id);
             if (subCategoria != null)
             {
                 ReadSubCategoriaDto readSubCategoria = _mapper.Map<ReadSubCategoriaDto>(subCategoria);

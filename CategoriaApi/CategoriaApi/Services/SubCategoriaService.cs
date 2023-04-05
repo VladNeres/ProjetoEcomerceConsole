@@ -125,8 +125,6 @@ namespace CategoriaApi.Services
 
             List<ReadSubCategoriaDto> readDto = _mapper.Map<List<ReadSubCategoriaDto>>(subcategorias);
             return readDto;
-
-
         }
 
         public ReadSubCategoriaDto GetSubPorId(int id)

@@ -200,7 +200,21 @@ namespace TestesUniarios
             Assert.True(resultado.IsSuccess);
         }
 
-        [Fact(Skip ="Error")] 
+        [Fact]
+        public void DeletarSub_IdValido()
+        {
+            int id = 1;
+            SubCategoria sub = new SubCategoria();
+            sub.Id = id;
+            sub.Nome = "subDeletar";
+            _repository.RecuperarSubPorId(id).Returns(sub);
+
+           var result= _service.DeletarSubCategoria(id);
+
+            Assert.True(result.IsSuccess);
+        }
+
+        [Fact (Skip ="erro")] 
         public void PesquisarListaDeSub()
         {
 

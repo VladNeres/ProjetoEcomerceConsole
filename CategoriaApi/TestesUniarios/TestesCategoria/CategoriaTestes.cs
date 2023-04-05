@@ -120,7 +120,7 @@ namespace TestesUniarios.TestesCategoria
             Assert.Equal("Não é possivel inativar uma categoria que contenha uma subCategoria cadastrada", excecaoMessage.Message);
         }
 
-        [Fact (Skip = "erro na conversao")]
+        [Fact ]
         public void AtualizarCategoria_IdDeCategoriaEStatusValido_AtualizaCategoria()
         {
             //Arrenge
